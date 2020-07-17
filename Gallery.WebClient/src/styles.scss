@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+.curs {
+    cursor: pointer;
+}
+
+.btn-default{
+    background-color: #3E4748 !important;
+    color: #c1d82f !important;
+    
+    &:hover{
+        color: white !important;
+        -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+    }    
+}
+
+.btn-default.btn-sml{
+    font-size: 12px;
+}
+
+.modal-header{
+    background-color: #3E4748 !important;
+    border-radius: 5px 5px 0px 0px;
+    .modal-title{
+        color: #c1d82f !important;
+    }
+}
+
+.form-control:focus {
+    border-color: #3E4748 !important;
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.75);
+}
+
+.hr {
+    height:2px;
+    border-width:0;
+    color:#3E4748;
+    background-color:#3E4748
+}

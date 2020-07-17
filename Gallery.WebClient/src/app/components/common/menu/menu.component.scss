@@ -1,0 +1,44 @@
+.navbar.navbar-default {
+    background-color: #3E4748;
+}
+
+.navbar-header .navbar-brand {
+    color: #c1d82f;
+    font-size: 22px;
+}
+.navbar-header .navbar-brand:hover {
+    color: #c1d82f;
+    font-size: 22px;
+}
+
+.text-green{
+    color: #c1d82f !important;
+}
+  
+.text-green:hover{
+    color: white !important;
+}
+
+.bg{
+    background-color: #3E4748 !important;
+    color:  #c1d82f !important;
+}
+
+.bg:hover{
+    background-color: #3E4748 !important;
+    color:  white !important;
+}
+
+.bg:focus{
+	color: white !important;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover
+{
+    color: #f9f9f9;
+}
+
+.wide{
+    width:50px;
+    text-align: center;
+}

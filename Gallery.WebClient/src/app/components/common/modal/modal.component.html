@@ -1,0 +1,27 @@
+
+<div class="container">
+    <button type="button" id="openModalButton" style="display:none" data-toggle="modal" data-target="#confirmationModal" data-backdrop="static" data-keyboard="false" >Open Modal</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmationModal" role="dialog" data-backdrop="static" data-keyboard="false" >
+        <div class="modal-dialog modal-dialog-centered">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{message}}</p>
+                </div>
+                <div class="modal-footer">                    
+                    <button type="button" class="btn btn-default" id="okButton">Da</button>
+                    <button type="button" class="btn btn-default pull-left" id="cancelButton" data-dismiss="modal">Nazad</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
