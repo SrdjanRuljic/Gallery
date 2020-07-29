@@ -32,11 +32,9 @@ export class LoginComponent {
     this.model.password = password;
 
     this._authService.login(this.model).subscribe(response => {
-      this._globalEventsManager.isAuthorized.emit(true);
       this.getLogedInUserData()
     },error => {
       this.goToHome();
-      this._globalEventsManager.isAuthorized.emit(false);
       this._toastService.activate(error.error.message, "alert-danger");
     });    
   }

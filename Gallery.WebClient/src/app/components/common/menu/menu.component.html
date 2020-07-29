@@ -11,10 +11,10 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="curs" (click)="goToCategories()" *ngIf="isAuthorized">
+                <li class="curs" (click)="goToCategories()" *ngIf="isAuthorized()">
                     <a class="text-green">Kategorije </a>
                 </li>
-                <li class="curs" (click)="goToUsers()" *ngIf="isAuthorized && isAdmin">
+                <li class="curs" (click)="goToUsers()" *ngIf="isAuthorized() && isAdmin">
                     <a class="text-green">Korisnici </a>
                 </li>
                 <li class="curs" (click)="goToAboutAuthor()">
@@ -25,13 +25,13 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li data-toggle="modal" *ngIf="isAuthorized" data-target="#login-modal">
+                <li data-toggle="modal" *ngIf="isAuthorized()" data-target="#login-modal">
                     <a class="text-green">{{displayName}} </a>
                 </li>
-                <li class="curs" data-toggle="modal" *ngIf="!isAuthorized" data-target="#login-modal">
+                <li class="curs" data-toggle="modal" *ngIf="!isAuthorized()" data-target="#login-modal">
                     <a class="text-green">Prijava </a>
                 </li>
-                <li class="curs" data-toggle="modal" *ngIf="isAuthorized" data-target="#logout-modal">
+                <li class="curs" data-toggle="modal" *ngIf="isAuthorized()" data-target="#logout-modal">
                     <a class="text-green">Odjeva </a>
                 </li>
             </ul>
