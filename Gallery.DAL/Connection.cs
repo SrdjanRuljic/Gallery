@@ -2,7 +2,7 @@
 {
     internal class Connection
     {
-        private string connectionString = "Data Source=DESKTOP-5N65NA1;Initial Catalog=Gallery;Integrated Security=true;User Id=rulja;Password=armor;";
+        private string connectionString = "Data Source=DESKTOP-TO1UCBV\\MSSQLSERVER2017;Initial Catalog=Gallery;Integrated Security=true;User Id=rulja;Password=rulja;";
 
         public string ConnectionString
         {
