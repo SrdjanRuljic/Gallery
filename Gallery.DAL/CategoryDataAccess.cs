@@ -14,7 +14,7 @@ namespace Gallery.DAL
 
         public async Task Delete(long id)
         {
-            string queryString = "[dbo].[sp_Cateories.Delete]";
+            string queryString = "[dbo].[sp_Categories.Delete]";
 
             using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {
@@ -38,7 +38,7 @@ namespace Gallery.DAL
 
         public async Task<bool> Exists(string name, long id)
         {
-            string queryString = "[dbo].[sp_Cateories.Exists]";
+            string queryString = "[dbo].[sp_Categories.Exists]";
 
             using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {
@@ -109,7 +109,7 @@ namespace Gallery.DAL
 
         public async Task<CategoryModel> GetById(long id)
         {
-            string queryString = "[dbo].[sp_Cateories.GetById]";
+            string queryString = "[dbo].[sp_Categories.GetById]";
 
             using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {
@@ -218,7 +218,7 @@ namespace Gallery.DAL
 
         public async Task<bool> Update(CategoryModel model)
         {
-            string queryString = "[dbo].[sp_Cateories.Update]";
+            string queryString = "[dbo].[sp_Categories.Update]";
 
             var isUpdated = false;
 
