@@ -63,7 +63,7 @@
           ></textarea>
         </div>
         <div class="form-group col-md-7">
-          <app-file-upload></app-file-upload>
+          <app-file-upload (fileData)="getFileData($event)"></app-file-upload>
         </div>
 
         <div class="form-group col-md-12">

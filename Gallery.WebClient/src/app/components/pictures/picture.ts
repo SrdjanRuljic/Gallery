@@ -5,4 +5,6 @@ export class Picture {
   description: string;
   extension: string;
   content: string;
+
+  fileData: File;
 }

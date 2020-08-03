@@ -43,6 +43,7 @@ export class PicturesFormComponent implements OnInit {
     this.model.extension = null;
     this.model.content = null;
     this.model.categoryId = 0;
+    this.model.fileData = null;
   }
 
   save() {}
@@ -59,6 +60,11 @@ export class PicturesFormComponent implements OnInit {
     this._categoriesService.getDropDownItems().subscribe((response) => {
       this.categories = response;
     });
+  }
+
+  getFileData(data) {
+    this.model.fileData = data;
+    console.log(this.model);
   }
 
   goBack() {
