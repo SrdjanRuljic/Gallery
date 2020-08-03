@@ -65,6 +65,9 @@ namespace Gallery.BLL
             return model;
         }
 
+        public Task<List<DropdownItemModel>> GetDropdownItems() =>
+            _categoryDataAccess.GetDropdownItems();
+
         public async Task<long> Insert(CategoryModel model)
         {
             long id = 0;

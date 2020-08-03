@@ -25,6 +25,32 @@
             </div>
           </div>
         </div>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !categoryValidation()
+            }"
+          >
+            <label for="categoryId">Kategorija*</label>
+            <select
+              class="form-control"
+              id="categoryId"
+              name="categoryId"
+              [(ngModel)]="model.categoryId"
+            >
+              <option value="0">-</option>
+              <option *ngFor="let item of categories" [value]="item.id">{{
+                item.name
+              }}</option>
+            </select>
+            <div
+              *ngIf="f.submitted && !categoryValidation()"
+              class="help-block"
+            >
+              Neophodno je odabrati kategoriju
+            </div>
+          </div>
+        </div>
 
         <div class="form-group col-md-12">
           <hr class="hr" />

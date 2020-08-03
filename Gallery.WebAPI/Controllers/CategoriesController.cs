@@ -88,6 +88,15 @@ namespace Gallery.WebAPI.Controllers
             return Ok(exists);
         }
 
+        [HttpGet]
+        [Route("dropdown")]
+        public async Task<IActionResult> GetDropdownItems()
+        {
+            List<DropdownItemViewModel> items = _mapper.Map<List<DropdownItemViewModel>>(await _categoryBusiness.GetDropdownItems());
+
+            return Ok(items);
+        }
+
         #endregion
 
         #region [PUT]

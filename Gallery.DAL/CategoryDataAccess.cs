@@ -144,6 +144,43 @@ namespace Gallery.DAL
             }
         }
 
+        public async Task<List<DropdownItemModel>> GetDropdownItems()
+        {
+            string queryString = "[dbo].[sp_Categories.GetDropdownItems]";
+
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                List<DropdownItemModel> list = new List<DropdownItemModel>();
+
+                try
+                {
+                    await connection.OpenAsync();
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            DropdownItemModel model = new DropdownItemModel()
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"].ToString()
+                            };
+                            list.Add(model);
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message);
+                }
+
+                return list;
+            }
+        }
+
         public async Task<long> Insert(CategoryModel model)
         {
             string queryString = "[dbo].[sp_Categories.Insert]";
