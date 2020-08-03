@@ -48,17 +48,11 @@ export class PicturesFormComponent implements OnInit {
   save() {}
 
   nameValidation() {
-    if (this.model.name == null || this.model.name.length < 1) {
-      return false;
-    }
-    return true;
+    return !!!(this.model.name == null || this.model.name.length < 1);
   }
 
   categoryValidation() {
-    if (this.model.categoryId < 1) {
-      return false;
-    }
-    return true;
+    return !!!(this.model.categoryId < 1);
   }
 
   getCategories() {
