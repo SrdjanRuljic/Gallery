@@ -10,6 +10,7 @@ const httpOptions = {
     Authorization: "",
   }),
 };
+const pictureFormData: FormData = new FormData();
 
 @Injectable()
 export class PicturesService {
@@ -32,6 +33,7 @@ export class PicturesService {
   }
 
   insert(model): Observable<any> {
+    console.log("PicturesService -> constructor -> model", model);
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
     return this._http

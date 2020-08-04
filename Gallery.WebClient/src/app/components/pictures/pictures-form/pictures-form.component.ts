@@ -13,6 +13,7 @@ import { CategoriesService } from "../../categories/categories.services";
 export class PicturesFormComponent implements OnInit {
   model: Picture;
   categories: any[];
+  fileData: File;
 
   constructor(
     private _picturesServices: PicturesService,
@@ -40,13 +41,37 @@ export class PicturesFormComponent implements OnInit {
     this.model.id = 0;
     this.model.name = null;
     this.model.description = null;
-    this.model.extension = null;
-    this.model.content = null;
     this.model.categoryId = 0;
-    this.model.fileData = null;
+    this.model.fileExtension = null;
+    this.model.fileContent = null;
   }
 
-  save() {}
+  save() {
+    if (this.nameValidation() && this.categoryValidation()) {
+      if (this.model.id == 0) {
+        this.insert();
+      } else {
+      }
+    }
+  }
+
+  insert() {
+    this._picturesServices.insert(this.model).subscribe(
+      (response) => {
+        this._toastService.activate(
+          "Slika je uspješno dodata.",
+          "alert-success"
+        );
+        this.goBack();
+      },
+      (error) => {
+        this._toastService.activate(
+          error.error.exceptionMessage,
+          "alert-danger"
+        );
+      }
+    );
+  }
 
   nameValidation() {
     return !!!(this.model.name == null || this.model.name.length < 1);
@@ -63,8 +88,8 @@ export class PicturesFormComponent implements OnInit {
   }
 
   getFileData(data) {
-    this.model.fileData = data;
-    console.log(this.model);
+    this.model.fileExtension = data.extension;
+    this.model.fileContent = data.content;
   }
 
   goBack() {
