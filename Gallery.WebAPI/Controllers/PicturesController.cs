@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Gallery.BLL.Interfaces;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,13 @@ namespace Gallery.WebAPI.Controllers
     public class PicturesController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IPicturesBusiness _picturesBusiness;
 
-        public PicturesController(IMapper mapper)
+        public PicturesController(IMapper mapper,
+                                  IPicturesBusiness picturesBusiness)
         {
             _mapper = mapper;
+            _picturesBusiness = picturesBusiness;
         }
 
         #region [POST]
@@ -30,7 +34,8 @@ namespace Gallery.WebAPI.Controllers
 
             try
             {
-                //id = await _categoryBusiness.Insert(_mapper.Map<CategoryModel>(model));
+                var result = await _picturesBusiness.UploadImage(model.FileContent, model.FileExtension);
+
                 return Ok(id);
             }
             catch (Exception e)
