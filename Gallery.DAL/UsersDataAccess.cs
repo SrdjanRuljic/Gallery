@@ -38,7 +38,7 @@ namespace Gallery.DAL
 
         public async Task<List<UserModel>> GetAll()
         {
-            string queryString = "[dbo].[sp_Useres.GetAll]";
+            string queryString = "[dbo].[sp_Users.GetAll]";
 
             using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {

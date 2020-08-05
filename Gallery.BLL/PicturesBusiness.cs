@@ -1,5 +1,9 @@
 ﻿using Gallery.BLL.Interfaces;
+using Gallery.Common;
 using Gallery.Common.Enums;
+using Gallery.Common.Validations;
+using Gallery.DAL;
+using Gallery.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,15 +14,64 @@ namespace Gallery.BLL
 {
     public class PicturesBusiness : IPicturesBusiness
     {
+        private readonly IPicturesDataAccess _picturesDataAccess;
+
         public PicturesBusiness()
         {
-            
+            _picturesDataAccess = new PicturesDataAcces();
         }
 
-        public async Task<int> UploadImage(string content, string extension)
+        public Task Delete(long id) => 
+            _picturesDataAccess.Delete(id);
+
+        public Task<List<PictureModel>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<PictureModel> GetById(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+            }
+
+            PictureModel picture = await _picturesDataAccess.GetById(id);
+
+            if (picture == null)
+            {
+                throw new ApplicationException(ErrorMessages.UserNotFound);
+            }
+
+            return picture;
+        }
+
+        public async Task<long> Insert(PictureModel model)
+        {
+            long id = 0;
+            string errorMessage = null;
+
+            if (!model.IsValid(out errorMessage))
+            {
+                throw new ArgumentException(errorMessage);
+            }
+
+            model.ImageName = await UploadImage("", model.Extension);
+
+            id = await _picturesDataAccess.Insert(model);
+
+            return id;
+        }
+
+        public Task<bool> Update(PictureModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<Guid> UploadImage(string content, string extension)
         {
             if (string.IsNullOrEmpty(content))
-                return (int)ImageEnum.NO_IMAGE;
+                return new Guid();
 
             string folderName = Path.Combine("Resources", "Images");
 
@@ -37,7 +90,7 @@ namespace Gallery.BLL
 
             File.WriteAllBytes(imagePath, image64);
 
-            return (int)ImageEnum.IMAGE_UPLOADED;
+            return imageName;
         }
     }
 }

@@ -11,6 +11,7 @@
         private static string canNotDeleteUser;
         private static string userNotFound;
         private static string dataNotFound;
+        private static string pictureNotFound;
 
         public static string DataNotFound
         {
@@ -55,6 +56,11 @@
         public static string IncorectUsernameOrPassword
         {
             get { return incorectUsernameOrPassword = "Neispravno korisničko ime ili lozinka."; }
+        }
+
+        public static string PictureNotFound
+        {
+            get { return pictureNotFound = "Tražena slika nije pronađena."; }
         }
     }
 }

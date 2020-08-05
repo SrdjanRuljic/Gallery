@@ -17,13 +17,13 @@ namespace Gallery.Common.Validations
 
             if (String.IsNullOrWhiteSpace(model.Username))
             {
-                validationMessage = "Neophodno je unijeti korisničko ime korisnika. ";
+                validationMessage += "Neophodno je unijeti korisničko ime korisnika. ";
                 isValid = false;
             }
 
             if (model.Id == 0 && String.IsNullOrWhiteSpace(model.Password))
             {
-                validationMessage = "Neophodno je unijeti lozinku korisnika. ";
+                validationMessage += "Neophodno je unijeti lozinku korisnika. ";
                 isValid = false;
             }
 
