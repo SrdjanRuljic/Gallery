@@ -11,7 +11,7 @@
   <div *ngFor="let i of rows" class="row">
     <div
       class="card col-md-3"
-      *ngFor="let item of pictures | slice: i * 4:(i + 1) * 4"
+      *ngFor="let item of itemsToDisplay | slice: i * 4:(i + 1) * 4"
     >
       <div class="card curs" (click)="goToPictureDetails(item.id)">
         <div class="">
@@ -28,4 +28,16 @@
       </div>
     </div>
   </div>
+  <hr class="hr" />
+  <nav class="center" *ngIf="rows.length > 1">
+    <ul class="pagination curs">
+      <li
+        *ngFor="let pageNumber of rows"
+        (click)="changePage(pageNumber)"
+        [ngClass]="{ active: pageNumber == currentPage }"
+      >
+        <button class="btn btn-default btn-sml">{{ pageNumber + 1 }}</button>
+      </li>
+    </ul>
+  </nav>
 </div>

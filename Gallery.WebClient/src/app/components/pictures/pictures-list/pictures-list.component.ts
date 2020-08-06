@@ -10,7 +10,10 @@ import { ToastService } from "../../common/toast/toast.service";
 })
 export class PicturesListComponent implements OnInit {
   pictures: any[];
+  itemsToDisplay: any[];
   rows = [];
+  itemPerPage: number = 1;
+  currentPage: number = 0;
 
   constructor(
     private _picturesService: PicturesService,
@@ -21,23 +24,38 @@ export class PicturesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.pictures = this._picturesService.getImages();
-    // this.rows = Array.from(Array(Math.ceil(this.pictures.length / 4)).keys());
     this.search();
   }
 
   search() {
     this._picturesService.search().subscribe(
       (data) => {
-        this.pictures = data;
-        this.rows = Array.from(
-          Array(Math.ceil(this.pictures.length / 4)).keys()
-        );
+        this.initialize(data);
       },
       (error) => {
         this._toastService.activate(error.error.message, "alert-danger");
       }
     );
+  }
+
+  initialize(data) {
+    this.pictures = data;
+    this.rows.length = Math.ceil(this.pictures.length / this.itemPerPage);
+    if (this.rows.length > 1) {
+      this.rows = Array.from(Array(this.rows.length).keys());
+    }
+    this.changePage(this.currentPage);
+  }
+
+  changePage(pageNum) {
+    this.currentPage = pageNum;
+    this.itemsToDisplay = this.pictures.slice(
+      this.currentPage * this.itemPerPage,
+      this.currentPage * this.itemPerPage + this.itemPerPage
+    );
+    if (this.itemsToDisplay.length == 0) {
+      this._toastService.activate("Nema podataka za prikaz.", "alert-danger");
+    }
   }
 
   goToPictureForm(id) {
