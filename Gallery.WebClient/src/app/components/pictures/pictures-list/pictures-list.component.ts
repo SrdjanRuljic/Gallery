@@ -12,7 +12,7 @@ export class PicturesListComponent implements OnInit {
   pictures: any[];
   itemsToDisplay: any[];
   rows = [];
-  itemPerPage: number = 1;
+  itemPerPage: number = 12;
   currentPage: number = 0;
 
   constructor(
