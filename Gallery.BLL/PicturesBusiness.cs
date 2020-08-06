@@ -4,6 +4,7 @@ using Gallery.Common.Enums;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
+using Gallery.DTO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,26 +47,38 @@ namespace Gallery.BLL
             return picture;
         }
 
-        public async Task<long> Insert(PictureModel model)
+        public Task<long> Insert(PictureModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Update(PictureModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<long> UploadAndInsert(PicturesDTO dto)
         {
             long id = 0;
             string errorMessage = null;
+
+            PictureModel model = new PictureModel()
+            {
+                CategoryId = dto.CategoryId,
+                Name = dto.Name,
+                Description = dto.Description,
+                ImageName = await UploadImage(dto.Content, dto.Extension),
+                Extension = dto.Extension
+            };
 
             if (!model.IsValid(out errorMessage))
             {
                 throw new ArgumentException(errorMessage);
             }
 
-            model.ImageName = await UploadImage("", model.Extension);
-
             id = await _picturesDataAccess.Insert(model);
 
             return id;
-        }
-
-        public Task<bool> Update(PictureModel model)
-        {
-            throw new NotImplementedException();
         }
 
         private async Task<Guid> UploadImage(string content, string extension)

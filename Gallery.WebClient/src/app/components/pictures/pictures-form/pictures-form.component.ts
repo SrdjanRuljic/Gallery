@@ -42,8 +42,8 @@ export class PicturesFormComponent implements OnInit {
     this.model.name = null;
     this.model.description = null;
     this.model.categoryId = 0;
-    this.model.fileExtension = null;
-    this.model.fileContent = null;
+    this.model.extension = null;
+    this.model.content = null;
   }
 
   save() {
@@ -88,8 +88,8 @@ export class PicturesFormComponent implements OnInit {
   }
 
   getFileData(data) {
-    this.model.fileExtension = data.extension;
-    this.model.fileContent = data.content;
+    this.model.extension = data.extension;
+    this.model.content = data.content;
   }
 
   goBack() {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Gallery.BLL.Interfaces;
+using Gallery.DTO;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,7 @@ namespace Gallery.WebAPI.Controllers
 
             try
             {
-                var result = await _picturesBusiness.UploadImage(model.FileContent, model.FileExtension);
+                var result = await _picturesBusiness.UploadAndInsert(_mapper.Map<PicturesDTO>(model));
 
                 return Ok(id);
             }

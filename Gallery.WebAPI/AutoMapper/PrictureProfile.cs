@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Gallery.Common;
+using Gallery.DTO;
 using Gallery.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Gallery.WebAPI.AutoMapper
     {
         public PrictureProfile()
         {
-            CreateMap<PictureViewModel, PictureModel>();
+            CreateMap<PictureViewModel, PicturesDTO>();
         }
     }
 }

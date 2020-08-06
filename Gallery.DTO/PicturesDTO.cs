@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace Gallery.WebAPI.Models
+namespace Gallery.DTO
 {
-    public class PictureViewModel
+    public class PicturesDTO
     {
         public long Id { get; set; }
         public string Name { get; set; }

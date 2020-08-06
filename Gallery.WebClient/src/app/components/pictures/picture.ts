@@ -3,6 +3,6 @@ export class Picture {
   name: string;
   categoryId: number;
   description: string;
-  fileExtension: string;
-  fileContent: string;
+  extension: string;
+  content: string;
 }
