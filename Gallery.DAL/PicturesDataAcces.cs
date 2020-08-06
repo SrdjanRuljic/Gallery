@@ -122,6 +122,50 @@ namespace Gallery.DAL
             }
         }
 
+        public async Task<List<PictureModel>> Search()
+        {
+            string queryString = "[dbo].[sp_Pictures.Search]";
+
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                List<PictureModel> list = new List<PictureModel>();
+
+                try
+                {
+                    await connection.OpenAsync();
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                            list = null;
+
+                        while (reader.Read())
+                        {
+                            PictureModel model = new PictureModel()
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"].ToString(),
+                                CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                                Description = reader["Description"].ToString(),
+                                ImageName = (Guid)reader["ImageName"],
+                                Extension = reader["Extension"].ToString()
+                            };
+                            list.Add(model);
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message);
+                }
+
+                return list;
+            }
+        }
+
         public async Task<bool> Update(PictureModel model)
         {
             string queryString = "[dbo].[sp_Pictures.Update]";

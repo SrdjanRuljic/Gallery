@@ -14,6 +14,7 @@ namespace Gallery.WebAPI.AutoMapper
         public PrictureProfile()
         {
             CreateMap<PictureViewModel, PicturesDTO>();
+            CreateMap<PicturesDTO, PictureViewModel>();
         }
     }
 }

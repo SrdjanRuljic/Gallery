@@ -33,11 +33,16 @@ export class PicturesService {
   }
 
   insert(model): Observable<any> {
-    console.log("PicturesService -> constructor -> model", model);
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
     return this._http
       .post(this._picturesUrl, model, httpOptions)
+      .pipe(map((res) => res));
+  }
+
+  search(): Observable<any> {
+    return this._http
+      .post(this._picturesUrl + "/" + "search", {})
       .pipe(map((res) => res));
   }
 }

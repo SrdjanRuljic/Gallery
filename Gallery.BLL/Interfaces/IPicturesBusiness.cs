@@ -10,5 +10,6 @@ namespace Gallery.BLL.Interfaces
     public interface IPicturesBusiness : IBaseBusiness<PictureModel>
     {
         Task<long> UploadAndInsert(PicturesDTO dto);
+        Task<List<PicturesDTO>> Search();
     }
 }

@@ -52,6 +52,30 @@ namespace Gallery.BLL
             throw new NotImplementedException();
         }
 
+        public async Task<List<PicturesDTO>> Search()
+        {
+            List<PicturesDTO> dtos = new List<PicturesDTO>();
+
+            List<PictureModel> pictures = await _picturesDataAccess.Search();
+
+            foreach (var item in pictures)
+            {
+                PicturesDTO dto = new PicturesDTO()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    CategoryId = item.CategoryId,
+                    Description = item.Description,
+                    Content =item.ImageName == null ? null : await GetImageContent(item.ImageName, item.Extension),
+                    Extension = item.Extension
+                };
+
+                dtos.Add(dto);
+            }
+
+            return dtos;
+        }
+
         public Task<bool> Update(PictureModel model)
         {
             throw new NotImplementedException();
@@ -104,6 +128,22 @@ namespace Gallery.BLL
             await File.WriteAllBytesAsync(imagePath, image64);
 
             return imageName;
+        }
+
+        private async Task<string> GetImageContent(Guid? imageName, string extension)
+        {
+            string content = null;
+            string folderName = Path.Combine("Resources", "Images");
+            string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            string imagePath = Path.Combine(pathToSave, imageName.ToString() + "." + extension);
+
+            if (File.Exists(imagePath))
+            {
+                Byte[] bytes = await File.ReadAllBytesAsync(imagePath);
+                content = "data:image/jpeg;base64," + Convert.ToBase64String(bytes);
+            }
+
+            return content;
         }
     }
 }

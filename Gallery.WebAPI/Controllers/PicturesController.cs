@@ -45,6 +45,15 @@ namespace Gallery.WebAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("search")]
+        public async Task<IActionResult> Search()
+        {
+            List<PictureViewModel> pictures = _mapper.Map<List<PictureViewModel>>(await _picturesBusiness.Search());
+
+            return Ok(pictures);
+        }
+
         #endregion [POST]
     }
 }
