@@ -1,16 +1,31 @@
-
 <div class="container">
   <div class="row">
-    <button type="button" class="btn btn-default pull-right margin-right-10" (click)="goToPictureForm(0)"> Nova slika </button>
+    <button
+      type="button"
+      class="btn btn-default pull-right margin-right-10"
+      (click)="goToPictureForm(0)"
+    >
+      Nova slika
+    </button>
   </div>
-  <div *ngFor="let i of rows" class="row">   
-    <div class="card col-md-3" *ngFor="let img of pictures | slice:(i*4):(i+1)*4">    
-      <div class="card curs" (click)="goToPictureDetails(img.id)">    
-        <div class="">    
-          <img src="{{img.url}}" class="img" width="260" height="190">  
+  <div *ngFor="let i of rows" class="row">
+    <div
+      class="card col-md-3"
+      *ngFor="let item of pictures | slice: i * 4:(i + 1) * 4"
+    >
+      <div class="card curs" (click)="goToPictureDetails(item.id)">
+        <div class="">
+          <img
+            src="{{
+              item.content != null ? item.content : 'assets/images/no-image.png'
+            }}"
+            class="img"
+            width="260"
+            height="190"
+          />
         </div>
-        <h5 class="title"> {{img.title}} </h5>
-      </div> 
-    </div>   
-  </div>    
+        <h5 class="title">{{ item.name }}</h5>
+      </div>
+    </div>
+  </div>
 </div>

@@ -28,10 +28,6 @@ export class PicturesService {
     );
   }
 
-  getImages() {
-    return (this.allImages = Imagesdelatils.slice(0));
-  }
-
   insert(model): Observable<any> {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
@@ -46,16 +42,3 @@ export class PicturesService {
       .pipe(map((res) => res));
   }
 }
-
-const Imagesdelatils = [
-  { id: 1, url: "assets/images/User.jfif", title: "Naslov 1" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 2, url: "assets/images/User.jfif", title: "Naslov 2" },
-  { id: 3, url: "assets/images/User.jfif", title: "Naslov 2" },
-];

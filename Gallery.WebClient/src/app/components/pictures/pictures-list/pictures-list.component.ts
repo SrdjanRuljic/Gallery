@@ -21,15 +21,18 @@ export class PicturesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pictures = this._picturesService.getImages();
-    this.rows = Array.from(Array(Math.ceil(this.pictures.length / 4)).keys());
+    // this.pictures = this._picturesService.getImages();
+    // this.rows = Array.from(Array(Math.ceil(this.pictures.length / 4)).keys());
     this.search();
   }
 
   search() {
     this._picturesService.search().subscribe(
       (data) => {
-        console.log(data);
+        this.pictures = data;
+        this.rows = Array.from(
+          Array(Math.ceil(this.pictures.length / 4)).keys()
+        );
       },
       (error) => {
         this._toastService.activate(error.error.message, "alert-danger");
