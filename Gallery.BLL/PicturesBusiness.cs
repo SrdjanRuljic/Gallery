@@ -101,7 +101,7 @@ namespace Gallery.BLL
 
             byte[] image64 = Convert.FromBase64String(content);
 
-            File.WriteAllBytes(imagePath, image64);
+            await File.WriteAllBytesAsync(imagePath, image64);
 
             return imageName;
         }
