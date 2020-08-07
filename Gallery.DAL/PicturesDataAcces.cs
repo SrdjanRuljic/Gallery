@@ -139,9 +139,6 @@ namespace Gallery.DAL
                     await connection.OpenAsync();
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
-                        if (!reader.HasRows)
-                            list = null;
-
                         while (reader.Read())
                         {
                             PictureModel model = new PictureModel()

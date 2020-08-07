@@ -1,40 +1,60 @@
 <div class="container">
-    <h3>
-        Kategorije
-        <button type="button" 
-                class="btn btn-default pull-right margin-right-10" 
-                (click)="goToCategoryForm(0)"> 
-            Nova kategorija 
-        </button>
-    </h3>
-    <hr class="hr"/>
-    <div class="">
-        <table class="table table-striped table-condensed" *ngIf="categoriesToDisplay.length!=0">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Naziv</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of categoriesToDisplay; let i = index">
-                    <td>{{(i + 1) + (currentPage * categoriesPerPage) }}</td>
-                    <td>{{item.name}}</td>
-                    <td>
-                        <button class="btn btn-default btn-sml pull-right" (click)="goToCategoryForm(item.id)">Izmjena</button>
-                        <button class="btn btn-default btn-sml pull-right" (click)="delete(item.id)">Brisanje</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <hr class="hr"/>
-        <nav class="center" *ngIf="numberOfPages.length > 1">
-            <ul class="pagination curs">
-                <li *ngFor="let pageNumber of numberOfPages" (click)="changePage(pageNumber)" [ngClass]="{'active': pageNumber == currentPage}">
-                    <button class="btn btn-default btn-sml">{{ pageNumber + 1 }}</button>
-                </li>
-            </ul>
-        </nav>
-    </div>
+  <h3>
+    Kategorije
+    <button
+      type="button"
+      class="btn btn-default pull-right"
+      (click)="goToCategoryForm(0)"
+      *ngIf="isAuthorized()"
+    >
+      Nova kategorija
+    </button>
+  </h3>
+  <hr class="hr" />
+  <div class="">
+    <table
+      class="table table-striped table-condensed"
+      *ngIf="itemsToDisplay.length != 0"
+    >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Naziv</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemsToDisplay; let i = index">
+          <td>{{ i + 1 + currentPage * itemPerPage }}</td>
+          <td>{{ item.name }}</td>
+          <td>
+            <button
+              class="btn btn-default btn-sml pull-right"
+              (click)="goToCategoryForm(item.id)"
+            >
+              Izmjena
+            </button>
+            <button
+              class="btn btn-default btn-sml pull-right"
+              (click)="delete(item.id)"
+            >
+              Brisanje
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr class="hr" *ngIf="itemsToDisplay.length != 0" />
+    <nav class="center" *ngIf="numberOfPages.length > 1">
+      <ul class="pagination curs">
+        <li
+          *ngFor="let pageNumber of numberOfPages"
+          (click)="changePage(pageNumber)"
+          [ngClass]="{ active: pageNumber == currentPage }"
+        >
+          <button class="btn btn-default btn-sml">{{ pageNumber + 1 }}</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

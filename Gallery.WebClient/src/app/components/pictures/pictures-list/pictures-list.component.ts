@@ -60,6 +60,11 @@ export class PicturesListComponent implements OnInit {
     }
   }
 
+  isAuthorized() {
+    const token = localStorage.getItem("auth_token");
+    return !!token;
+  }
+
   goToPictureForm(id) {
     this._router.navigate(["/pictures/form", id]);
   }

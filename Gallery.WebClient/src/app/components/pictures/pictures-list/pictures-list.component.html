@@ -1,13 +1,16 @@
 <div class="container">
-  <div class="row">
+  <h3>
+    Slike
     <button
       type="button"
-      class="btn btn-default pull-right margin-right-10"
+      class="btn btn-default pull-right"
       (click)="goToPictureForm(0)"
+      *ngIf="isAuthorized()"
     >
       Nova slika
     </button>
-  </div>
+  </h3>
+  <hr class="hr" />
   <div class="row">
     <div class="card col-md-3" *ngFor="let item of itemsToDisplay">
       <div class="card curs" (click)="goToPictureDetails(item.id)">
@@ -25,7 +28,7 @@
       </div>
     </div>
   </div>
-  <hr class="hr" />
+  <hr class="hr" *ngIf="itemsToDisplay.length != 0" />
   <nav class="center" *ngIf="numberOfPages.length > 1">
     <ul class="pagination curs">
       <li
