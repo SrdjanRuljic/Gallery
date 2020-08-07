@@ -122,15 +122,21 @@ namespace Gallery.DAL
             }
         }
 
-        public async Task<List<PictureModel>> Search()
+        public async Task<List<PictureModel>> Search(string name, long? categoryId)
         {
             string queryString = "[dbo].[sp_Pictures.Search]";
+
+            if (String.IsNullOrEmpty(name))
+                name = null;
+            categoryId = categoryId == 0 ? null : categoryId;
 
             using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add("@Name", SqlDbType.NVarChar).Value = name;
+                command.Parameters.Add("@CategoryId", SqlDbType.BigInt).Value = categoryId;
 
                 List<PictureModel> list = new List<PictureModel>();
 

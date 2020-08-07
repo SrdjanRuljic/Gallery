@@ -36,9 +36,9 @@ export class PicturesService {
       .pipe(map((res) => res));
   }
 
-  search(): Observable<any> {
+  search(model): Observable<any> {
     return this._http
-      .post(this._picturesUrl + "/" + "search", {})
+      .post(this._picturesUrl + "/" + "search", model)
       .pipe(map((res) => res));
   }
 }

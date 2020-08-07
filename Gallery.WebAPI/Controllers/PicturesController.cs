@@ -49,9 +49,10 @@ namespace Gallery.WebAPI.Controllers
 
         [HttpPost]
         [Route("search")]
-        public async Task<IActionResult> Search()
+        public async Task<IActionResult> Search(PictureSearchViewModel model)
         {
-            List<PictureViewModel> pictures = _mapper.Map<List<PictureViewModel>>(await _picturesBusiness.Search());
+            List<PictureViewModel> pictures = _mapper.Map<List<PictureViewModel>>(await _picturesBusiness.Search(model.Name, 
+                                                                                                                 model.CategoryId));
 
             return Ok(pictures);
         }

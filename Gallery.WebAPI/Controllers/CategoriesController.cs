@@ -90,6 +90,7 @@ namespace Gallery.WebAPI.Controllers
 
         [HttpGet]
         [Route("dropdown")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetDropdownItems()
         {
             List<DropdownItemViewModel> items = _mapper.Map<List<DropdownItemViewModel>>(await _categoryBusiness.GetDropdownItems());

@@ -52,11 +52,11 @@ namespace Gallery.BLL
             throw new NotImplementedException();
         }
 
-        public async Task<List<PicturesDTO>> Search()
+        public async Task<List<PicturesDTO>> Search(string name, long categoryId)
         {
             List<PicturesDTO> dtos = new List<PicturesDTO>();
 
-            List<PictureModel> pictures = await _picturesDataAccess.Search();
+            List<PictureModel> pictures = await _picturesDataAccess.Search(name, categoryId);
 
             foreach (var item in pictures)
             {

@@ -8,6 +8,6 @@ namespace Gallery.DAL.Interfaces
 {
     public interface IPicturesDataAccess : IBaseDataAccess<PictureModel>
     {
-        Task<List<PictureModel>> Search();
+        Task<List<PictureModel>> Search(string name, long? categoryId);
     }
 }
