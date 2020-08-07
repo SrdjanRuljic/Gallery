@@ -8,11 +8,8 @@
       Nova slika
     </button>
   </div>
-  <div *ngFor="let i of rows" class="row">
-    <div
-      class="card col-md-3"
-      *ngFor="let item of itemsToDisplay | slice: i * 4:(i + 1) * 4"
-    >
+  <div class="row">
+    <div class="card col-md-3" *ngFor="let item of itemsToDisplay">
       <div class="card curs" (click)="goToPictureDetails(item.id)">
         <div class="">
           <img
@@ -29,10 +26,10 @@
     </div>
   </div>
   <hr class="hr" />
-  <nav class="center" *ngIf="rows.length > 1">
+  <nav class="center" *ngIf="numberOfPages.length > 1">
     <ul class="pagination curs">
       <li
-        *ngFor="let pageNumber of rows"
+        *ngFor="let pageNumber of numberOfPages"
         (click)="changePage(pageNumber)"
         [ngClass]="{ active: pageNumber == currentPage }"
       >

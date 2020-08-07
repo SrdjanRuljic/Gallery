@@ -11,7 +11,7 @@ import { ToastService } from "../../common/toast/toast.service";
 export class PicturesListComponent implements OnInit {
   pictures: any[];
   itemsToDisplay: any[];
-  rows = [];
+  numberOfPages = [];
   itemPerPage: number = 12;
   currentPage: number = 0;
 
@@ -40,9 +40,11 @@ export class PicturesListComponent implements OnInit {
 
   initialize(data) {
     this.pictures = data;
-    this.rows.length = Math.ceil(this.pictures.length / this.itemPerPage);
-    if (this.rows.length > 1) {
-      this.rows = Array.from(Array(this.rows.length).keys());
+    this.numberOfPages.length = Math.ceil(
+      this.pictures.length / this.itemPerPage
+    );
+    if (this.numberOfPages.length > 1) {
+      this.numberOfPages = Array.from(Array(this.numberOfPages.length).keys());
     }
     this.changePage(this.currentPage);
   }
