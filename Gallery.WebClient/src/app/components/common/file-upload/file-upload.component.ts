@@ -7,7 +7,7 @@ import { FileData } from "./file";
   styleUrls: ["./file-upload.component.css"],
 })
 export class FileUploadComponent implements OnInit {
-  imageUrl: string = "/assets/images/User.jfif";
+  imageUrl: string = "/assets/images/no-image.png";
   uploadedFile: File = null;
   dataToEmit: FileData;
 

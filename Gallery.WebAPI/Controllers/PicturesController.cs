@@ -6,6 +6,7 @@ using AutoMapper;
 using Gallery.BLL.Interfaces;
 using Gallery.DTO;
 using Gallery.WebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ namespace Gallery.WebAPI.Controllers
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("")]
+        [Authorize]
         public async Task<IActionResult> Insert(PictureViewModel model)
         {
             long id = 0;
