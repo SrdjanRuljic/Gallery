@@ -30,6 +30,7 @@ export class PicturesListComponent implements OnInit {
     private _categoriesService: CategoriesService
   ) {
     this.pictures = [];
+    this.itemsToDisplay = [];
     this.searchModel = new SearchModel();
   }
 
