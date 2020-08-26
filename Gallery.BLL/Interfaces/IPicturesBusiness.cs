@@ -11,5 +11,6 @@ namespace Gallery.BLL.Interfaces
     {
         Task<long> UploadAndInsert(PicturesDTO dto);
         Task<List<PicturesDTO>> Search(string name, long categoryId);
+        Task<PicturesDTO> GetDTOById(long id);
     }
 }

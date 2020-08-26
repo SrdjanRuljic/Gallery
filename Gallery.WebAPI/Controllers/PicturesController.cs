@@ -26,6 +26,19 @@ namespace Gallery.WebAPI.Controllers
             _picturesBusiness = picturesBusiness;
         }
 
+        #region [GET]
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            PictureViewModel picture = _mapper.Map<PictureViewModel>(await _picturesBusiness.GetDTOById(id));
+
+            return Ok(picture);
+        }
+
+        #endregion
+
         #region [POST]
 
         [HttpPost, DisableRequestSizeLimit]
@@ -58,5 +71,22 @@ namespace Gallery.WebAPI.Controllers
         }
 
         #endregion [POST]
+
+        #region [PUT]
+        #endregion
+
+        #region [DELETE]
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _picturesBusiness.Delete(id);
+
+            return Ok();
+        }
+
+        #endregion
     }
 }

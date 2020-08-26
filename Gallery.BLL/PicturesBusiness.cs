@@ -22,8 +22,14 @@ namespace Gallery.BLL
             _picturesDataAccess = new PicturesDataAcces();
         }
 
-        public Task Delete(long id) => 
-            _picturesDataAccess.Delete(id);
+        public async Task Delete(long id)
+        {
+            PictureModel picture = await _picturesDataAccess.GetById(id);
+
+            DeleteImage(picture.ImageName, picture.Extension);
+
+            await _picturesDataAccess.Delete(id);
+        }
 
         public Task<List<PictureModel>> GetAll()
         {
@@ -41,7 +47,7 @@ namespace Gallery.BLL
 
             if (picture == null)
             {
-                throw new ApplicationException(ErrorMessages.UserNotFound);
+                throw new ApplicationException(ErrorMessages.PictureNotFound);
             }
 
             return picture;
@@ -110,16 +116,16 @@ namespace Gallery.BLL
             if (string.IsNullOrEmpty(content))
                 return new Guid();
 
-            string folderName = Path.Combine("Resources", "Images");
+            string folderPath = Path.Combine("Resources", "Images");
 
-            bool exists = System.IO.Directory.Exists(folderName);
+            bool exists = System.IO.Directory.Exists(folderPath);
 
             if (!exists)
-                System.IO.Directory.CreateDirectory(folderName);
+                System.IO.Directory.CreateDirectory(folderPath);
 
-            string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
             Guid imageName = Guid.NewGuid();
-            string imagePath = Path.Combine(pathToSave, imageName.ToString() + "." + extension);
+            string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
 
             content =  content.Substring(content.LastIndexOf(",") + 1);
 
@@ -133,9 +139,9 @@ namespace Gallery.BLL
         private async Task<string> GetImageContent(Guid? imageName, string extension)
         {
             string content = null;
-            string folderName = Path.Combine("Resources", "Images");
-            string pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            string imagePath = Path.Combine(pathToSave, imageName.ToString() + "." + extension);
+            string folderPath = Path.Combine("Resources", "Images");
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
+            string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
 
             if (File.Exists(imagePath))
             {
@@ -144,6 +150,42 @@ namespace Gallery.BLL
             }
 
             return content;
+        }
+
+        private void DeleteImage(Guid? imageName, string extension)
+        {
+            string folderPath = Path.Combine("Resources", "Images");
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
+            string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
+
+            File.Delete(imagePath);
+        }
+
+        public async Task<PicturesDTO> GetDTOById(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+            }
+
+            PictureModel picture = await _picturesDataAccess.GetById(id);
+
+            if (picture == null)
+            {
+                throw new ApplicationException(ErrorMessages.PictureNotFound);
+            }
+
+            PicturesDTO dto = new PicturesDTO()
+            {
+                Id = picture.Id,
+                Name = picture.Name,
+                CategoryId = picture.CategoryId,
+                Description = picture.Description,
+                Content = picture.ImageName == null ? null : await GetImageContent(picture.ImageName, picture.Extension),
+                Extension = picture.Extension
+            };
+
+            return dto;
         }
     }
 }
