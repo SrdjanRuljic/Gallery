@@ -31,33 +31,6 @@ namespace Gallery.BLL
             await _picturesDataAccess.Delete(id);
         }
 
-        public Task<List<PictureModel>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<PictureModel> GetById(long id)
-        {
-            if (id <= 0)
-            {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
-            }
-
-            PictureModel picture = await _picturesDataAccess.GetById(id);
-
-            if (picture == null)
-            {
-                throw new ApplicationException(ErrorMessages.PictureNotFound);
-            }
-
-            return picture;
-        }
-
-        public Task<long> Insert(PictureModel model)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<PicturesDTO>> Search(string name, long categoryId)
         {
             List<PicturesDTO> dtos = new List<PicturesDTO>();
@@ -82,11 +55,6 @@ namespace Gallery.BLL
             return dtos;
         }
 
-        public Task<bool> Update(PictureModel model)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<long> UploadAndInsert(PicturesDTO dto)
         {
             long id = 0;
@@ -109,7 +77,61 @@ namespace Gallery.BLL
             id = await _picturesDataAccess.Insert(model);
 
             return id;
+        }       
+
+        public async Task<PicturesDTO> GetById(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+            }
+
+            PictureModel picture = await _picturesDataAccess.GetById(id);
+
+            if (picture == null)
+            {
+                throw new ApplicationException(ErrorMessages.PictureNotFound);
+            }
+
+            PicturesDTO dto = new PicturesDTO()
+            {
+                Id = picture.Id,
+                Name = picture.Name,
+                CategoryId = picture.CategoryId,
+                Description = picture.Description,
+                Content = picture.ImageName == null ? null : await GetImageContent(picture.ImageName, picture.Extension),
+                Extension = picture.Extension
+            };
+
+            return dto;
         }
+
+        public async Task<bool> Update(PicturesDTO dto)
+        {
+            bool isUpdated = false;
+            string errorMessage = null;
+
+            PictureModel model = await _picturesDataAccess.GetById(dto.Id);
+
+            DeleteImage(model.ImageName, model.Extension);
+
+            model.CategoryId = dto.CategoryId;
+            model.Name = dto.Name;
+            model.Description = dto.Description;
+            model.ImageName = await UploadImage(dto.Content, dto.Extension);
+            model.Extension = dto.Extension;            
+
+            if (!model.IsValid(out errorMessage))
+            {
+                throw new ArgumentException(errorMessage);
+            }
+
+            isUpdated = await _picturesDataAccess.Update(model);            
+
+            return isUpdated;
+        }
+
+        #region [Image]
 
         private async Task<Guid> UploadImage(string content, string extension)
         {
@@ -127,7 +149,7 @@ namespace Gallery.BLL
             Guid imageName = Guid.NewGuid();
             string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
 
-            content =  content.Substring(content.LastIndexOf(",") + 1);
+            content = content.Substring(content.LastIndexOf(",") + 1);
 
             byte[] image64 = Convert.FromBase64String(content);
 
@@ -161,31 +183,6 @@ namespace Gallery.BLL
             File.Delete(imagePath);
         }
 
-        public async Task<PicturesDTO> GetDTOById(long id)
-        {
-            if (id <= 0)
-            {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
-            }
-
-            PictureModel picture = await _picturesDataAccess.GetById(id);
-
-            if (picture == null)
-            {
-                throw new ApplicationException(ErrorMessages.PictureNotFound);
-            }
-
-            PicturesDTO dto = new PicturesDTO()
-            {
-                Id = picture.Id,
-                Name = picture.Name,
-                CategoryId = picture.CategoryId,
-                Description = picture.Description,
-                Content = picture.ImageName == null ? null : await GetImageContent(picture.ImageName, picture.Extension),
-                Extension = picture.Extension
-            };
-
-            return dto;
-        }
+        #endregion
     }
 }

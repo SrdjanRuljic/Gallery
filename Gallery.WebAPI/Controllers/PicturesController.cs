@@ -31,7 +31,7 @@ namespace Gallery.WebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            PictureViewModel picture = _mapper.Map<PictureViewModel>(await _picturesBusiness.GetDTOById(id));
+            PictureViewModel picture = _mapper.Map<PictureViewModel>(await _picturesBusiness.GetById(id));
 
             return Ok(picture);
         }
@@ -73,6 +73,25 @@ namespace Gallery.WebAPI.Controllers
         #endregion [POST]
 
         #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Update(PictureViewModel model)
+        {
+            bool isUpdated = false;
+
+            try
+            {
+                await _picturesBusiness.Update(_mapper.Map<PicturesDTO>(model));
+
+                return Ok(isUpdated);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
         #endregion
 
         #region [DELETE]
