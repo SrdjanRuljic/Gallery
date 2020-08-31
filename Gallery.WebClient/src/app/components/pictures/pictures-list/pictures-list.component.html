@@ -65,9 +65,7 @@
       <div class="card curs" (click)="goToPictureDetails(item.id)">
         <div class="">
           <img
-            src="{{
-              item.content != null ? item.content : 'assets/images/no-image.png'
-            }}"
+            [src]="item.content"
             class="img"
             width="260"
             height="190"

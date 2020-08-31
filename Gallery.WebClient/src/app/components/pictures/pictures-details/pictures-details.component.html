@@ -30,9 +30,7 @@
                 <label for="" class="data-lable"><i>{{model.description}}</i></label>
             </div>
             <div class="form-group col-md-7">
-                <img src="{{
-                    model.content != null ? model.content : 'assets/images/no-image.png'
-                  }}" />
+                <img [src]="model.content" />
             </div>
 
             <div class="form-group col-md-12">

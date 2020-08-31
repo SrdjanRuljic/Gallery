@@ -1,4 +1,4 @@
-<img [src]="imageUrl" />
+<img src="{{imageUrl != null ? imageContext : imageUrl}}" />
 <input
   type="file"
   (change)="onFileSelected($event.target.files)"

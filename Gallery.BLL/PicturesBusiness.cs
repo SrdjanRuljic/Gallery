@@ -37,13 +37,15 @@ namespace Gallery.BLL
 
             foreach (var item in pictures)
             {
+                string imageContext = await GetImageContent(item.ImageName, item.Extension);
+
                 PicturesDTO dto = new PicturesDTO()
                 {
                     Id = item.Id,
                     Name = item.Name,
                     CategoryId = item.CategoryId,
                     Description = item.Description,
-                    Content = item.ImageName == null ? null : await GetImageContent(item.ImageName, item.Extension),
+                    Content = imageContext == null ? "/assets/images/no-image.png" : imageContext,
                     Extension = item.Extension
                 };
 
@@ -91,13 +93,15 @@ namespace Gallery.BLL
                 throw new ApplicationException(ErrorMessages.PictureNotFound);
             }
 
+            string imageContext = await GetImageContent(picture.ImageName, picture.Extension);
+
             PicturesDTO dto = new PicturesDTO()
             {
                 Id = picture.Id,
                 Name = picture.Name,
                 CategoryId = picture.CategoryId,
                 Description = picture.Description,
-                Content = picture.ImageName == null ? null : await GetImageContent(picture.ImageName, picture.Extension),
+                Content = imageContext == null ? "/assets/images/no-image.png" : imageContext,
                 Extension = picture.Extension,
                 Category = picture.Category
             };

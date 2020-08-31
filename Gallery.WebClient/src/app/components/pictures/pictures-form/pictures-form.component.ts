@@ -62,6 +62,7 @@ export class PicturesFormComponent implements OnInit {
       if (this.model.id == 0) {
         this.insert();
       } else {
+        this.update();
       }
     }
   }
@@ -82,6 +83,16 @@ export class PicturesFormComponent implements OnInit {
         );
       }
     );
+  }
+
+  update(){
+    this._picturesService.update(this.model).subscribe(response => {       
+        this._toastService.activate("Slika je uspješno izmjenjena.", "alert-success");
+        this.goBack()
+    },
+    error => {
+      this._toastService.activate(error.error.message, "alert-danger");
+    });
   }
 
   nameValidation() {

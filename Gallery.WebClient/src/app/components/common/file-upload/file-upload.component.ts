@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
 import { FileData } from "./file";
 
 @Component({
@@ -11,6 +11,7 @@ export class FileUploadComponent implements OnInit {
   uploadedFile: File = null;
   dataToEmit: FileData;
 
+  @Input() imageContext: string;
   @Output() fileData: EventEmitter<FileData> = new EventEmitter<FileData>();
 
   constructor() {
