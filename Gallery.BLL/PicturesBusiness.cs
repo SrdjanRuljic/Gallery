@@ -1,6 +1,5 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
-using Gallery.Common.Enums;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
@@ -8,7 +7,6 @@ using Gallery.DTO;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Gallery.BLL
@@ -45,7 +43,7 @@ namespace Gallery.BLL
                     Name = item.Name,
                     CategoryId = item.CategoryId,
                     Description = item.Description,
-                    Content =item.ImageName == null ? null : await GetImageContent(item.ImageName, item.Extension),
+                    Content = item.ImageName == null ? null : await GetImageContent(item.ImageName, item.Extension),
                     Extension = item.Extension
                 };
 
@@ -77,7 +75,7 @@ namespace Gallery.BLL
             id = await _picturesDataAccess.Insert(model);
 
             return id;
-        }       
+        }
 
         public async Task<PicturesDTO> GetById(long id)
         {
@@ -100,7 +98,8 @@ namespace Gallery.BLL
                 CategoryId = picture.CategoryId,
                 Description = picture.Description,
                 Content = picture.ImageName == null ? null : await GetImageContent(picture.ImageName, picture.Extension),
-                Extension = picture.Extension
+                Extension = picture.Extension,
+                Category = picture.Category
             };
 
             return dto;
@@ -119,14 +118,14 @@ namespace Gallery.BLL
             model.Name = dto.Name;
             model.Description = dto.Description;
             model.ImageName = await UploadImage(dto.Content, dto.Extension);
-            model.Extension = dto.Extension;            
+            model.Extension = dto.Extension;
 
             if (!model.IsValid(out errorMessage))
             {
                 throw new ArgumentException(errorMessage);
             }
 
-            isUpdated = await _picturesDataAccess.Update(model);            
+            isUpdated = await _picturesDataAccess.Update(model);
 
             return isUpdated;
         }

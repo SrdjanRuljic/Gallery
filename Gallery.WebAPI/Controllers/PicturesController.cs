@@ -29,6 +29,7 @@ namespace Gallery.WebAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(long id)
         {
             PictureViewModel picture = _mapper.Map<PictureViewModel>(await _picturesBusiness.GetById(id));

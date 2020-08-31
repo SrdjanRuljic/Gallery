@@ -16,7 +16,7 @@ export class PicturesFormComponent implements OnInit {
   fileData: File;
 
   constructor(
-    private _picturesServices: PicturesService,
+    private _picturesService: PicturesService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _toastService: ToastService,
@@ -26,14 +26,16 @@ export class PicturesFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._route.params.subscribe((params) => {
-      let id = +params["id"];
-      if (!isNaN(id) && id > 0) {
-        // this.getUser(id);
-      } else {
-        this.initModel();
+    this.getCategories();
+
+    this._route.params.subscribe(params => {
+      let id = params['id'];
+      if (!isNaN(id) && id > 0) {   
+        this.getPicture(id); 
       }
-      this.getCategories();
+      else {
+        this.initModel(); 
+      }
     });
   }
 
@@ -46,6 +48,15 @@ export class PicturesFormComponent implements OnInit {
     this.model.content = null;
   }
 
+  getPicture(id){
+    this._picturesService.getById(id).subscribe(response => {
+        this.model = response;
+    },
+    error => {
+      this._toastService.activate(error.error.message, "alert-danger");
+    });
+  }
+
   save() {
     if (this.nameValidation() && this.categoryValidation()) {
       if (this.model.id == 0) {
@@ -56,7 +67,7 @@ export class PicturesFormComponent implements OnInit {
   }
 
   insert() {
-    this._picturesServices.insert(this.model).subscribe(
+    this._picturesService.insert(this.model).subscribe(
       (response) => {
         this._toastService.activate(
           "Slika je uspješno dodata.",

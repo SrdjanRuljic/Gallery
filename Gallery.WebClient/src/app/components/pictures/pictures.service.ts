@@ -41,4 +41,27 @@ export class PicturesService {
       .post(this._picturesUrl + "/" + "search", model)
       .pipe(map((res) => res));
   }
+
+  delete(id): Observable<any> {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this._http.delete(this._picturesUrl + "/" + id, httpOptions)
+        .pipe(map(res => res));
+  }
+
+  getById(id): Observable<any> {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this._http
+      .get(this._picturesUrl + "/" + id, httpOptions)
+      .pipe(map((res) => res));
+  }
+
+  update(model): Observable<any> {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this._http
+      .put(this._picturesUrl, model, httpOptions)
+      .pipe(map((res) => res));
+  }
 }

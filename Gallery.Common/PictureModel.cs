@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Gallery.Common
 {
@@ -12,5 +10,7 @@ namespace Gallery.Common
         public string Description { get; set; }
         public Guid? ImageName { get; set; }
         public string Extension { get; set; }
+
+        public virtual string Category { get; set; }
     }
 }

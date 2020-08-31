@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Gallery.WebAPI.Models
+﻿namespace Gallery.WebAPI.Models
 {
     public class PictureViewModel
     {
@@ -15,5 +8,7 @@ namespace Gallery.WebAPI.Models
         public string Description { get; set; }
         public string Content { get; set; }
         public string Extension { get; set; }
+
+        public virtual string Category { get; set; }
     }
 }

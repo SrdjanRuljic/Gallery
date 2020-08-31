@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Gallery.DTO
+﻿namespace Gallery.DTO
 {
     public class PicturesDTO
     {
@@ -10,5 +8,7 @@ namespace Gallery.DTO
         public string Description { get; set; }
         public string Content { get; set; }
         public string Extension { get; set; }
+
+        public virtual string Category { get; set; }
     }
 }

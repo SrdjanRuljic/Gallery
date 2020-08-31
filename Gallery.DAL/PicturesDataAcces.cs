@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Gallery.DAL
@@ -69,8 +68,9 @@ namespace Gallery.DAL
                             model.Name = reader["Name"].ToString();
                             model.CategoryId = Convert.ToInt32(reader["CategoryId"]);
                             model.Description = reader["Description"].ToString();
-                            model.ImageName =  (Guid)(reader["ImageName"]);
+                            model.ImageName = (Guid)(reader["ImageName"]);
                             model.Extension = reader["Extension"].ToString();
+                            model.Category = reader["Category"].ToString();
                         }
                     }
                 }
