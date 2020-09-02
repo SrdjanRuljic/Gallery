@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Gallery.DAL
 {
-    public class CategoryDataAccess : ICategoryDataAccess
+    public class CategoriesDataAccess : ICategoriesDataAccess
     {
         private readonly Connection _connection = new Connection();
 
