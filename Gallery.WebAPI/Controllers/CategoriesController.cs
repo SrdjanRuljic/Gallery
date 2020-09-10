@@ -15,10 +15,10 @@ namespace Gallery.WebAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryBusiness _categoryBusiness;
+        private readonly ICategoriesBusiness _categoryBusiness;
         private readonly IMapper _mapper;
 
-        public CategoriesController(ICategoryBusiness categoryBusiness, IMapper mapper)
+        public CategoriesController(ICategoriesBusiness categoryBusiness, IMapper mapper)
         {
             _categoryBusiness = categoryBusiness;
             _mapper = mapper;

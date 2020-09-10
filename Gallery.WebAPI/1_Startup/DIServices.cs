@@ -11,9 +11,10 @@ namespace Gallery.WebAPI._1_Startup
         {
             services.AddTransient<IJwtFactory, JwtFactory>();
             services.AddTransient<IUsersBusiness, UsersBusiness>();
-            services.AddTransient<ICategoryBusiness, CategoryBusiness>();
+            services.AddTransient<ICategoriesBusiness, CategoriesBusiness>();
             services.AddTransient<IRolesBusiness, RolesBusiness>();
             services.AddTransient<IPicturesBusiness, PicturesBusiness>();
+            services.AddTransient<IContactsBusiness, ContactsBusiness>();
 
             services.AddOptions();
 

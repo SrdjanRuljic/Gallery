@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Gallery.BLL
 {
-    public class CategoryBusiness : ICategoryBusiness
+    public class CategoriesBusiness : ICategoriesBusiness
     {
-        private readonly ICategoryDataAccess _categoryDataAccess;
+        private readonly ICategoriesDataAccess _categoryDataAccess;
 
-        public CategoryBusiness()
+        public CategoriesBusiness()
         {
-            _categoryDataAccess = new CategoryDataAccess();
+            _categoryDataAccess = new CategoriesDataAccess();
         }
 
         public async Task Delete(long id)

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Gallery.BLL.Interfaces
 {
-    public interface ICategoryBusiness : IBaseBusiness<CategoryModel>
+    public interface ICategoriesBusiness : IBaseBusiness<CategoryModel>
     {
         Task<bool> Exists(string name, long id);
         Task<List<DropdownItemModel>> GetDropdownItems();

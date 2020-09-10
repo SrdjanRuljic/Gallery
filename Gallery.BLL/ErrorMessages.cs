@@ -12,6 +12,7 @@
         private static string userNotFound;
         private static string dataNotFound;
         private static string pictureNotFound;
+        private static string contactNotFound;
 
         public static string DataNotFound
         {
@@ -53,6 +54,7 @@
         {
             get { return canNotDeleteCategory = "Nije moguće obrisati kategoriju."; }
         }
+
         public static string IncorectUsernameOrPassword
         {
             get { return incorectUsernameOrPassword = "Neispravno korisničko ime ili lozinka."; }
@@ -61,6 +63,11 @@
         public static string PictureNotFound
         {
             get { return pictureNotFound = "Tražena slika nije pronađena."; }
+        }
+
+        public static string ContactNotFound
+        {
+            get { return contactNotFound = "Traženi kontakt nije pronađena."; }
         }
     }
 }
