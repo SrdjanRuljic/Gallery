@@ -14,15 +14,15 @@ namespace Gallery.WebAPI.Extensions
             {
                 appError.Run(async context =>
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                    context.Response.ContentType = "application/json";
                     if (contextFeature != null)
                     {
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = "Internal Server Error."
+                            Message = contextFeature.Error.Message
                         }.ToString());
                     }
                 });
