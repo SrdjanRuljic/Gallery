@@ -23,7 +23,7 @@ namespace Gallery.WebAPI.Controllers
                 {
                     StatusCode = code,
                     Message = ErrorMessages.GetMessageForHttpCode(code)
-                }); ;
+                });
             });
         }
     }
