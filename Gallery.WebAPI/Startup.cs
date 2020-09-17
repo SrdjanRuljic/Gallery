@@ -1,6 +1,5 @@
 using AutoMapper;
 using Gallery.WebAPI._1_Startup;
-using Gallery.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -56,7 +55,8 @@ namespace Gallery.WebAPI
             //    app.UseDeveloperExceptionPage();
             //}
 
-            app.ConfigureExceptionHandler();
+            app.UseExceptionHandler("/api/errors/500");
+            app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
 
             app.UseHttpsRedirection();
 

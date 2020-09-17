@@ -2,7 +2,7 @@
 
 namespace Gallery.WebAPI.Models
 {
-    public class ErrorDetails
+    public class ErrorDetailsViewModel
     {
         public int StatusCode { get; set; }
         public string Message { get; set; }
