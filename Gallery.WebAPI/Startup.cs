@@ -1,6 +1,8 @@
 using AutoMapper;
 using Gallery.WebAPI._1_Startup;
+using Gallery.WebAPI.Helpers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
+using System.Net;
 
 namespace Gallery.WebAPI
 {
@@ -50,13 +53,30 @@ namespace Gallery.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
+            if (!env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            app.UseExceptionHandler("/api/errors/500");
-            app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
+                        var exception = context.Features.Get<IExceptionHandlerFeature>();
+
+                        if (exception != null)
+                        {
+                            context.Response.AddApplicationExcention(exception.Error.Message);
+                            await context.Response.WriteAsync(exception.Error.Message);
+                        }
+                    });
+                });
+            }
+
+            //app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
 
             app.UseHttpsRedirection();
 
