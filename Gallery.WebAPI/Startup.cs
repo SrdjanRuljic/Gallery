@@ -53,28 +53,7 @@ namespace Gallery.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (!env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler(builder =>
-                {
-                    builder.Run(async context =>
-                    {
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                        var exception = context.Features.Get<IExceptionHandlerFeature>();
-
-                        if (exception != null)
-                        {
-                            context.Response.AddApplicationExcention(exception.Error.Message);
-                            await context.Response.WriteAsync(exception.Error.Message);
-                        }
-                    });
-                });
-            }
+            app.ConfigureExceptionHandler();
 
             //app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
 
