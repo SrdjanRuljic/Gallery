@@ -14,5 +14,12 @@ namespace Gallery.WebAPI.Helpers
             respounse.Headers.Add("Access-Control-Expose-Headers", "Application-Exception");
             respounse.Headers.Add("Access-Control-Allow-Origin", "*");
         }
+
+        public static void AddArgumentnExcention(this HttpResponse respounse, string message)
+        {
+            respounse.Headers.Add("Argument-Exception", message);
+            respounse.Headers.Add("Access-Control-Expose-Headers", "Argument-Exception");
+            respounse.Headers.Add("Access-Control-Allow-Origin", "*");
+        }
     }
 }

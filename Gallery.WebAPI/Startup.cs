@@ -53,7 +53,7 @@ namespace Gallery.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.ConfigureExceptionHandler();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             //app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
 
