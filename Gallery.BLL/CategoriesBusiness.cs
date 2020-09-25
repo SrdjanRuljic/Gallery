@@ -1,10 +1,12 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
+using Gallery.Common.Helpers;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Gallery.BLL
@@ -24,21 +26,21 @@ namespace Gallery.BLL
 
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
             try
             {
                 await _categoryDataAccess.Delete(id);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                if (e.Message.Contains("The DELETE statement conflicted with the REFERENCE"))
+                if (exception.Message.Contains("The DELETE statement conflicted with the REFERENCE"))
                     errorMessage = ErrorMessages.CanNotDeleteCategory;
+                else
+                    errorMessage = exception.Message;
 
-                errorMessage = e.Message;
-
-                throw new ApplicationException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
         }
 
@@ -52,14 +54,14 @@ namespace Gallery.BLL
         {
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
             CategoryModel model = await _categoryDataAccess.GetById(id);
 
             if (model == null)
             {
-                throw new ApplicationException(ErrorMessages.CategoryNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.CategoryNotFound);
             }
 
             return model;
@@ -75,7 +77,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             bool categoryExists = await _categoryDataAccess.Exists(model.Name, id);
@@ -86,7 +88,7 @@ namespace Gallery.BLL
             }
             else
             {
-                throw new ArgumentException(ErrorMessages.CategoryExists);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.CategoryExists);
             }
 
             return id;
@@ -99,7 +101,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             bool categoryExists = await _categoryDataAccess.Exists(model.Name, model.Id);
@@ -110,7 +112,7 @@ namespace Gallery.BLL
             }
             else
             {
-                throw new ArgumentException(ErrorMessages.CategoryExists);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.CategoryExists);
             }
 
             return isUpdated;

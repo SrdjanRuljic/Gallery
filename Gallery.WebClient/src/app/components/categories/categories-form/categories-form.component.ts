@@ -91,9 +91,9 @@ export class CategoriesFormComponent implements OnInit {
 
   nameValidation() {
     if (this.model.name == null || this.model.name.length < 1) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   goBack() {
