@@ -1,10 +1,12 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
+using Gallery.Common.Helpers;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -38,14 +40,14 @@ namespace Gallery.BLL
         {
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
             UserModel user = await _usersDataAccess.GetById(id);
 
             if (user == null)
             {
-                throw new ApplicationException(ErrorMessages.UserNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound , ErrorMessages.UserNotFound);
             }
 
             return user;
@@ -60,7 +62,7 @@ namespace Gallery.BLL
 
             if (user == null)
             {
-                throw new ApplicationException(ErrorMessages.DataNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.DataNotFound);
             }
 
             return user;
@@ -74,7 +76,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             model.Username = model.Username.ToLower();
@@ -98,7 +100,7 @@ namespace Gallery.BLL
             }
             else
             {
-                throw new ArgumentException(ErrorMessages.UserExists);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
             }
 
             return id;
@@ -111,7 +113,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             model.Username = model.Username.ToLower();
@@ -130,7 +132,7 @@ namespace Gallery.BLL
             }
             else
             {
-                throw new ArgumentException(ErrorMessages.UserExists);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
             }
 
             return isUpdated;

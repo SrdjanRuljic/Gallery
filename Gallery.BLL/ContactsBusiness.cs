@@ -1,10 +1,12 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
+using Gallery.Common.Helpers;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +25,7 @@ namespace Gallery.BLL
         {
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
             
             await _contactsDataAccess.Delete(id);           
@@ -36,14 +38,14 @@ namespace Gallery.BLL
         {
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
             ContactModel model = await _contactsDataAccess.GetById(id);
 
             if (model == null)
             {
-                throw new ApplicationException(ErrorMessages.ContactNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.ContactNotFound);
             }
 
             return model;
@@ -56,7 +58,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
             
             id = await _contactsDataAccess.Insert(model);
@@ -71,7 +73,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
             
             isUpdated = await _contactsDataAccess.Update(model);

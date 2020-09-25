@@ -55,8 +55,6 @@ namespace Gallery.WebAPI
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
-            //app.UseStatusCodePagesWithReExecute("/api/errors/{0}");
-
             app.UseHttpsRedirection();
 
             app.UseCors(MyAllowSpecificOrigins);
