@@ -8,14 +8,6 @@
   <hr class="hr" />
   <div class="">
     <table class="table table-striped table-condensed" *ngIf="itemsToDisplay.length != 0">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Naziv</th>
-          <th>Vrijednost</th>
-          <th></th>
-        </tr>
-      </thead>
       <tbody>
         <tr *ngFor="let item of itemsToDisplay; let i = index">
           <td>{{ i + 1 + currentPage * itemPerPage }}</td>
