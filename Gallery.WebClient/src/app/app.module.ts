@@ -18,6 +18,7 @@ import { ModalModule } from "./components/common/modal/modal.module";
 import { RolesModule } from "./components/roles/roles.module";
 import { UsersModule } from "./components/users/users.module";
 import { ContactsModule } from "./components/contacts/contacts.module";
+import { ErrorInterceptorProvider } from "./components/common/http-intercepter";
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, AboutAuthorComponent],
@@ -36,7 +37,7 @@ import { ContactsModule } from "./components/contacts/contacts.module";
     ContactsModule,
   ],
   exports: [ToastModule, ModalModule],
-  providers: [MyGlobals, GlobalEventsManager],
+  providers: [MyGlobals, GlobalEventsManager, ErrorInterceptorProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
