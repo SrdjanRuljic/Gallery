@@ -1,5 +1,6 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
+using Gallery.Common.Helpers;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
@@ -7,6 +8,7 @@ using Gallery.DTO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Gallery.BLL
@@ -22,11 +24,28 @@ namespace Gallery.BLL
 
         public async Task Delete(long id)
         {
+            if (id <= 0)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
+            }
+
             PictureModel picture = await _picturesDataAccess.GetById(id);
 
-            DeleteImage(picture.ImageName, picture.Extension);
+            if (picture == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.PictureNotFound);
+            }
 
-            await _picturesDataAccess.Delete(id);
+            try
+            {
+                await _picturesDataAccess.Delete(id);
+
+                DeleteImage(picture.ImageName, picture.Extension);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
         }
 
         public async Task<List<PicturesDTO>> Search(string name, long categoryId)
@@ -83,14 +102,14 @@ namespace Gallery.BLL
         {
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
             PictureModel picture = await _picturesDataAccess.GetById(id);
 
             if (picture == null)
             {
-                throw new ApplicationException(ErrorMessages.PictureNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.PictureNotFound);
             }
 
             string imageContext = await GetImageContent(picture.ImageName, picture.Extension);

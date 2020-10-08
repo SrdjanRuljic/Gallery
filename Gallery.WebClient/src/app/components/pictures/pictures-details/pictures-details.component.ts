@@ -58,8 +58,6 @@ export class PicturesDetailsComponent implements OnInit {
           if (response == null) {
             this._toastService.activate("Uspješno se obrisali sliku.");
             this.goToPictureList();
-          } else {
-            this._toastService.activate(response, "alert-danger");
           }
         });
       }
