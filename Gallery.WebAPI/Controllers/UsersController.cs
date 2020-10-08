@@ -32,18 +32,11 @@ namespace Gallery.WebAPI.Controllers
         [Route("data")]
         public async Task<IActionResult> GetLogedInUserData()
         {
-            try
-            {
-                string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-                LogedInUserDataViewModel data = _mapper.Map<LogedInUserDataViewModel>(await _usersBusiness.GetLogedInUserData(username));
+            LogedInUserDataViewModel data = _mapper.Map<LogedInUserDataViewModel>(await _usersBusiness.GetLogedInUserData(username));
 
-                return Ok(data);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(data);
         }
 
         [Authorize(Roles = "Admin")]

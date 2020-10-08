@@ -81,16 +81,9 @@ namespace Gallery.WebAPI.Controllers
         {
             bool isUpdated = false;
 
-            try
-            {
-                await _picturesBusiness.Update(_mapper.Map<PicturesDTO>(model));
+            await _picturesBusiness.Update(_mapper.Map<PicturesDTO>(model));
 
-                return Ok(isUpdated);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(isUpdated);
         }
 
         #endregion
