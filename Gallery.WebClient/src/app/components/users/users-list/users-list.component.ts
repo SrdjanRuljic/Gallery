@@ -70,10 +70,8 @@ export class UsersListComponent implements OnInit {
       if (responseOK) {
         this._usersService.delete(id).subscribe((response) => {
           if (response == null) {
-            this._toastService.activate("Uspješno se obrisali korisnika.");
+            this._toastService.activate("Uspješno ste obrisali korisnika.");
             this.getUsers();
-          } else {
-            this._toastService.activate(response, "alert-danger");
           }
         });
       }
