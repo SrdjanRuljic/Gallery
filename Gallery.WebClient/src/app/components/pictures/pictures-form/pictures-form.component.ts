@@ -28,13 +28,12 @@ export class PicturesFormComponent implements OnInit {
   ngOnInit() {
     this.getCategories();
 
-    this._route.params.subscribe(params => {
-      let id = params['id'];
-      if (!isNaN(id) && id > 0) {   
-        this.getPicture(id); 
-      }
-      else {
-        this.initModel(); 
+    this._route.params.subscribe((params) => {
+      let id = params["id"];
+      if (!isNaN(id) && id > 0) {
+        this.getPicture(id);
+      } else {
+        this.initModel();
       }
     });
   }
@@ -48,12 +47,9 @@ export class PicturesFormComponent implements OnInit {
     this.model.content = null;
   }
 
-  getPicture(id){
-    this._picturesService.getById(id).subscribe(response => {
-        this.model = response;
-    },
-    error => {
-      this._toastService.activate(error.error.message, "alert-danger");
+  getPicture(id) {
+    this._picturesService.getById(id).subscribe((response) => {
+      this.model = response;
     });
   }
 
@@ -68,30 +64,19 @@ export class PicturesFormComponent implements OnInit {
   }
 
   insert() {
-    this._picturesService.insert(this.model).subscribe(
-      (response) => {
-        this._toastService.activate(
-          "Slika je uspješno dodata.",
-          "alert-success"
-        );
-        this.goBack();
-      },
-      (error) => {
-        this._toastService.activate(
-          error.error.exceptionMessage,
-          "alert-danger"
-        );
-      }
-    );
+    this._picturesService.insert(this.model).subscribe((response) => {
+      this._toastService.activate("Slika je uspješno dodata.", "alert-success");
+      this.goBack();
+    });
   }
 
-  update(){
-    this._picturesService.update(this.model).subscribe(response => {       
-        this._toastService.activate("Slika je uspješno izmjenjena.", "alert-success");
-        this.goBack()
-    },
-    error => {
-      this._toastService.activate(error.error.message, "alert-danger");
+  update() {
+    this._picturesService.update(this.model).subscribe((response) => {
+      this._toastService.activate(
+        "Slika je uspješno izmjenjena.",
+        "alert-success"
+      );
+      this.goBack();
     });
   }
 

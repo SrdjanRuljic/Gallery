@@ -90,10 +90,20 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
-            id = await _picturesDataAccess.Insert(model);
+            try
+            {
+                id = await _picturesDataAccess.Insert(model);
+
+            }
+            catch (Exception exception)
+            {
+                DeleteImage(model.ImageName, model.Extension);
+
+                throw new Exception(exception.Message);
+            }
 
             return id;
         }
@@ -145,7 +155,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             isUpdated = await _picturesDataAccess.Update(model);
@@ -183,9 +193,7 @@ namespace Gallery.BLL
         private async Task<string> GetImageContent(Guid? imageName, string extension)
         {
             string content = null;
-            string folderPath = Path.Combine("Resources", "Images");
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
-            string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
+            string imagePath = CombineImagePath(imageName, extension);
 
             if (File.Exists(imagePath))
             {
@@ -198,11 +206,18 @@ namespace Gallery.BLL
 
         private void DeleteImage(Guid? imageName, string extension)
         {
+            string imagePath = CombineImagePath(imageName, extension);
+
+            File.Delete(imagePath);
+        }
+
+        private string CombineImagePath(Guid? imageName, string extension)
+        {
             string folderPath = Path.Combine("Resources", "Images");
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
             string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
 
-            File.Delete(imagePath);
+            return imagePath;
         }
 
         #endregion

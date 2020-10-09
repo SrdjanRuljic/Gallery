@@ -46,18 +46,9 @@ namespace Gallery.WebAPI.Controllers
 
         public async Task<IActionResult> Insert(PictureViewModel model)
         {
-            long id = 0;
+            long id = await _picturesBusiness.UploadAndInsert(_mapper.Map<PicturesDTO>(model));
 
-            try
-            {
-                var result = await _picturesBusiness.UploadAndInsert(_mapper.Map<PicturesDTO>(model));
-
-                return Ok(id);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(id);
         }
 
         [HttpPost]

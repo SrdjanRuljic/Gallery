@@ -46,14 +46,9 @@ export class PicturesListComponent implements OnInit {
   }
 
   search() {
-    this._picturesService.search(this.searchModel).subscribe(
-      (data) => {
-        this.initialize(data);
-      },
-      (error) => {
-        this._toastService.activate(error.error.message, "alert-danger");
-      }
-    );
+    this._picturesService.search(this.searchModel).subscribe((data) => {
+      this.initialize(data);
+    });
   }
 
   resetSearch() {
