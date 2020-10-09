@@ -39,14 +39,9 @@ export class CategoriesFormComponent implements OnInit {
   }
 
   getCategory(id) {
-    this._categoriesService.getById(id).subscribe(
-      (response) => {
-        this.model = response;
-      },
-      (error) => {
-        this._toastService.activate(error.error.message, "alert-danger");
-      }
-    );
+    this._categoriesService.getById(id).subscribe((response) => {
+      this.model = response;
+    });
   }
 
   save() {
@@ -60,33 +55,23 @@ export class CategoriesFormComponent implements OnInit {
   }
 
   insert() {
-    this._categoriesService.insert(this.model).subscribe(
-      (response) => {
-        this._toastService.activate(
-          "Kategorija je uspješno kreirana.",
-          "alert-success"
-        );
-        this.goBack();
-      },
-      (error) => {
-        this._toastService.activate(error.error.message, "alert-danger");
-      }
-    );
+    this._categoriesService.insert(this.model).subscribe((response) => {
+      this._toastService.activate(
+        "Kategorija je uspješno kreirana.",
+        "alert-success"
+      );
+      this.goBack();
+    });
   }
 
   update() {
-    this._categoriesService.update(this.model).subscribe(
-      (response) => {
-        this._toastService.activate(
-          "Kategorija je uspješno izmjenjena.",
-          "alert-success"
-        );
-        this.goBack();
-      },
-      (error) => {
-        this._toastService.activate(error.error.message, "alert-danger");
-      }
-    );
+    this._categoriesService.update(this.model).subscribe((response) => {
+      this._toastService.activate(
+        "Kategorija je uspješno izmjenjena.",
+        "alert-success"
+      );
+      this.goBack();
+    });
   }
 
   nameValidation() {

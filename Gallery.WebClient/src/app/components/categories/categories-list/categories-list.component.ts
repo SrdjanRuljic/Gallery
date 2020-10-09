@@ -73,15 +73,10 @@ export class CategoriesListComponent implements OnInit {
     let title = "Upozorenje";
     this._modalService.activate(msg, title).then((responseOK) => {
       if (responseOK) {
-        this._categoriesService.delete(id).subscribe(
-          (response) => {
-            this._toastService.activate("Uspješno se obrisali kategoriju.");
-            this.getCategories();
-          },
-          (error) => {
-            this._toastService.activate(error.error.message, "alert-danger");
-          }
-        );
+        this._categoriesService.delete(id).subscribe((response) => {
+          this._toastService.activate("Uspješno se obrisali kategoriju.");
+          this.getCategories();
+        });
       }
     });
   }
