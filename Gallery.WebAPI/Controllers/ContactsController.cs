@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Gallery.BLL.Interfaces;
 using Gallery.Common;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Gallery.WebAPI.Controllers
 {
@@ -31,34 +28,21 @@ namespace Gallery.WebAPI.Controllers
 
         [HttpGet]
         [Route("")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                List<ContactViewModel> list = _mapper.Map<List<ContactViewModel>>(await _contactsBusiness.GetAll());
+            List<ContactViewModel> list = _mapper.Map<List<ContactViewModel>>(await _contactsBusiness.GetAll());
 
-                return Ok(list);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(list);
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            try
-            {
-                ContactViewModel model = _mapper.Map<ContactViewModel>(await _contactsBusiness.GetById(id));
+            ContactViewModel model = _mapper.Map<ContactViewModel>(await _contactsBusiness.GetById(id));
 
-                return Ok(model);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(model);
         }
 
         #endregion
@@ -69,18 +53,9 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Update(ContactViewModel model)
         {
-            bool isUpdated = false;
+            bool isUpdated = await _contactsBusiness.Update(_mapper.Map<ContactModel>(model));
 
-            try
-            {
-                await _contactsBusiness.Update(_mapper.Map<ContactModel>(model));
-
-                return Ok(isUpdated);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(isUpdated);
         }
 
         #endregion
@@ -91,17 +66,9 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Insert(ContactViewModel model)
         {
-            long id = 0;
+            long id = await _contactsBusiness.Insert(_mapper.Map<ContactModel>(model));
 
-            try
-            {
-                id = await _contactsBusiness.Insert(_mapper.Map<ContactModel>(model));
-                return Ok(id);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(id);
         }
 
         #endregion [POST]
@@ -112,16 +79,9 @@ namespace Gallery.WebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await _contactsBusiness.Delete(id);
+            await _contactsBusiness.Delete(id);
 
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok();
         }
 
         #endregion
