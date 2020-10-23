@@ -11,7 +11,7 @@ namespace Gallery.DAL
     public class CategoriesDataAccess : ICategoriesDataAccess
     {
         private readonly Connection _connection = new Connection();
-        private readonly DBContext _dBContext = new DBContext();
+        private readonly DbContext _dBContext = new DbContext();
 
         public async Task Delete(long id) =>
             await _dBContext.Delete("[dbo].[sp_Categories.Delete]", id);
@@ -65,7 +65,7 @@ namespace Gallery.DAL
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Id", id);
+                DbParameterHelper.AddOnlyPrimaryKeyAsParametar(command.Parameters, id);
 
                 CategoryModel model = new CategoryModel();
 
@@ -93,42 +93,8 @@ namespace Gallery.DAL
             }
         }
 
-        public async Task<List<DropdownItemModel>> GetDropdownItems()
-        {
-            string queryString = "[dbo].[sp_Categories.GetDropdownItems]";
-
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                List<DropdownItemModel> list = new List<DropdownItemModel>();
-
-                try
-                {
-                    await connection.OpenAsync();
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                    {
-                        while (reader.Read())
-                        {
-                            DropdownItemModel model = new DropdownItemModel()
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                Name = reader["Name"].ToString()
-                            };
-                            list.Add(model);
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception(exception.Message);
-                }
-
-                return list;
-            }
-        }
+        public async Task<List<DropdownItemModel>> GetDropdownItems() =>
+            await _dBContext.GetDropdownItems("[dbo].[sp_Categories.GetDropdownItems]");
 
         public async Task<long> Insert(CategoryModel model) =>
            await _dBContext.Insert("[dbo].[sp_Categories.Insert]", model);

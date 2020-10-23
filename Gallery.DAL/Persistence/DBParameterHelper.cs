@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Gallery.DAL.Persistence
 {
-    public static class DBParameterHelper
+    public static class DbParameterHelper
     {
         public static void AddParameterFromInsertModel<T>(SqlParameterCollection collection, T model)
         {
@@ -26,5 +26,8 @@ namespace Gallery.DAL.Persistence
                                         model?.GetType().GetProperty(item.Name)?.GetValue(model, null));
             }
         }
+
+        public static void AddOnlyPrimaryKeyAsParametar(SqlParameterCollection collection, long id) =>
+            collection.AddWithValue("@Id", id);
     }
 }
