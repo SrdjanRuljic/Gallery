@@ -56,42 +56,8 @@ namespace Gallery.DAL
             }
         }
 
-        public async Task<CategoryModel> GetById(long id)
-        {
-            string queryString = "[dbo].[sp_Categories.GetById]";
-
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                DbParameterHelper.AddOnlyPrimaryKeyAsParametar(command.Parameters, id);
-
-                CategoryModel model = new CategoryModel();
-
-                try
-                {
-                    await connection.OpenAsync();
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                    {
-                        if (!reader.HasRows)
-                            model = null;
-
-                        while (reader.Read())
-                        {
-                            model.Id = Convert.ToInt32(reader["Id"]);
-                            model.Name = reader["Name"].ToString();
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception(exception.Message);
-                }
-
-                return model;
-            }
-        }
+        public async Task<CategoryModel> GetById(long id) =>
+            await _dBContext.GetSingle<CategoryModel>("[dbo].[sp_Categories.GetById]", id);
 
         public async Task<List<DropdownItemModel>> GetDropdownItems() =>
             await _dBContext.GetDropdownItems("[dbo].[sp_Categories.GetDropdownItems]");

@@ -69,6 +69,43 @@ namespace Gallery.DAL.Persistence
             }
         }
 
+        public async Task<T> GetSingle<T>(string storeProcedureName, long id) where T : new()
+        {
+            string queryString = storeProcedureName;
+
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            {
+                T model = default(T);
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                DbParameterHelper.AddOnlyPrimaryKeyAsParametar(command.Parameters, id);
+
+                try
+                {
+                    await connection.OpenAsync();
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (!reader.HasRows)
+                            return default(T);
+
+                        while (reader.Read())
+                        {
+                            model = new T();
+
+                            DbParameterHelper.InitializeFromReader(reader, model);
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message);
+                }
+
+                return model;
+            }
+        }
+
         public async Task<List<DropdownItemModel>> GetDropdownItems(string storeProcedureName)
         {
             string queryString = storeProcedureName;
