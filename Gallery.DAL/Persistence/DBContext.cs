@@ -106,6 +106,41 @@ namespace Gallery.DAL.Persistence
             }
         }
 
+        public async Task<List<T>> GetList<T>(string storeProcedureName) where T : new()
+        {
+            string queryString = storeProcedureName;
+
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            {
+                List<T> list = new List<T>();
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                try
+                {
+                    await connection.OpenAsync();
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            T model = new T();
+
+                            DbParameterHelper.InitializeFromReader(reader, model);
+
+                            list.Add(model);
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message);
+                }
+
+                return list;
+            }
+        }
+
         public async Task<List<DropdownItemModel>> GetDropdownItems(string storeProcedureName)
         {
             string queryString = storeProcedureName;
