@@ -8,7 +8,6 @@ namespace Gallery.DAL
 {
     public class CategoriesDataAccess : ICategoriesDataAccess
     {
-        private readonly Connection _connection = new Connection();
         private readonly DbContext _dBContext = new DbContext();
 
         public async Task Delete(long id) =>
