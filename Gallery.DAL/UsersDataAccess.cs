@@ -27,7 +27,7 @@ namespace Gallery.DAL
         {
             string queryString = "[dbo].[sp_Users.GetByUsername]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -70,7 +70,7 @@ namespace Gallery.DAL
         {
             string queryString = "[dbo].[sp_Users.GetLogedInUserDataByUsername]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -113,7 +113,7 @@ namespace Gallery.DAL
         {
             string queryString = "[dbo].[sp_Users.UsernameExists]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 

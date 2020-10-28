@@ -32,7 +32,7 @@ namespace Gallery.DAL
         {
             string queryString = "[dbo].[sp_Pictures.Search]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 

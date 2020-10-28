@@ -1,12 +1,16 @@
-﻿namespace Gallery.DAL
-{
-    internal class Connection
-    {
-        private readonly string connectionString = "Data Source=DESKTOP-5N65NA1;Initial Catalog=Gallery;Integrated Security=true;User Id=rulja;Password=armor;";
+﻿using Microsoft.Extensions.Configuration;
+using System.IO;
 
-        public string ConnectionString
+namespace Gallery.DAL
+{
+    public class Connection
+    {
+        public string ConnectionString()
         {
-            get { return connectionString; }
+            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                                                                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            return builder.Build().GetSection("ConnectionStrings").GetSection("GalleryDb").Value;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Gallery.DAL.Persistence
         {
             string queryString = storeProcedureName;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 using (SqlCommand command = new SqlCommand(queryString, connection))
                 {
@@ -39,7 +39,7 @@ namespace Gallery.DAL.Persistence
         {
             string queryString = storeProcedureName;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -73,7 +73,7 @@ namespace Gallery.DAL.Persistence
         {
             string queryString = storeProcedureName;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 T model = default(T);
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -110,7 +110,7 @@ namespace Gallery.DAL.Persistence
         {
             string queryString = storeProcedureName;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 List<T> list = new List<T>();
                 SqlCommand command = new SqlCommand(queryString, connection);
@@ -145,7 +145,7 @@ namespace Gallery.DAL.Persistence
         {
             string queryString = storeProcedureName;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
@@ -182,7 +182,7 @@ namespace Gallery.DAL.Persistence
         {
             string queryString = storeProcedureName;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 using (SqlCommand command = new SqlCommand(queryString, connection))
                 {
@@ -218,7 +218,7 @@ namespace Gallery.DAL.Persistence
 
             var isUpdated = false;
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 using (SqlCommand command = new SqlCommand(queryString, connection))
                 {
