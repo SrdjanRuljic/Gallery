@@ -32,10 +32,6 @@ namespace Gallery.DAL
         {
             string queryString = "[dbo].[sp_Pictures.Search]";
 
-            if (String.IsNullOrEmpty(name))
-                name = null;
-            categoryId = categoryId == 0 ? null : categoryId;
-
             using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);

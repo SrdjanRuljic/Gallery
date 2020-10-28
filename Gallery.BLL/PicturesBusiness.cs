@@ -48,9 +48,13 @@ namespace Gallery.BLL
             }
         }
 
-        public async Task<List<PicturesDTO>> Search(string name, long categoryId)
+        public async Task<List<PicturesDTO>> Search(string name, long? categoryId)
         {
             List<PicturesDTO> dtos = new List<PicturesDTO>();
+
+            if (String.IsNullOrEmpty(name))
+                name = null;
+            categoryId = categoryId == 0 ? null : categoryId;
 
             List<PictureModel> pictures = await _picturesDataAccess.Search(name, categoryId);
 
