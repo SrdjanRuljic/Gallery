@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Gallery.DAL
 {
-    public class Connection
+    internal class Connection
     {
         public string ConnectionString()
         {
