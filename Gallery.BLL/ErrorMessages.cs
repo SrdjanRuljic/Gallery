@@ -15,13 +15,14 @@
         private static string contactNotFound;
         private static string inernalServerError;
         private static string unauthorised;
+        private static string authorNotFound;
 
         public static string Unauthorised
         {
             get { return inernalServerError = "Nemate pravo pristupa."; }
         }
 
-        public static string InernalServerError 
+        public static string InernalServerError
         {
             get { return inernalServerError = "Greška na serverskoj strani, molimo obratite se administratoru."; }
         }
@@ -81,6 +82,11 @@
         public static string ContactNotFound
         {
             get { return contactNotFound = "Traženi kontakt nije pronađena."; }
+        }
+
+        public static string AuthorNotFound
+        {
+            get { return authorNotFound = "Traženi podaci o autoru nisu pronađeni."; }
         }
 
         public static string GetMessageForHttpCode(int code)

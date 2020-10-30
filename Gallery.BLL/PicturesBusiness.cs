@@ -1,4 +1,5 @@
-﻿using Gallery.BLL.Interfaces;
+﻿using Gallery.BLL.Helpers;
+using Gallery.BLL.Interfaces;
 using Gallery.Common;
 using Gallery.Common.Helpers;
 using Gallery.Common.Validations;
@@ -7,7 +8,6 @@ using Gallery.DAL.Interfaces;
 using Gallery.DTO;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -40,7 +40,7 @@ namespace Gallery.BLL
             {
                 await _picturesDataAccess.Delete(id);
 
-                DeleteImage(picture.ImageName, picture.Extension);
+                ImageHelper.DeleteImage(picture.ImageName, picture.Extension);
             }
             catch (Exception exception)
             {
@@ -60,7 +60,7 @@ namespace Gallery.BLL
 
             foreach (var item in pictures)
             {
-                string imageContext = await GetImageContent(item.ImageName, item.Extension);
+                string imageContext = await ImageHelper.GetImageContent(item.ImageName, item.Extension);
 
                 PicturesDTO dto = new PicturesDTO()
                 {
@@ -88,7 +88,7 @@ namespace Gallery.BLL
                 CategoryId = dto.CategoryId,
                 Name = dto.Name,
                 Description = dto.Description,
-                ImageName = await UploadImage(dto.Content, dto.Extension),
+                ImageName = await ImageHelper.UploadImage(dto.Content, dto.Extension),
                 Extension = dto.Extension
             };
 
@@ -104,7 +104,7 @@ namespace Gallery.BLL
             }
             catch (Exception exception)
             {
-                DeleteImage(model.ImageName, model.Extension);
+                ImageHelper.DeleteImage(model.ImageName, model.Extension);
 
                 throw new Exception(exception.Message);
             }
@@ -126,7 +126,7 @@ namespace Gallery.BLL
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.PictureNotFound);
             }
 
-            string imageContext = await GetImageContent(picture.ImageName, picture.Extension);
+            string imageContext = await ImageHelper.GetImageContent(picture.ImageName, picture.Extension);
 
             PicturesDTO dto = new PicturesDTO()
             {
@@ -149,12 +149,12 @@ namespace Gallery.BLL
 
             PictureModel model = await _picturesDataAccess.GetById(dto.Id);
 
-            DeleteImage(model.ImageName, model.Extension);
+            ImageHelper.DeleteImage(model.ImageName, model.Extension);
 
             model.CategoryId = dto.CategoryId;
             model.Name = dto.Name;
             model.Description = dto.Description;
-            model.ImageName = await UploadImage(dto.Content, dto.Extension);
+            model.ImageName = await ImageHelper.UploadImage(dto.Content, dto.Extension);
             model.Extension = dto.Extension;
 
             if (!model.IsValid(out errorMessage))
@@ -166,64 +166,5 @@ namespace Gallery.BLL
 
             return isUpdated;
         }
-
-        #region [Image]
-
-        private async Task<Guid> UploadImage(string content, string extension)
-        {
-            if (string.IsNullOrEmpty(content))
-                return new Guid();
-
-            string folderPath = Path.Combine("Resources", "Images");
-
-            bool exists = System.IO.Directory.Exists(folderPath);
-
-            if (!exists)
-                System.IO.Directory.CreateDirectory(folderPath);
-
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
-            Guid imageName = Guid.NewGuid();
-            string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
-
-            content = content.Substring(content.LastIndexOf(",") + 1);
-
-            byte[] image64 = Convert.FromBase64String(content);
-
-            await File.WriteAllBytesAsync(imagePath, image64);
-
-            return imageName;
-        }
-
-        private async Task<string> GetImageContent(Guid? imageName, string extension)
-        {
-            string content = null;
-            string imagePath = CombineImagePath(imageName, extension);
-
-            if (File.Exists(imagePath))
-            {
-                Byte[] bytes = await File.ReadAllBytesAsync(imagePath);
-                content = "data:image/jpeg;base64," + Convert.ToBase64String(bytes);
-            }
-
-            return content;
-        }
-
-        private void DeleteImage(Guid? imageName, string extension)
-        {
-            string imagePath = CombineImagePath(imageName, extension);
-
-            File.Delete(imagePath);
-        }
-
-        private string CombineImagePath(Guid? imageName, string extension)
-        {
-            string folderPath = Path.Combine("Resources", "Images");
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
-            string imagePath = Path.Combine(directoryPath, imageName.ToString() + "." + extension);
-
-            return imagePath;
-        }
-
-        #endregion
     }
 }
