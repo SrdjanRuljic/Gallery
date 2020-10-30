@@ -18,7 +18,7 @@ namespace Gallery.DAL
             throw new NotImplementedException();
 
         public async Task<AboutAuthorModel> GetById(long id) =>
-            await _dBContext.GetSingle<AboutAuthorModel>("[dbo].[sp_AboutAuthor.GetById] ", id);
+            await _dBContext.GetSingle<AboutAuthorModel>("[dbo].[sp_AboutAuthor.GetById]", id);
 
         public async Task<long> Insert(AboutAuthorModel model) =>
             await _dBContext.Insert("[dbo].[sp_AboutAuthor.Insert]", model);

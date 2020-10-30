@@ -15,6 +15,7 @@ namespace Gallery.WebAPI._1_Startup
             services.AddTransient<IRolesBusiness, RolesBusiness>();
             services.AddTransient<IPicturesBusiness, PicturesBusiness>();
             services.AddTransient<IContactsBusiness, ContactsBusiness>();
+            services.AddTransient<IAboutAuthorBusiness, AboutAuthorBusiness>();
 
             services.AddOptions();
 

@@ -10,7 +10,7 @@ import { AppRoutingModule } from "./app-routing.module";
 
 import { PicturesModule } from "./components/pictures/pictures.module";
 import { MenuComponent } from "./components/common/menu/menu.component";
-import { AboutAuthorComponent } from "./components/about-author/about-author.component";
+import { AboutAuthorModule } from "./components/about-author/about-author.module";
 import { CategoriesModule } from "./components/categories/categories.module";
 import { AuthModule } from "./components/common/auth/auth.module";
 import { ToastModule } from "./components/common/toast/toast.module";
@@ -21,7 +21,7 @@ import { ContactsModule } from "./components/contacts/contacts.module";
 import { ErrorInterceptorProvider } from "./components/common/http-intercepter";
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent, AboutAuthorComponent],
+  declarations: [AppComponent, MenuComponent],
   imports: [
     CommonModule,
     BrowserModule,
@@ -35,6 +35,7 @@ import { ErrorInterceptorProvider } from "./components/common/http-intercepter";
     RolesModule,
     UsersModule,
     ContactsModule,
+    AboutAuthorModule,
   ],
   exports: [ToastModule, ModalModule],
   providers: [MyGlobals, GlobalEventsManager, ErrorInterceptorProvider],
