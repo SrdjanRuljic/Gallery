@@ -19,6 +19,7 @@ import { RolesModule } from "./components/roles/roles.module";
 import { UsersModule } from "./components/users/users.module";
 import { ContactsModule } from "./components/contacts/contacts.module";
 import { ErrorInterceptorProvider } from "./components/common/http-intercepter";
+import { FileUploadModule } from "./components/common/file-upload/file-upload.module";
 
 @NgModule({
   declarations: [AppComponent, MenuComponent],
@@ -36,8 +37,9 @@ import { ErrorInterceptorProvider } from "./components/common/http-intercepter";
     UsersModule,
     ContactsModule,
     AboutAuthorModule,
+    FileUploadModule,
   ],
-  exports: [ToastModule, ModalModule],
+  exports: [ToastModule, ModalModule, FileUploadModule],
   providers: [MyGlobals, GlobalEventsManager, ErrorInterceptorProvider],
   bootstrap: [AppComponent],
 })

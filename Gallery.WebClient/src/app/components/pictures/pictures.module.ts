@@ -9,15 +9,15 @@ import { PicturesFormComponent } from "./pictures-form/pictures-form.component";
 import { PicturesService } from "./pictures.service";
 
 import { PicturesRoutingModule } from "./pictures-routing.module";
-import { FileUploadComponent } from "../common/file-upload/file-upload.component";
+
+import { FileUploadModule } from "../common/file-upload/file-upload.module";
 
 @NgModule({
-  imports: [CommonModule, FormsModule, PicturesRoutingModule],
+  imports: [CommonModule, FormsModule, PicturesRoutingModule, FileUploadModule],
   declarations: [
     PicturesListComponent,
     PicturesDetailsComponent,
     PicturesFormComponent,
-    FileUploadComponent,
   ],
   providers: [PicturesService],
   exports: [PicturesListComponent],

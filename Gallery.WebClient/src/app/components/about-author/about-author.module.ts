@@ -8,8 +8,15 @@ import { AboutAuthorService } from "./about-author.service";
 
 import { AboutAuthorRoutingModule } from "./about-author-routing.module";
 
+import { FileUploadModule } from "../common/file-upload/file-upload.module";
+
 @NgModule({
-  imports: [CommonModule, FormsModule, AboutAuthorRoutingModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AboutAuthorRoutingModule,
+    FileUploadModule,
+  ],
   declarations: [AboutAuthorComponent],
   providers: [AboutAuthorService],
   exports: [AboutAuthorComponent],
