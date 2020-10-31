@@ -2,7 +2,8 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
-import { AboutAuthorComponent } from "./about-author.component";
+import { AboutAuthorDetailsComponent } from "./about-author-details/about-author-details.component";
+import { AboutAuthorFormComponent } from "./about-author-form/about-author-form.component";
 
 import { AboutAuthorService } from "./about-author.service";
 
@@ -17,8 +18,8 @@ import { FileUploadModule } from "../common/file-upload/file-upload.module";
     AboutAuthorRoutingModule,
     FileUploadModule,
   ],
-  declarations: [AboutAuthorComponent],
+  declarations: [AboutAuthorDetailsComponent, AboutAuthorFormComponent],
   providers: [AboutAuthorService],
-  exports: [AboutAuthorComponent],
+  exports: [AboutAuthorDetailsComponent],
 })
 export class AboutAuthorModule {}
