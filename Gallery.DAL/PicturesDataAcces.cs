@@ -22,8 +22,8 @@ namespace Gallery.DAL
             throw new NotImplementedException();
         }
 
-        public async Task<PictureModel> GetById(long id) =>
-            await _dBContext.GetSingle<PictureModel>("[dbo].[sp_Pictures.GetById]", id);
+        public async Task<PictureDetailsModel> GetSingleById(long id) =>
+            await _dBContext.GetSingle<PictureDetailsModel>("[dbo].[sp_Pictures.GetById]", id);
 
         public async Task<long> Insert(PictureModel model) =>
             await _dBContext.Insert("[dbo].[sp_Pictures.Insert]", model);
@@ -73,5 +73,8 @@ namespace Gallery.DAL
 
         public async Task<bool> Update(PictureModel model) =>
             await _dBContext.Update("[dbo].[sp_Pictures.Update]", model);
+
+        public Task<PictureModel> GetById(long id) =>
+            throw new NotImplementedException();
     }
 }

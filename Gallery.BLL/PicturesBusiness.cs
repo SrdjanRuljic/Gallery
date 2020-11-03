@@ -119,7 +119,7 @@ namespace Gallery.BLL
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
-            PictureModel picture = await _picturesDataAccess.GetById(id);
+            PictureDetailsModel picture = await _picturesDataAccess.GetSingleById(id);
 
             if (picture == null)
             {

@@ -2,7 +2,7 @@
 
 namespace Gallery.Common
 {
-    public class PictureModel
+    public class PictureDetailsModel
     {
         public long Id { get; set; }
         public string Name { get; set; }
@@ -10,5 +10,6 @@ namespace Gallery.Common
         public string Description { get; set; }
         public Guid? ImageName { get; set; }
         public string Extension { get; set; }
+        public string Category { get; set; }
     }
 }
