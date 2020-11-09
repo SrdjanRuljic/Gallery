@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Category } from "../category";
 import { ModalService } from "../../common/modal/modal.service";
 import { ToastService } from "../../common/toast/toast.service";
+import { AuthService } from "../../common/auth/auth.services";
 
 @Component({
   selector: "app-categories-list",
@@ -21,7 +22,8 @@ export class CategoriesListComponent implements OnInit {
     private _categoriesService: CategoriesService,
     private _router: Router,
     private _modalService: ModalService,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    private _authService: AuthService
   ) {
     this.categories = [];
     this.itemsToDisplay = [];
@@ -60,8 +62,7 @@ export class CategoriesListComponent implements OnInit {
   }
 
   isAuthorized() {
-    const token = localStorage.getItem("auth_token");
-    return !!token;
+    return this._authService.isAuthorized();
   }
 
   goToCategoryForm(id) {

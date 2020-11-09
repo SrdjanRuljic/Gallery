@@ -3,6 +3,7 @@ import { PicturesService } from "../pictures.service";
 import { Router } from "@angular/router";
 import { ToastService } from "../../common/toast/toast.service";
 import { CategoriesService } from "../../categories/categories.services";
+import { AuthService } from "../../common/auth/auth.services";
 
 export class SearchModel {
   name: string;
@@ -27,7 +28,8 @@ export class PicturesListComponent implements OnInit {
     private _picturesService: PicturesService,
     private _router: Router,
     private _toastService: ToastService,
-    private _categoriesService: CategoriesService
+    private _categoriesService: CategoriesService,
+    private _authService: AuthService
   ) {
     this.pictures = [];
     this.itemsToDisplay = [];
@@ -86,8 +88,7 @@ export class PicturesListComponent implements OnInit {
   }
 
   isAuthorized() {
-    const token = localStorage.getItem("auth_token");
-    return !!token;
+    return this._authService.isAuthorized();
   }
 
   goToPictureForm(id) {

@@ -1,32 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthService } from "../auth/auth.services";
 import { GlobalEventsManager } from "../global-event-manager";
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  selector: "app-menu",
+  templateUrl: "./menu.component.html",
+  styleUrls: ["./menu.component.scss"],
 })
 export class MenuComponent implements OnInit {
-
   isAdmin: boolean = false;
   displayName: string = null;
 
-  constructor(private _router: Router,
-              private _globalEventsManager: GlobalEventsManager,) { 
+  constructor(
+    private _router: Router,
+    private _globalEventsManager: GlobalEventsManager,
+    private _authService: AuthService
+  ) {
     this.isAuthorized();
     this.getLocalUserData();
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  isAuthorized() {
+    return this._authService.isAuthorized();
   }
 
-  isAuthorized(){
-    const token = localStorage.getItem('auth_token');
-    return !!token;
-  }
-
-  getLocalUserData(){
+  getLocalUserData() {
     this._globalEventsManager.isAdmin.subscribe((mode: boolean) => {
       this.isAdmin = mode;
     });
@@ -36,22 +37,22 @@ export class MenuComponent implements OnInit {
   }
 
   goToAboutAuthor() {
-      this._router.navigate(['/about-author']);
+    this._router.navigate(["/about-author"]);
   }
 
   goToContacts() {
-      this._router.navigate(['/contacts']);
+    this._router.navigate(["/contacts"]);
   }
 
-  goToHome(){
-      this._router.navigate(['/']);
+  goToHome() {
+    this._router.navigate(["/"]);
   }
 
-  goToCategories(){
-    this._router.navigate(['/categories']);
+  goToCategories() {
+    this._router.navigate(["/categories"]);
   }
 
-  goToUsers(){
-    this._router.navigate(['/users']);
+  goToUsers() {
+    this._router.navigate(["/users"]);
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../../common/auth/auth.services";
 import { AboutAuthorService } from "../about-author.service";
 import { Author } from "../author";
 
@@ -14,7 +15,8 @@ export class AboutAuthorDetailsComponent implements OnInit {
   constructor(
     private _aboutAuthorService: AboutAuthorService,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _authService: AuthService
   ) {
     this.model = new Author();
   }
@@ -30,8 +32,7 @@ export class AboutAuthorDetailsComponent implements OnInit {
   }
 
   isAuthorized() {
-    const token = localStorage.getItem("auth_token");
-    return !!token;
+    return this._authService.isAuthorized();
   }
 
   goToAboutAuthorForm(id) {

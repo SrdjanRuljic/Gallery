@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ToastService } from "../../common/toast/toast.service";
 import { ModalService } from "../../common/modal/modal.service";
 import { Picture } from "../picture";
+import { AuthService } from "../../common/auth/auth.services";
 
 @Component({
   selector: "app-pictures-details",
@@ -18,7 +19,8 @@ export class PicturesDetailsComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private _toastService: ToastService,
-    private _modalService: ModalService
+    private _modalService: ModalService,
+    private _authService: AuthService
   ) {
     this.model = new Picture();
   }
@@ -45,8 +47,7 @@ export class PicturesDetailsComponent implements OnInit {
   }
 
   isAuthorized() {
-    const token = localStorage.getItem("auth_token");
-    return !!token;
+    return this._authService.isAuthorized();
   }
 
   delete(id) {

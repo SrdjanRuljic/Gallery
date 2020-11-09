@@ -1,28 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ModalService } from '../../common/modal/modal.service';
-import { ToastService } from '../../common/toast/toast.service';
-import { ContactsService } from '../contacts.service';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ModalService } from "../../common/modal/modal.service";
+import { ToastService } from "../../common/toast/toast.service";
+import { ContactsService } from "../contacts.service";
 import { Contact } from "../contact";
+import { AuthService } from "../../common/auth/auth.services";
 
 @Component({
-  selector: 'app-contacts-list',
-  templateUrl: './contacts-list.component.html',
-  styleUrls: ['./contacts-list.component.scss']
+  selector: "app-contacts-list",
+  templateUrl: "./contacts-list.component.html",
+  styleUrls: ["./contacts-list.component.scss"],
 })
 export class ContactsListComponent implements OnInit {
-
   contacts: Contact[];
   itemsToDisplay: Contact[];
   itemPerPage: number = 10;
   numberOfPages: number[] = [];
   currentPage: number = 0;
 
-  constructor(private _contactsService: ContactsService,
-              private _router: Router,
-              private _modalService: ModalService,
-              private _toastService: ToastService) { 
-    this.contacts = [];    
+  constructor(
+    private _contactsService: ContactsService,
+    private _router: Router,
+    private _modalService: ModalService,
+    private _toastService: ToastService,
+    private _authService: AuthService
+  ) {
+    this.contacts = [];
     this.itemsToDisplay = [];
   }
 
@@ -64,8 +67,7 @@ export class ContactsListComponent implements OnInit {
   }
 
   isAuthorized() {
-    const token = localStorage.getItem("auth_token");
-    return !!token;
+    return this._authService.isAuthorized();
   }
 
   goToContactForm(id) {
