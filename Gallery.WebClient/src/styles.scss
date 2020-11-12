@@ -46,3 +46,11 @@
 textarea {
   resize: vertical;
 }
+
+.table tr td {
+  border: none !important;
+}
+
+.table th {
+  border-color: rgba(62, 71, 72, 0.9) !important;
+}
