@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.DAL", "Gallery.DAL\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.BLL", "Gallery.BLL\Gallery.BLL.csproj", "{90C09680-1649-40ED-875A-54EE07B122C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallery.DTO", "Gallery.DTO\Gallery.DTO.csproj", "{FD6A9242-C9D1-4687-89CA-7A1F5794F0E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.DTO", "Gallery.DTO\Gallery.DTO.csproj", "{FD6A9242-C9D1-4687-89CA-7A1F5794F0E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gallery.Docs", "Gallery.Docs", "{347AA6D3-CE61-4641-B38B-9C36DD068D45}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Documents\Gallery.sql = ..\..\..\Documents\Gallery.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
