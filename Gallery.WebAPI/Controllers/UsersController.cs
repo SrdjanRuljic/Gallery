@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Gallery.BLL.Interfaces;
-using Gallery.Common;
+using Gallery.Common.UserModels;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -69,7 +68,7 @@ namespace Gallery.WebAPI.Controllers
         public async Task<IActionResult> Insert(InsertUserViewModel model)
         {
 
-            long id = await _usersBusiness.Insert(_mapper.Map<UserModel>(model));
+            long id = await _usersBusiness.Insert(_mapper.Map<InsertUserModel>(model));
 
             return Ok(id);
         }
@@ -83,7 +82,7 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Update(UpdateUserViewModel model)
         {
-            bool isUpdated = await _usersBusiness.Update(_mapper.Map<UserModel>(model));
+            bool isUpdated = await _usersBusiness.Update(_mapper.Map<UpdateUserModel>(model));
 
             return Ok(isUpdated);
         }

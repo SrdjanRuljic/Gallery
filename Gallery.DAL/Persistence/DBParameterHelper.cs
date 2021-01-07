@@ -12,6 +12,8 @@ namespace Gallery.DAL.Persistence
             {
                 if (property.Name == "Id")
                     collection.AddWithValue("@Id", 0);
+                else if (property.Name == "Password")
+                    return;
                 else
                     collection.AddWithValue(String.Format("@{0}", property.Name),
                                             model?.GetType().GetProperty(property.Name)?.GetValue(model, null));

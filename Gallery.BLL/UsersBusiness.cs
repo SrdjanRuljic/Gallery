@@ -1,7 +1,9 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
 using Gallery.Common.Helpers;
+using Gallery.Common.UserModels;
 using Gallery.Common.Validations;
+using Gallery.Common.Validations.UserModelsValidations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
 using System;
@@ -33,21 +35,21 @@ namespace Gallery.BLL
             }
         }
 
-        public async Task<List<UserModel>> GetAll() =>
+        public async Task<List<ListUserModel>> GetAll() =>
             await _usersDataAccess.GetAll();
 
-        public async Task<UserModel> GetById(long id)
+        public async Task<UpdateUserModel> GetById(long id)
         {
             if (id <= 0)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
-            UserModel user = await _usersDataAccess.GetById(id);
+            UpdateUserModel user = await _usersDataAccess.GetById(id);
 
             if (user == null)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound , ErrorMessages.UserNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.UserNotFound);
             }
 
             return user;
@@ -68,7 +70,7 @@ namespace Gallery.BLL
             return user;
         }
 
-        public async Task<long> Insert(UserModel model)
+        public async Task<long> Insert(InsertUserModel model)
         {
             long id = 0;
             string errorMessage = null;
@@ -106,7 +108,7 @@ namespace Gallery.BLL
             return id;
         }
 
-        public async Task<bool> Update(UserModel model)
+        public async Task<bool> Update(UpdateUserModel model)
         {
             var isUpdated = false;
             string errorMessage = null;

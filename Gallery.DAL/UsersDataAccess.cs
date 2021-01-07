@@ -1,4 +1,5 @@
 ﻿using Gallery.Common;
+using Gallery.Common.UserModels;
 using Gallery.DAL.Interfaces;
 using Gallery.DAL.Persistence;
 using System;
@@ -17,11 +18,11 @@ namespace Gallery.DAL
         public async Task Delete(long id) =>
             await _dBContext.Delete("[dbo].[sp_Users.Delete]", id);
 
-        public async Task<List<UserModel>> GetAll() =>
-            await _dBContext.GetList<UserModel>("[dbo].[sp_Users.GetAll]");
+        public async Task<List<ListUserModel>> GetAll() =>
+            await _dBContext.GetList<ListUserModel>("[dbo].[sp_Users.GetAll]");
 
-        public async Task<UserModel> GetById(long id) =>
-            await _dBContext.GetSingle<UserModel>("[dbo].[sp_Users.GetById]", id);
+        public async Task<UpdateUserModel> GetById(long id) =>
+            await _dBContext.GetSingle<UpdateUserModel>("[dbo].[sp_Users.GetById]", id);
 
         public async Task<UserModel> GetByUsername(string username)
         {
@@ -103,10 +104,10 @@ namespace Gallery.DAL
             }
         }
 
-        public async Task<long> Insert(UserModel model) =>
+        public async Task<long> Insert(InsertUserModel model) =>
             await _dBContext.Insert("[dbo].[sp_Users.Insert]", model);
 
-        public async Task<bool> Update(UserModel model) =>
+        public async Task<bool> Update(UpdateUserModel model) =>
             await _dBContext.Update("[dbo].[sp_Users.Update]", model);
 
         public async Task<bool> UsernameExists(string username, long id)

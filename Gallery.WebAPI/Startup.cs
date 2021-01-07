@@ -1,18 +1,14 @@
 using AutoMapper;
 using Gallery.WebAPI._1_Startup;
-using Gallery.WebAPI.Helpers;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
-using System.Net;
 
 namespace Gallery.WebAPI
 {
@@ -45,7 +41,7 @@ namespace Gallery.WebAPI
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.ServiceAuthentication(Configuration);
             services.AddMvc();
         }
