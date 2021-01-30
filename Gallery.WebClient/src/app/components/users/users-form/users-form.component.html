@@ -1,56 +1,116 @@
 <div class="container">
   <h3 *ngIf="model.id == 0">Dodavanje novog korisnika</h3>
   <h3 *ngIf="model.id != 0">Uređivanje korisnika</h3>
-  <hr class="hr"/>
+  <hr class="hr" />
   <div class="row">
-      <form name="form" (ngSubmit)="f.valid && save()" #f="ngForm">
-          <fieldset>
-            
-              <div class="form-group col-md-7">
-                <label for="firstName">Ime</label>
-                 <input type="text" [(ngModel)]="model.firstName" class="form-control" id="firstName" name="firstName" autocomplete="off"/>
-              </div>
+    <form name="form" (ngSubmit)="f.valid && save()" #f="ngForm">
+      <fieldset>
+        <div class="form-group col-md-7">
+          <label for="firstName">Ime</label>
+          <input
+            type="text"
+            [(ngModel)]="model.firstName"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            autocomplete="off"
+          />
+        </div>
 
-              <div class="form-group col-md-7">
-                <label for="lastName">Prezime</label>
-                 <input type="text" [(ngModel)]="model.lastName" class="form-control" id="lastName" name="lastName" autocomplete="off"/>
-              </div>
-              
-              <div class="form-group col-md-7">
-                <div [ngClass]="{ 'form-group has-error':f.submitted && !usernameValidation()}">
-                      <label for="username">Korisničko ime*</label>
-                      <input type="text" [(ngModel)]="model.username" class="form-control" id="username" name="username" autocomplete="off"/>
-                      <div *ngIf="f.submitted && !usernameValidation()" class="help-block">Neophodno je unijeti korisničko ime korisnika</div>
-                  </div>
-              </div>
-              <div class="form-group col-md-7">
-                <div *ngIf="model.id == 0" [ngClass]="{ 'form-group has-error':f.submitted && !passwordValidation()}">
-                    <label for="password">Lozinka*</label>
-                    <input type="text" [(ngModel)]="model.password" class="form-control" id="password" name="password" autocomplete="off"/>
-                    <div *ngIf="f.submitted && !passwordValidation()" class="help-block">Neophodno je unijeti lozinku korisnika</div>
-                </div>
-              </div>
+        <div class="form-group col-md-7">
+          <label for="lastName">Prezime</label>
+          <input
+            type="text"
+            [(ngModel)]="model.lastName"
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            autocomplete="off"
+          />
+        </div>
 
-              <div class="form-group col-md-7">
-                <div [ngClass]="{ 'form-group has-error':f.submitted && !roleValidation()}">
-                    <label for="roleId">Uloga*</label>
-                    <select class="form-control" 
-                            id="roleId" 
-                            name="roleId" 
-                            [(ngModel)]="model.roleId">
-                      <option value="0">-</option>
-                      <option *ngFor="let item of roles" [value]="item.id">{{item.name}}</option>
-                    </select>
-                    <div *ngIf="f.submitted && !roleValidation()" class="help-block">Neophodno je odabrati ulogu</div>
-                </div>
-              </div>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !usernameValidation()
+            }"
+          >
+            <label for="username">Korisničko ime*</label>
+            <input
+              type="text"
+              [(ngModel)]="model.username"
+              class="form-control"
+              id="username"
+              name="username"
+              autocomplete="off"
+            />
+            <div
+              *ngIf="f.submitted && !usernameValidation()"
+              class="help-block"
+            >
+              Neophodno je unijeti korisničko ime korisnika
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-7">
+          <div
+            *ngIf="model.id == 0"
+            [ngClass]="{
+              'form-group has-error': f.submitted && !passwordValidation()
+            }"
+          >
+            <label for="password">Lozinka*</label>
+            <input
+              type="password"
+              [(ngModel)]="model.password"
+              class="form-control"
+              id="password"
+              name="password"
+              autocomplete="off"
+            />
+            <div
+              *ngIf="f.submitted && !passwordValidation()"
+              class="help-block"
+            >
+              Neophodno je unijeti lozinku korisnika
+            </div>
+          </div>
+        </div>
 
-              <div class="form-group col-md-12">
-                <hr class="hr"/>
-                  <button type="button" class="btn btn-default" (click)="goBack()">Nazad</button>
-                  <button type="submit" class="btn btn-default pull-right">Sačuvati</button>
-              </div>
-          </fieldset>
-      </form>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !roleValidation()
+            }"
+          >
+            <label for="roleId">Uloga*</label>
+            <select
+              class="form-control"
+              id="roleId"
+              name="roleId"
+              [(ngModel)]="model.roleId"
+            >
+              <option value="0">-</option>
+              <option *ngFor="let item of roles" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+            <div *ngIf="f.submitted && !roleValidation()" class="help-block">
+              Neophodno je odabrati ulogu
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <hr class="hr" />
+          <button type="button" class="btn btn-default" (click)="goBack()">
+            Nazad
+          </button>
+          <button type="submit" class="btn btn-default pull-right">
+            Sačuvati
+          </button>
+        </div>
+      </fieldset>
+    </form>
   </div>
 </div>

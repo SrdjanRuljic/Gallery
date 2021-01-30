@@ -87,6 +87,16 @@ namespace Gallery.WebAPI.Controllers
             return Ok(isUpdated);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        [Route("update-password")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordViewModel model)
+        {
+            bool isUpdated = await _usersBusiness.UpdatePassword(model.Id, model.Password, model.ConfirmedPassword);
+
+            return Ok(isUpdated);
+        }
+
         #endregion
 
         #region [DELETE]

@@ -16,5 +16,6 @@ namespace Gallery.BLL.Interfaces
         Task<bool> UsernameExists(string username, long id);
         Task<LogedInUserData> GetLogedInUserData(string username);
         Task<bool> Update(UpdateUserModel model);
+        Task<bool> UpdatePassword(long id, string password, string confirmedPassword);
     }
 }

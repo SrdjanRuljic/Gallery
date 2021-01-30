@@ -110,6 +110,9 @@ namespace Gallery.DAL
         public async Task<bool> Update(UpdateUserModel model) =>
             await _dBContext.Update("[dbo].[sp_Users.Update]", model);
 
+        public async Task<bool> UpdatePassword(UpdatePasswordModel model) =>
+            await _dBContext.Update("[dbo].[sp_Users.UpdatePassword]", model);
+
         public async Task<bool> UsernameExists(string username, long id)
         {
             string queryString = "[dbo].[sp_Users.UsernameExists]";

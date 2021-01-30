@@ -140,6 +140,31 @@ namespace Gallery.BLL
             return isUpdated;
         }
 
+        public async Task<bool> UpdatePassword(long id, string password, string confirmedPassword)
+        {
+            var isUpdated = false;
+            byte[] passwordHash, passwordSalt;
+
+            if (id <= 0)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
+
+            if (String.Compare(password, confirmedPassword) != 0)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.PasswordsAreDifferent);
+
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            UpdatePasswordModel model = new UpdatePasswordModel()
+            {
+                Id = id,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
+            };
+
+            isUpdated = await _usersDataAccess.UpdatePassword(model);
+
+            return isUpdated;
+        }
+
         public async Task<bool> UsernameExists(string username, long id) =>
             await _usersDataAccess.UsernameExists(username, id);
 

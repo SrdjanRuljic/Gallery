@@ -63,6 +63,10 @@ export class UsersListComponent implements OnInit {
     this._router.navigate(["/users/form", id]);
   }
 
+  goToResetPassword(id) {
+    this._router.navigate(["/users/reset-password", id]);
+  }
+
   delete(id) {
     let msg = "Da li ste sigurni da želite izvršiti brisanje?";
     let title = "Upozorenje";

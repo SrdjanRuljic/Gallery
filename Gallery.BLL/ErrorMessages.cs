@@ -16,6 +16,7 @@
         private static string inernalServerError;
         private static string unauthorised;
         private static string authorNotFound;
+        private static string passwordsAreDifferent;
 
         public static string Unauthorised
         {
@@ -98,6 +99,11 @@
                 default:
                     return InernalServerError;
             }
+        }
+
+        public static string PasswordsAreDifferent
+        {
+            get { return inernalServerError = "Lozinke se razlikuju. "; }
         }
     }
 }

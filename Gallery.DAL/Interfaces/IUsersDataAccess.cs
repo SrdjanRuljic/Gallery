@@ -15,5 +15,6 @@ namespace Gallery.DAL.Interfaces
         Task<long> Insert(InsertUserModel model);
         Task<bool> UsernameExists(string username, long id);
         Task<bool> Update(UpdateUserModel model);
+        Task<bool> UpdatePassword(UpdatePasswordModel model);
     }
 }

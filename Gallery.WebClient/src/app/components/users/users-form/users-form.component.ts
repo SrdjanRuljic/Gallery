@@ -103,7 +103,7 @@ export class UsersFormComponent implements OnInit {
   update() {
     this._usersService.update(this.model).subscribe((response) => {
       this._toastService.activate(
-        "Kategorija je uspješno izmjenjena.",
+        "Korisnik je uspješno izmjenjen.",
         "alert-success"
       );
       this.goBack();
