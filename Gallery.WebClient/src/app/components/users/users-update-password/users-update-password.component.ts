@@ -5,11 +5,11 @@ import { UsersService } from "../users.services";
 import { ToastService } from "../../common/toast/toast.service";
 
 @Component({
-  selector: "app-users-reset-password",
-  templateUrl: "./users-reset-password.component.html",
-  styleUrls: ["./users-reset-password.component.scss"],
+  selector: "app-users-update-password",
+  templateUrl: "./users-update-password.component.html",
+  styleUrls: ["./users-update-password.component.scss"],
 })
-export class UsersResetPasswordComponent implements OnInit {
+export class UsersUpdatePasswordComponent implements OnInit {
   model: UpdatePassword;
 
   constructor(

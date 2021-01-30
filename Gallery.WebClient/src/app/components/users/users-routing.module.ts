@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { UsersListComponent } from "./users-list/users-list.component";
 import { UsersFormComponent } from "./users-form/users-form.component";
-import { UsersResetPasswordComponent } from "./users-reset-password/users-reset-password.component";
+import { UsersUpdatePasswordComponent } from "./users-update-password/users-update-password.component";
 
 const userRoutes: Routes = [
   {
@@ -16,8 +16,8 @@ const userRoutes: Routes = [
     component: UsersFormComponent,
   },
   {
-    path: "users/reset-password/:id",
-    component: UsersResetPasswordComponent,
+    path: "users/update-password/:id",
+    component: UsersUpdatePasswordComponent,
   },
 ];
 

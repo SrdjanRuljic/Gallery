@@ -64,7 +64,7 @@ export class UsersListComponent implements OnInit {
   }
 
   goToResetPassword(id) {
-    this._router.navigate(["/users/reset-password", id]);
+    this._router.navigate(["/users/update-password", id]);
   }
 
   delete(id) {
