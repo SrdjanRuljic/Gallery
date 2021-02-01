@@ -45,8 +45,9 @@ export class PicturesService {
   delete(id): Observable<any> {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
-    return this._http.delete(this._picturesUrl + "/" + id, httpOptions)
-        .pipe(map(res => res));
+    return this._http
+      .delete(this._picturesUrl + "/" + id, httpOptions)
+      .pipe(map((res) => res));
   }
 
   getById(id): Observable<any> {
@@ -54,6 +55,14 @@ export class PicturesService {
     this.createAuthorizationHeader(headers);
     return this._http
       .get(this._picturesUrl + "/" + id, httpOptions)
+      .pipe(map((res) => res));
+  }
+
+  getSingleById(id): Observable<any> {
+    let headers = new Headers();
+    this.createAuthorizationHeader(headers);
+    return this._http
+      .get(this._picturesUrl + "/single/" + id, httpOptions)
       .pipe(map((res) => res));
   }
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Gallery.BLL.Interfaces;
-using Gallery.DTO;
+using Gallery.Common;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +36,16 @@ namespace Gallery.WebAPI.Controllers
             return Ok(picture);
         }
 
+        [HttpGet]
+        [Route("single/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSingleById(long id)
+        {
+            PictureDetailsViewModel picture = _mapper.Map<PictureDetailsViewModel>(await _picturesBusiness.GetSingleById(id));
+
+            return Ok(picture);
+        }
+
         #endregion
 
         #region [POST]
@@ -45,7 +55,7 @@ namespace Gallery.WebAPI.Controllers
 
         public async Task<IActionResult> Insert(PictureViewModel model)
         {
-            long id = await _picturesBusiness.UploadAndInsert(_mapper.Map<PicturesDTO>(model));
+            long id = await _picturesBusiness.Insert(_mapper.Map<PictureModel>(model));
 
             return Ok(id);
         }
@@ -71,7 +81,7 @@ namespace Gallery.WebAPI.Controllers
         {
             bool isUpdated = false;
 
-            await _picturesBusiness.Update(_mapper.Map<PicturesDTO>(model));
+            await _picturesBusiness.Update(_mapper.Map<PictureModel>(model));
 
             return Ok(isUpdated);
         }

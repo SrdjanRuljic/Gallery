@@ -10,6 +10,7 @@ namespace Gallery.Common
         public string Description { get; set; }
         public Guid? ImageName { get; set; }
         public string Extension { get; set; }
+        public string Content { get; set; }
         public string Category { get; set; }
     }
 }

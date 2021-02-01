@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Gallery.Common
+﻿namespace Gallery.Common
 {
     public class PictureModel
     {
@@ -8,7 +6,7 @@ namespace Gallery.Common
         public string Name { get; set; }
         public long CategoryId { get; set; }
         public string Description { get; set; }
-        public Guid? ImageName { get; set; }
+        public string Content { get; set; }
         public string Extension { get; set; }
     }
 }

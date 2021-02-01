@@ -3,7 +3,7 @@ import { PicturesService } from "../pictures.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastService } from "../../common/toast/toast.service";
 import { ModalService } from "../../common/modal/modal.service";
-import { Picture } from "../picture";
+import { PictureDetails } from "../picture-details";
 import { AuthService } from "../../common/auth/auth.services";
 
 @Component({
@@ -12,7 +12,7 @@ import { AuthService } from "../../common/auth/auth.services";
   styleUrls: ["./pictures-details.component.scss"],
 })
 export class PicturesDetailsComponent implements OnInit {
-  model: Picture;
+  model: PictureDetails;
 
   constructor(
     private _picturesService: PicturesService,
@@ -22,7 +22,7 @@ export class PicturesDetailsComponent implements OnInit {
     private _modalService: ModalService,
     private _authService: AuthService
   ) {
-    this.model = new Picture();
+    this.model = new PictureDetails();
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class PicturesDetailsComponent implements OnInit {
   }
 
   getPicture(id) {
-    this._picturesService.getById(id).subscribe((response) => {
+    this._picturesService.getSingleById(id).subscribe((response) => {
       this.model = response;
     });
   }

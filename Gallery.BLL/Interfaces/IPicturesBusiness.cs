@@ -1,15 +1,12 @@
-﻿using Gallery.DTO;
+﻿using Gallery.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gallery.BLL.Interfaces
 {
-    public interface IPicturesBusiness
+    public interface IPicturesBusiness : IBaseBusiness<PictureModel>
     {
-        Task<long> UploadAndInsert(PicturesDTO dto);
-        Task<List<PicturesDTO>> Search(string name, long? categoryId);
-        Task<PicturesDTO> GetById(long id);
-        Task<bool> Update(PicturesDTO dto);
-        Task Delete(long id);
+        Task<List<PictureModel>> Search(string name, long? categoryId);
+        Task<PictureDetailsModel> GetSingleById(long id);
     }
 }
