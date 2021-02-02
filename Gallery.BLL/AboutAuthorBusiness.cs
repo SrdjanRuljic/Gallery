@@ -1,11 +1,10 @@
-﻿using Gallery.BLL.Helpers;
-using Gallery.BLL.Interfaces;
+﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
 using Gallery.Common.Helpers;
 using Gallery.Common.Validations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
-using Gallery.DTO;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -18,47 +17,29 @@ namespace Gallery.BLL
         public AboutAuthorBusiness() =>
             _aboutAuthorDataAccess = new AboutAuthorDataAccess();
 
-        public async Task<AboutAuthorDTO> GetById(long id)
+        public async Task<AboutAuthorModel> GetById(long id)
         {
             if (id <= 0)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
-            AboutAuthorModel data = await _aboutAuthorDataAccess.GetById(id);
+            AboutAuthorModel model = await _aboutAuthorDataAccess.GetById(id);
 
-            if (data == null)
+            model.Content = string.IsNullOrEmpty(model.Content) ? "/assets/images/no-image.png" : model.Content;
+
+            if (model == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.AuthorNotFound);
             }
 
-            string imageContext = await ImageHelper.GetImageContent(data.ImageName, data.Extension);
-
-            AboutAuthorDTO dto = new AboutAuthorDTO()
-            {
-                Id = data.Id,
-                Name = data.Name,
-                Biography = data.Biography,
-                Content = imageContext == null ? "/assets/images/no-image.png" : imageContext,
-                Extension = data.Extension,
-            };
-
-            return dto;
+            return model;
         }
 
-        public async Task<bool> Update(AboutAuthorDTO dto)
+        public async Task<bool> Update(AboutAuthorModel model)
         {
             bool isUpdated = false;
             string errorMessage = null;
-
-            AboutAuthorModel model = await _aboutAuthorDataAccess.GetById(dto.Id);
-
-            ImageHelper.DeleteImage(model.ImageName, model.Extension);
-
-            model.Name = dto.Name;
-            model.Biography = dto.Biography;
-            model.ImageName = await ImageHelper.UploadImage(dto.Content, dto.Extension);
-            model.Extension = dto.Extension;
 
             if (!model.IsValid(out errorMessage))
             {
@@ -70,18 +51,10 @@ namespace Gallery.BLL
             return isUpdated;
         }
 
-        public async Task<long> UploadAndInsert(AboutAuthorDTO dto)
+        public async Task<long> Insert(AboutAuthorModel model)
         {
             long id = 0;
             string errorMessage = null;
-
-            AboutAuthorModel model = new AboutAuthorModel()
-            {
-                Name = dto.Name,
-                Biography = dto.Biography,
-                ImageName = await ImageHelper.UploadImage(dto.Content, dto.Extension),
-                Extension = dto.Extension
-            };
 
             if (!model.IsValid(out errorMessage))
             {
@@ -92,5 +65,11 @@ namespace Gallery.BLL
 
             return id;
         }
+
+        public Task<List<AboutAuthorModel>> GetAll() =>
+            throw new System.NotImplementedException();
+
+        public Task Delete(long id) =>
+            throw new System.NotImplementedException();
     }
 }

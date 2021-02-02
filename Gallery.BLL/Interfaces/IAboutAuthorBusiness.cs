@@ -1,12 +1,8 @@
-﻿using Gallery.DTO;
-using System.Threading.Tasks;
+﻿using Gallery.Common;
 
 namespace Gallery.BLL.Interfaces
 {
-    public interface IAboutAuthorBusiness
+    public interface IAboutAuthorBusiness : IBaseBusiness<AboutAuthorModel>
     {
-        Task<long> UploadAndInsert(AboutAuthorDTO dto);
-        Task<AboutAuthorDTO> GetById(long id);
-        Task<bool> Update(AboutAuthorDTO dto);
     }
 }

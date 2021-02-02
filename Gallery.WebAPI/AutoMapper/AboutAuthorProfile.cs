@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Gallery.DTO;
+using Gallery.Common;
 using Gallery.WebAPI.Models;
 
 namespace Gallery.WebAPI.AutoMapper
@@ -8,8 +8,8 @@ namespace Gallery.WebAPI.AutoMapper
     {
         public AboutAuthorProfile()
         {
-            CreateMap<AboutAuthorViewModel, AboutAuthorDTO>();
-            CreateMap<AboutAuthorDTO, AboutAuthorViewModel>();
+            CreateMap<AboutAuthorViewModel, AboutAuthorModel>();
+            CreateMap<AboutAuthorModel, AboutAuthorViewModel>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Gallery.BLL.Interfaces;
-using Gallery.DTO;
+using Gallery.Common;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +44,7 @@ namespace Gallery.WebAPI.Controllers
 
         public async Task<IActionResult> Insert(AboutAuthorViewModel model)
         {
-            long id = await _aboutAuthorBusiness.UploadAndInsert(_mapper.Map<AboutAuthorDTO>(model));
+            long id = await _aboutAuthorBusiness.Insert(_mapper.Map<AboutAuthorModel>(model));
 
             return Ok(id);
         }
@@ -59,7 +59,7 @@ namespace Gallery.WebAPI.Controllers
         {
             bool isUpdated = false;
 
-            await _aboutAuthorBusiness.Update(_mapper.Map<AboutAuthorDTO>(model));
+            await _aboutAuthorBusiness.Update(_mapper.Map<AboutAuthorModel>(model));
 
             return Ok(isUpdated);
         }
