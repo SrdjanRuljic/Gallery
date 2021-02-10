@@ -1,46 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { UsersService } from "../users.services";
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from "@angular/router";
 import { User } from "../user";
 import { ToastService } from "../../common/toast/toast.service";
 import { RolesService } from "../../roles/roles.services";
 import { ModalService } from "../../common/modal/modal.service";
 
 @Component({
-  selector: 'app-users-form',
-  templateUrl: './users-form.component.html',
-  styleUrls: ['./users-form.component.css']
+  selector: "app-users-form",
+  templateUrl: "./users-form.component.html",
+  styleUrls: ["./users-form.component.css"],
 })
 export class UsersFormComponent implements OnInit {
-
   id: number = 0;
   model: User;
-  roles: any[];  
+  roles: any[];
   previousUsername: string = null;
 
-  constructor(private _usersService: UsersService,
-              private _route: ActivatedRoute,
-              private _router: Router,
-              private _toastService: ToastService,
-              private _rolesService: RolesService,
-              private _modalService: ModalService) {
-      this.model = new User();
-    }
+  constructor(
+    private _usersService: UsersService,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _toastService: ToastService,
+    private _rolesService: RolesService,
+    private _modalService: ModalService
+  ) {
+    this.model = new User();
+  }
 
   ngOnInit() {
-    this._route.params.subscribe(params => {
-      let id = +params['id'];
-      if (!isNaN(id) && id > 0) {   
-        this.getUser(id); 
-      }
-      else {
-        this.initModel(); 
+    this._route.params.subscribe((params) => {
+      let id = +params["id"];
+      if (!isNaN(id) && id > 0) {
+        this.getUser(id);
+      } else {
+        this.initModel();
       }
       this.getRoles();
     });
   }
 
-  initModel(){
+  initModel() {
     this.model.id = 0;
     this.model.firstName = null;
     this.model.lastName = null;
@@ -49,96 +49,86 @@ export class UsersFormComponent implements OnInit {
     this.model.roleId = 0;
   }
 
-  getRoles(){
-    this._rolesService.getDropDownItems().subscribe(response =>{
-      this.roles = response;  
+  getRoles() {
+    this._rolesService.getDropDownItems().subscribe((response) => {
+      this.roles = response;
     });
   }
 
-  getUser(id){
-    this._usersService.getById(id).subscribe(response => {
-        this.model = response;
-        this.previousUsername = this.model.username;
+  getUser(id) {
+    this._usersService.getById(id).subscribe((response) => {
+      this.model = response;
+      this.previousUsername = this.model.username;
     });
   }
 
-  save(){
-    if(this.usernameValidation() && 
-    this.passwordValidation() &&
-    this.roleValidation()){
+  save() {
+    if (
+      this.usernameValidation() &&
+      this.passwordValidation() &&
+      this.roleValidation()
+    ) {
       if (this.model.id == 0) {
         this.insert();
-      }else{
-        this.update();
-      }      
+      } else {
+        this.updateUser();
+      }
     }
   }
 
-  insert(){
-    this._usersService.insert(this.model).subscribe(response => {
-      this._toastService.activate("Korisnik je uspješno kreirana.", "alert-success");
-      this.goBack()      
-    },
-    error => {
-      this._toastService.activate(error.error.exceptionMessage, "alert-danger");
+  insert() {
+    this._usersService.insert(this.model).subscribe((response) => {
+      this._toastService.activate(
+        "Korisnik je uspješno kreirana.",
+        "alert-success"
+      );
+      this.goBack();
     });
   }
 
-  update(){
-    if (!this.compareUsernames()) {
+  updateUser() {
+    if (this.compareUsernames()) {
       let msg = "Da li ste sigurni da želite promjeniti korisničko ime?";
       let title = "Upozorenje";
       this._modalService.activate(msg, title).then((responseOK) => {
         if (responseOK) {
-          this._usersService.update(this.model).subscribe(response => {       
-            this._toastService.activate("Kategorija je uspješno izmjenjena.", "alert-success");
-            this.goBack()
-          },
-          error => {
-            this._toastService.activate(error.error.exceptionMessage, "alert-danger");
-          });
+          this.update();
         }
       });
-      
     } else {
-      this._usersService.update(this.model).subscribe(response => {       
-        this._toastService.activate("Kategorija je uspješno izmjenjena.", "alert-success");
-        this.goBack()
-      },
-      error => {
-        this._toastService.activate(error.error.exceptionMessage, "alert-danger");
-      });
-    }    
+      this.update();
+    }
+  }
+
+  update() {
+    this._usersService.update(this.model).subscribe((response) => {
+      this._toastService.activate(
+        "Korisnik je uspješno izmjenjen.",
+        "alert-success"
+      );
+      this.goBack();
+    });
   }
 
   usernameValidation() {
-    if (this.model.username == null || this.model.username.length < 1) {
-      return false;
-    }
-    return true;
+    return !!!(this.model.username == null || this.model.username.length < 1);
   }
   passwordValidation() {
-    if ((this.model.password == null || this.model.password.length < 1) && this.model.id == 0) {
-      return false;
-    }
-    return true;
+    return !!!(
+      (this.model.password == null || this.model.password.length < 1) &&
+      this.model.id == 0
+    );
   }
 
   roleValidation() {
-    if (this.model.roleId < 1) {
-      return false;
-    }      
-    return true;
+    return !!!(this.model.roleId < 1);
   }
 
-  compareUsernames(){
-    if(this.previousUsername === this.model.username){
-      return true;
-    }
-    return false;
+  compareUsernames() {
+    return !!!(this.previousUsername === this.model.username);
   }
 
   goBack() {
-    this._router.navigate(['/users']);
+    this._router.navigate(["/users"]);
   }
 }

@@ -1,1 +1,44 @@
-<p>pictures-details works!</p>
+<div class="container">
+    <h3>
+        Detalji
+        <button type="button"
+                class="btn btn-default pull-right"
+                (click)="goToPictureForm(model.id)"
+                *ngIf="isAuthorized()">
+            Izmjena
+        </button>
+        <button type="button"
+                class="btn btn-default pull-right"
+                (click)="delete(model.id)"
+                *ngIf="isAuthorized()">
+            Brisanje
+        </button>
+    </h3>
+    <hr class="hr" />
+    <div class="row">
+        <fieldset>
+            <div class="form-group col-md-7">
+                <label for="name">Naziv: </label>
+                <label for="" class="data-lable"><i>{{model.name}}</i></label>
+            </div>
+            <div class="form-group col-md-7">
+                <label for="name">Kategorija: </label>
+                <label for="" class="data-lable"><i>{{model.category}}</i></label>
+            </div>
+            <div class="form-group col-md-7">
+                <label for="name">Opis: </label>
+                <label for="" class="data-lable"><i>{{model.description}}</i></label>
+            </div>
+            <div class="form-group col-md-7">
+                <img [src]="model.content" />
+            </div>
+
+            <div class="form-group col-md-12">
+                <hr class="hr" />
+                <button type="button" class="btn btn-default" (click)="goToPictureList()">
+                  Nazad
+                </button>
+              </div>
+        </fieldset>
+    </div>
+</div>

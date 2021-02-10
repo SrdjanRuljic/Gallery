@@ -1,1 +1,84 @@
-<p>pictures-form works!</p>
+<div class="container">
+  <h3 *ngIf="model.id == 0">Dodavanje nove slike</h3>
+  <h3 *ngIf="model.id != 0">Uređivanje slike</h3>
+  <hr class="hr" />
+  <div class="row">
+    <form name="form" (ngSubmit)="f.valid && save()" #f="ngForm">
+      <fieldset>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !nameValidation()
+            }"
+          >
+            <label for="name">Naziv*</label>
+            <input
+              type="text"
+              [(ngModel)]="model.name"
+              class="form-control"
+              id="name"
+              name="name"
+              autocomplete="off"
+            />
+            <div *ngIf="f.submitted && !nameValidation()" class="help-block">
+              Neophodno je unijeti naziv slike
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !categoryValidation()
+            }"
+          >
+            <label for="categoryId">Kategorija*</label>
+            <select
+              class="form-control"
+              id="categoryId"
+              name="categoryId"
+              [(ngModel)]="model.categoryId"
+            >
+              <option [ngValue]="0">-</option>
+              <option *ngFor="let item of categories" [ngValue]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="f.submitted && !categoryValidation()"
+              class="help-block"
+            >
+              Neophodno je odabrati kategoriju
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-7">
+          <label for="description">Opis</label>
+          <textarea
+            type="text"
+            [(ngModel)]="model.description"
+            class="form-control"
+            id="description"
+            name="description"
+            autocomplete="off"
+          ></textarea>
+        </div>
+        <div class="form-group col-md-7">
+          <app-file-upload
+            [imageContext]="model.content"
+            (fileData)="getFileData($event)"
+          ></app-file-upload>
+        </div>
+
+        <div class="form-group col-md-12">
+          <hr class="hr" />
+          <button type="button" class="btn btn-default" (click)="goBack()">
+            Nazad
+          </button>
+          <button type="submit" class="btn btn-default pull-right">
+            Sačuvati
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

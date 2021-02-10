@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Gallery.BLL.Interfaces;
-using Gallery.Common;
+using Gallery.Common.UserModels;
 using Gallery.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -32,18 +31,11 @@ namespace Gallery.WebAPI.Controllers
         [Route("data")]
         public async Task<IActionResult> GetLogedInUserData()
         {
-            try
-            {
-                string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-                LogedInUserDataViewModel data = _mapper.Map<LogedInUserDataViewModel>(await _usersBusiness.GetLogedInUserData(username));
+            LogedInUserDataViewModel data = _mapper.Map<LogedInUserDataViewModel>(await _usersBusiness.GetLogedInUserData(username));
 
-                return Ok(data);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(data);
         }
 
         [Authorize(Roles = "Admin")]
@@ -76,7 +68,7 @@ namespace Gallery.WebAPI.Controllers
         public async Task<IActionResult> Insert(InsertUserViewModel model)
         {
 
-            long id = await _usersBusiness.Insert(_mapper.Map<UserModel>(model));
+            long id = await _usersBusiness.Insert(_mapper.Map<InsertUserModel>(model));
 
             return Ok(id);
         }
@@ -90,7 +82,17 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Update(UpdateUserViewModel model)
         {
-            bool isUpdated = await _usersBusiness.Update(_mapper.Map<UserModel>(model));
+            bool isUpdated = await _usersBusiness.Update(_mapper.Map<UpdateUserModel>(model));
+
+            return Ok(isUpdated);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        [Route("update-password")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordViewModel model)
+        {
+            bool isUpdated = await _usersBusiness.UpdatePassword(model.Id, model.Password, model.ConfirmedPassword);
 
             return Ok(isUpdated);
         }

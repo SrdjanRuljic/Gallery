@@ -15,10 +15,10 @@ namespace Gallery.WebAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryBusiness _categoryBusiness;
+        private readonly ICategoriesBusiness _categoryBusiness;
         private readonly IMapper _mapper;
 
-        public CategoriesController(ICategoryBusiness categoryBusiness, IMapper mapper)
+        public CategoriesController(ICategoriesBusiness categoryBusiness, IMapper mapper)
         {
             _categoryBusiness = categoryBusiness;
             _mapper = mapper;
@@ -30,17 +30,9 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Insert(CategoryViewModel model)
         {
-            long id = 0;
-
-            try
-            {
-                id = await _categoryBusiness.Insert(_mapper.Map<CategoryModel>(model));
-                return Ok(id);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            long id = await _categoryBusiness.Insert(_mapper.Map<CategoryModel>(model));
+            
+            return Ok(id);
         }
 
         #endregion [POST]
@@ -51,32 +43,18 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                List<CategoryViewModel> list = _mapper.Map<List<CategoryViewModel>>(await _categoryBusiness.GetAll());
+            List<CategoryViewModel> list = _mapper.Map<List<CategoryViewModel>>(await _categoryBusiness.GetAll());
 
-                return Ok(list);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(list);
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            try
-            {
-                CategoryViewModel model = _mapper.Map<CategoryViewModel>(await _categoryBusiness.GetById(id));
+            CategoryViewModel model = _mapper.Map<CategoryViewModel>(await _categoryBusiness.GetById(id));
 
-                return Ok(model);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(model);
         }
 
         [HttpGet]
@@ -88,6 +66,16 @@ namespace Gallery.WebAPI.Controllers
             return Ok(exists);
         }
 
+        [HttpGet]
+        [Route("dropdown")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDropdownItems()
+        {
+            List<DropdownItemViewModel> items = _mapper.Map<List<DropdownItemViewModel>>(await _categoryBusiness.GetDropdownItems());
+
+            return Ok(items);
+        }
+
         #endregion
 
         #region [PUT]
@@ -96,18 +84,9 @@ namespace Gallery.WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Update(CategoryViewModel model)
         {
-            bool isUpdated = false;
+            bool isUpdated = await _categoryBusiness.Update(_mapper.Map<CategoryModel>(model));
 
-            try
-            {
-                await _categoryBusiness.Update(_mapper.Map<CategoryModel>(model));
-
-                return Ok(isUpdated);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(isUpdated);
         }
 
         #endregion
@@ -118,16 +97,9 @@ namespace Gallery.WebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            try
-            {
-                await _categoryBusiness.Delete(id);
+            await _categoryBusiness.Delete(id);
 
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok();
         }
 
         #endregion

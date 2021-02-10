@@ -1,5 +1,7 @@
 ﻿using Gallery.Common;
+using Gallery.Common.UserModels;
 using Gallery.DAL.Interfaces;
+using Gallery.DAL.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,119 +13,22 @@ namespace Gallery.DAL
     public class UsersDataAccess : IUsersDataAccess
     {
         private readonly Connection _connection = new Connection();
+        private readonly DbContext _dBContext = new DbContext();
 
-        public async Task Delete(long id)
-        {
-            string queryString = "[dbo].[sp_Users.Delete]";
+        public async Task Delete(long id) =>
+            await _dBContext.Delete("[dbo].[sp_Users.Delete]", id);
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(queryString, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add("@Id", SqlDbType.BigInt).Value = id;
+        public async Task<List<ListUserModel>> GetAll() =>
+            await _dBContext.GetList<ListUserModel>("[dbo].[sp_Users.GetAll]");
 
-                    try
-                    {
-                        await connection.OpenAsync();
-                        await command.ExecuteNonQueryAsync();
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new Exception(exception.Message);
-                    }
-                }
-            }
-        }
-
-        public async Task<List<UserModel>> GetAll()
-        {
-            string queryString = "[dbo].[sp_Useres.GetAll]";
-
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                List<UserModel> list = new List<UserModel>();
-
-                try
-                {
-                    await connection.OpenAsync();
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                    {
-                        if (!reader.HasRows)
-                            list = null;
-
-                        while (reader.Read())
-                        {
-                            UserModel model = new UserModel()
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                FirstName = reader["FirstName"].ToString(),
-                                LastName = reader["LastName"].ToString(),
-                                Role = reader["Role"].ToString()
-                            };
-                            list.Add(model);
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception(exception.Message);
-                }
-
-                return list;
-            }
-        }
-
-        public async Task<UserModel> GetById(long id)
-        {
-            string queryString = "[dbo].[sp_Users.GetById]";
-
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Id", id);
-
-                UserModel model = new UserModel();
-
-                try
-                {
-                    await connection.OpenAsync();
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                    {
-                        if (!reader.HasRows)
-                            model = null;
-
-                        while (reader.Read())
-                        {
-                            model.Id = Convert.ToInt32(reader["Id"]);
-                            model.FirstName = reader["FirstName"].ToString();
-                            model.LastName = reader["LastName"].ToString();
-                            model.Username = reader["Username"].ToString();
-                            model.RoleId = Convert.ToInt32(reader["RoleId"]);
-                            model.Role = reader["Name"].ToString();
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception(exception.Message);
-                }
-
-                return model;
-            }
-        }
+        public async Task<UpdateUserModel> GetById(long id) =>
+            await _dBContext.GetSingle<UpdateUserModel>("[dbo].[sp_Users.GetById]", id);
 
         public async Task<UserModel> GetByUsername(string username)
         {
             string queryString = "[dbo].[sp_Users.GetByUsername]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -166,7 +71,7 @@ namespace Gallery.DAL
         {
             string queryString = "[dbo].[sp_Users.GetLogedInUserDataByUsername]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -199,85 +104,20 @@ namespace Gallery.DAL
             }
         }
 
-        public async Task<long> Insert(UserModel model)
-        {
-            string queryString = "[dbo].[sp_Users.Insert]";
+        public async Task<long> Insert(InsertUserModel model) =>
+            await _dBContext.Insert("[dbo].[sp_Users.Insert]", model);
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(queryString, connection))
-                {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@FirstName", model.FirstName);
-                    command.Parameters.AddWithValue("@LastName", model.LastName);
-                    command.Parameters.AddWithValue("@Username", model.Username);
-                    command.Parameters.AddWithValue("@PasswordHash", model.PasswordHash);
-                    command.Parameters.AddWithValue("@PasswordSalt", model.PasswordSalt);
-                    command.Parameters.AddWithValue("@RoleId", model.RoleId);
-                    command.Parameters.AddWithValue("@Id", 0);
+        public async Task<bool> Update(UpdateUserModel model) =>
+            await _dBContext.Update("[dbo].[sp_Users.Update]", model);
 
-                    long id = 0;
-
-                    try
-                    {
-                        await connection.OpenAsync();
-                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
-                        {
-                            while (reader.Read())
-                            {
-                                id = Convert.ToInt32(reader["Id"]);
-                            }
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new Exception(exception.Message);
-                    }
-
-                    return id;
-                }
-            }
-        }
-
-        public async Task<bool> Update(UserModel model)
-        {
-            string queryString = "[dbo].[sp_Users.Update]";
-
-            bool isUpdated = false;
-
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(queryString, connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add("@FirstName", SqlDbType.NVarChar).Value = model.FirstName;
-                    command.Parameters.Add("@LastName", SqlDbType.NVarChar).Value = model.LastName;
-                    command.Parameters.Add("@Username", SqlDbType.NVarChar).Value = model.Username;
-                    command.Parameters.Add("@RoleId", SqlDbType.BigInt).Value = model.RoleId;
-                    command.Parameters.Add("@Id", SqlDbType.BigInt).Value = model.Id;
-
-                    try
-                    {
-                        await connection.OpenAsync();
-                        await command.ExecuteNonQueryAsync();
-
-                        isUpdated = true;
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new Exception(exception.Message);
-                    }
-                }
-            }
-
-            return isUpdated;
-        }
+        public async Task<bool> UpdatePassword(UpdatePasswordModel model) =>
+            await _dBContext.Update("[dbo].[sp_Users.UpdatePassword]", model);
 
         public async Task<bool> UsernameExists(string username, long id)
         {
             string queryString = "[dbo].[sp_Users.UsernameExists]";
 
-            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(_connection.ConnectionString()))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 

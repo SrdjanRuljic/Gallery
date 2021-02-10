@@ -11,6 +11,23 @@
         private static string canNotDeleteUser;
         private static string userNotFound;
         private static string dataNotFound;
+        private static string pictureNotFound;
+        private static string contactNotFound;
+        private static string inernalServerError;
+        private static string unauthorised;
+        private static string authorNotFound;
+        private static string passwordsAreDifferent;
+
+        public static string Unauthorised
+        {
+            get { return inernalServerError = "Nemate pravo pristupa."; }
+        }
+
+        public static string InernalServerError
+        {
+            get { return inernalServerError = "Greška na serverskoj strani, molimo obratite se administratoru."; }
+        }
+
 
         public static string DataNotFound
         {
@@ -52,9 +69,41 @@
         {
             get { return canNotDeleteCategory = "Nije moguće obrisati kategoriju."; }
         }
+
         public static string IncorectUsernameOrPassword
         {
             get { return incorectUsernameOrPassword = "Neispravno korisničko ime ili lozinka."; }
+        }
+
+        public static string PictureNotFound
+        {
+            get { return pictureNotFound = "Tražena slika nije pronađena."; }
+        }
+
+        public static string ContactNotFound
+        {
+            get { return contactNotFound = "Traženi kontakt nije pronađena."; }
+        }
+
+        public static string AuthorNotFound
+        {
+            get { return authorNotFound = "Traženi podaci o autoru nisu pronađeni."; }
+        }
+
+        public static string GetMessageForHttpCode(int code)
+        {
+            switch (code)
+            {
+                case 401:
+                    return Unauthorised;
+                default:
+                    return InernalServerError;
+            }
+        }
+
+        public static string PasswordsAreDifferent
+        {
+            get { return inernalServerError = "Lozinke se razlikuju. "; }
         }
     }
 }

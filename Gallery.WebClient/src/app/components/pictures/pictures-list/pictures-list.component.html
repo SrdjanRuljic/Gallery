@@ -1,16 +1,90 @@
-
 <div class="container">
+  <h3>
+    Slike
+    <button
+      type="button"
+      class="btn btn-default pull-right"
+      (click)="goToPictureForm(0)"
+      *ngIf="isAuthorized()"
+    >
+      Nova slika
+    </button>
+  </h3>
+  <hr class="hr" />
   <div class="row">
-    <button type="button" class="btn btn-default pull-right margin-right-10" (click)="goToPictureForm(0)"> Nova slika </button>
-  </div>
-  <div *ngFor="let i of rows" class="row">   
-    <div class="card col-md-3" *ngFor="let img of pictures | slice:(i*4):(i+1)*4">    
-      <div class="card curs" (click)="goToPictureDetails(img.id)">    
-        <div class="">    
-          <img src="{{img.url}}" class="img" width="260" height="190">  
+    <form name="form" (ngSubmit)="f.valid && search()" #f="ngForm">
+      <fieldset>
+        <div class="form-group col-md-6">
+          <div>
+            <label for="name">Naziv</label>
+            <input
+              type="text"
+              [(ngModel)]="searchModel.name"
+              class="form-control"
+              id="name"
+              name="name"
+              autocomplete="off"
+            />
+          </div>
         </div>
-        <h5 class="title"> {{img.title}} </h5>
-      </div> 
-    </div>   
-  </div>    
+        <div class="form-group col-md-6">
+          <div>
+            <label for="categoryId">Kategorija</label>
+            <select
+              class="form-control"
+              id="categoryId"
+              name="categoryId"
+              [(ngModel)]="searchModel.categoryId"
+            >
+              <option [ngValue]="0">-</option>
+              <option *ngFor="let item of categories" [ngValue]="item.id">{{
+                item.name
+              }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-md-12">
+          <button type="submit" class="btn btn-default pull-right">
+            Pretraga
+          </button>
+          <button
+            type="button"
+            class="btn btn-default pull-right"
+            (click)="resetSearch()"
+          >
+            Poništavanje pretrage
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  <hr class="hr" />
+  <div class="row">
+    <div class="card col-md-3" *ngFor="let item of itemsToDisplay">
+      <div class="card curs" (click)="goToPictureDetails(item.id)">
+        <div class="">
+          <img
+            [src]="item.content"
+            class="img"
+            width="260"
+            height="190"
+          />
+        </div>
+        <h5 class="title">{{ item.name }}</h5>
+      </div>
+    </div>
+  </div>
+  <hr class="hr" *ngIf="itemsToDisplay.length != 0" />
+  <nav class="center" *ngIf="numberOfPages.length > 1">
+    <ul class="pagination curs">
+      <li
+        *ngFor="let pageNumber of numberOfPages"
+        (click)="changePage(pageNumber)"
+        [ngClass]="{ active: pageNumber == currentPage }"
+      >
+        <button class="btn btn-default btn-sml">{{ pageNumber + 1 }}</button>
+      </li>
+    </ul>
+  </nav>
 </div>

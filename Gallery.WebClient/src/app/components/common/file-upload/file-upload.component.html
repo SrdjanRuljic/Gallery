@@ -1,0 +1,9 @@
+<img src="{{imageUrl != null ? imageContext : imageUrl}}" />
+<input
+  type="file"
+  (change)="onFileSelected($event.target.files)"
+  accept="image/*"
+  class="hidden"
+  id="file"
+/>
+<label class="btn btn-default" for="file">Odabir slike</label>

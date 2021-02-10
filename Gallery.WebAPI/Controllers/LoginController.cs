@@ -27,10 +27,10 @@ namespace Gallery.WebAPI.Controllers
             UserModel user = await _usersBusiness.GetByUsername(model.Username);
 
             if (user == null)
-                return BadRequest(new { message = ErrorMessages.IncorectUsernameOrPassword });
+                return BadRequest(ErrorMessages.IncorectUsernameOrPassword);
 
             if (!_usersBusiness.VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
-                return BadRequest(new { message = ErrorMessages.IncorectUsernameOrPassword });
+                return BadRequest(ErrorMessages.IncorectUsernameOrPassword);
 
             object token = TokenHelper.GenerateJwt(user.Username, user.Role, _jwtFactory);
 

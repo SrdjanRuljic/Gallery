@@ -1,10 +1,14 @@
 ﻿using Gallery.BLL.Interfaces;
 using Gallery.Common;
+using Gallery.Common.Helpers;
+using Gallery.Common.UserModels;
 using Gallery.Common.Validations;
+using Gallery.Common.Validations.UserModelsValidations;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -31,21 +35,21 @@ namespace Gallery.BLL
             }
         }
 
-        public async Task<List<UserModel>> GetAll() =>
+        public async Task<List<ListUserModel>> GetAll() =>
             await _usersDataAccess.GetAll();
 
-        public async Task<UserModel> GetById(long id)
+        public async Task<UpdateUserModel> GetById(long id)
         {
             if (id <= 0)
             {
-                throw new ArgumentOutOfRangeException("id", ErrorMessages.IdCanNotBeLowerThanOne);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
             }
 
-            UserModel user = await _usersDataAccess.GetById(id);
+            UpdateUserModel user = await _usersDataAccess.GetById(id);
 
             if (user == null)
             {
-                throw new ApplicationException(ErrorMessages.UserNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.UserNotFound);
             }
 
             return user;
@@ -60,13 +64,13 @@ namespace Gallery.BLL
 
             if (user == null)
             {
-                throw new ApplicationException(ErrorMessages.DataNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.DataNotFound);
             }
 
             return user;
         }
 
-        public async Task<long> Insert(UserModel model)
+        public async Task<long> Insert(InsertUserModel model)
         {
             long id = 0;
             string errorMessage = null;
@@ -74,7 +78,7 @@ namespace Gallery.BLL
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             model.Username = model.Username.ToLower();
@@ -98,20 +102,20 @@ namespace Gallery.BLL
             }
             else
             {
-                throw new ArgumentException(ErrorMessages.UserExists);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
             }
 
             return id;
         }
 
-        public async Task<bool> Update(UserModel model)
+        public async Task<bool> Update(UpdateUserModel model)
         {
             var isUpdated = false;
             string errorMessage = null;
 
             if (!model.IsValid(out errorMessage))
             {
-                throw new ArgumentException(errorMessage);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
             }
 
             model.Username = model.Username.ToLower();
@@ -130,8 +134,33 @@ namespace Gallery.BLL
             }
             else
             {
-                throw new ArgumentException(ErrorMessages.UserExists);
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
             }
+
+            return isUpdated;
+        }
+
+        public async Task<bool> UpdatePassword(long id, string password, string confirmedPassword)
+        {
+            var isUpdated = false;
+            byte[] passwordHash, passwordSalt;
+
+            if (id <= 0)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
+
+            if (String.Compare(password, confirmedPassword) != 0)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.PasswordsAreDifferent);
+
+            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            UpdatePasswordModel model = new UpdatePasswordModel()
+            {
+                Id = id,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
+            };
+
+            isUpdated = await _usersDataAccess.UpdatePassword(model);
 
             return isUpdated;
         }

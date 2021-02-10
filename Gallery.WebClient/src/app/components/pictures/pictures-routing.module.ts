@@ -12,7 +12,7 @@ const pictureRoutes: Routes = [
     pathMatch: 'full'   
   },
   { 
-    path: 'pictures/form/:id?', 
+    path: 'pictures/form/:id', 
     component: PicturesFormComponent 
   },
   { 

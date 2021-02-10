@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Gallery.Common;
+using Gallery.Common.UserModels;
 using Gallery.WebAPI.Models;
 
 namespace Gallery.WebAPI.AutoMapper
@@ -10,9 +11,10 @@ namespace Gallery.WebAPI.AutoMapper
         {
             CreateMap<UserModel, UserListVirewModel>();
             CreateMap<LogedInUserData, LogedInUserDataViewModel>();
-            CreateMap<InsertUserViewModel, UserModel>();
-            CreateMap<UserModel, UpdateUserViewModel>();
-            CreateMap<UpdateUserViewModel, UserModel>();
+            CreateMap<InsertUserViewModel, InsertUserModel>();
+            CreateMap<UpdateUserModel, UpdateUserViewModel>();
+            CreateMap<UpdateUserViewModel, UpdateUserModel>();
+            CreateMap<ListUserModel, UserListVirewModel>();
         }
     }
 }
