@@ -16,8 +16,7 @@ namespace Gallery.WebAPI.Controllers
         private readonly IMapper _mapper;
         private readonly IAboutAuthorBusiness _aboutAuthorBusiness;
 
-        public AboutAuthorController(IMapper mapper,
-                                     IAboutAuthorBusiness aboutAuthorBusiness)
+        public AboutAuthorController(IMapper mapper, IAboutAuthorBusiness aboutAuthorBusiness)
         {
             _mapper = mapper;
             _aboutAuthorBusiness = aboutAuthorBusiness;
