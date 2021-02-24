@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
+import { environment } from './environments/environment';
 
 @Injectable()
 export class MyGlobals {
-    WebApiUrl: string = "https://localhost:44378/";
+    WebApiUrl: string = environment.api_url;
 }
