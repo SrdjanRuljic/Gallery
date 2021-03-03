@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api_url: 'http://api.draganinagalerija.com/'
+  api_url: 'https://api.draganinagalerija.com/'
 };
