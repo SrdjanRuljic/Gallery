@@ -12,6 +12,7 @@ namespace Application.Common.Interfaces
     public interface IGalleryDbContext
     {
         DbSet<Role> Roles { get; set; }
+        DbSet<User> Users { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

@@ -1,9 +1,7 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Behaviours;
+using Application.Common.Interfaces;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,21 +18,69 @@ namespace Application.System.Commands.SeedData
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            if (_context.Roles.Any())
+            if (!_context.Roles.Any())
+                await SeedRolesAsync(cancellationToken);
+            if (!_context.Users.Any())
+                await SeedUsersAsync(cancellationToken);
+            else
                 return;
-
-            await SeedRolesAsync(cancellationToken);
         }
 
         public async Task SeedRolesAsync(CancellationToken cancellationToken)
         {
-            Role admin = new Role()
+            Role[] roles = new[]
             {
-                Name = "Admin",
-                Description = "Administratorska uloga"
+                new Role()
+                {
+                    Name = "Admin",
+                    Description = "Administratorska uloga"
+                },
+                new Role()
+                {
+                    Name = "Moderator",
+                    Description = "Moderatorska uloga"
+                }
             };
 
-            _context.Roles.Add(admin);
+            _context.Roles.AddRange(roles);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task SeedUsersAsync(CancellationToken cancellationToken)
+        {
+            byte[] adminPasswordHash; 
+            byte[] adminPasswordSalt;
+            byte[] moderatorPasswordHash;
+            byte[] moderatorPasswordSalt;
+
+            Hasher.CreatePasswordHash("Administrator_123!", out adminPasswordHash, out adminPasswordSalt);
+            Hasher.CreatePasswordHash("Moderator_123!", out moderatorPasswordHash, out moderatorPasswordSalt);
+
+            User[] users = new[]
+            {
+                new User()
+                {
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    Username = "admin",
+                    RoleId = _context.Roles.FirstOrDefault(x => x.Name == "Admin").Id,
+                    PasswordHash = adminPasswordHash,
+                    PasswordSalt = adminPasswordSalt
+
+                },
+                new User()
+                {
+                    FirstName = "Moderator",
+                    LastName = "Moderator",
+                    Username = "moderator",
+                    RoleId = _context.Roles.FirstOrDefault(x => x.Name == "Moderator").Id,
+                    PasswordHash = moderatorPasswordHash,
+                    PasswordSalt = moderatorPasswordSalt
+                }
+            };
+
+            _context.Users.AddRange(users);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

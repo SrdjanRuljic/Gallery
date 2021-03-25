@@ -13,6 +13,7 @@ namespace Persistence
     public class GalleryDbContext : DbContext, IGalleryDbContext
     {
         public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public GalleryDbContext(DbContextOptions<GalleryDbContext> options)
             : base(options)
