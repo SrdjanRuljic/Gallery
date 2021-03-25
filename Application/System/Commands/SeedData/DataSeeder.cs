@@ -30,7 +30,6 @@ namespace Application.System.Commands.SeedData
         {
             Role admin = new Role()
             {
-                Id = 1,
                 Name = "Admin"
             };
 
