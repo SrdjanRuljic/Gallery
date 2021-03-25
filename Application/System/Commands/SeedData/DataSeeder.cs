@@ -30,7 +30,8 @@ namespace Application.System.Commands.SeedData
         {
             Role admin = new Role()
             {
-                Name = "Admin"
+                Name = "Admin",
+                Description = "Administratorska uloga"
             };
 
             _context.Roles.Add(admin);
