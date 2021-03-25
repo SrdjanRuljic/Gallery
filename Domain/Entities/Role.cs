@@ -11,5 +11,12 @@ namespace Domain.Entities
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public ICollection<User> Users { get; private set; }
+
+        public Role()
+        {
+            Users = new HashSet<User>();
+        }
     }
 }
