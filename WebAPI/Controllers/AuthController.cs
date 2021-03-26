@@ -1,4 +1,5 @@
 ﻿using Application.Common.Behaviours;
+using Application.Common.Exceptions;
 using Application.Users.Queries.GetUserByUsername;
 using Gallery.WebAPI.Auth;
 using MediatR;
@@ -32,10 +33,10 @@ namespace WebAPI.Controllers
             });
 
             if (result == null)
-                return BadRequest("Incorect username or password.");
+                return BadRequest(ErrorMessages.IncorectUsernameOrPassword);
 
             if (!Hasher.VerifyPassword(model.Password, result.PasswordHash, result.PasswordSalt))
-                return BadRequest("Incorect username or password.");
+                return BadRequest(ErrorMessages.IncorectUsernameOrPassword);
 
             object token = TokenHelper.GenerateJwt(result.Username, result.Role, _jwtFactory);
 
