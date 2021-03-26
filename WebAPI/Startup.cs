@@ -1,5 +1,6 @@
 using Application;
 using Gallery.WebAPI._1_Startup;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +24,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDIServices();
+            services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
             services.AddApplication();
             services.AddCors(options =>
@@ -35,7 +36,6 @@ namespace WebAPI
                 });
             });
             services.AddControllers();
-            services.ServiceAuthentication(Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });

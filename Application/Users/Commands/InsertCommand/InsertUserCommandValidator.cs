@@ -7,19 +7,6 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands
 {
-    //public class InsertUserCommandValidator : AbstractValidator<InsertUserCommand>
-    //{
-    //    public InsertUserCommandValidator()
-    //    {
-    //        RuleFor(x => x.Password).NotEmpty()
-    //                                .WithMessage("Neophodno je unijeti lozinku korisnika. ");
-    //        RuleFor(x => x.Username).NotEmpty()
-    //                                .WithMessage("Neophodno je unijeti korisničko ime korisnika. ");
-    //        RuleFor(x => x.RoleId).GreaterThan(0)
-    //                              .WithMessage("Neophodno je odabrati ulogu. ");
-    //    }
-    //}
-
     public static class InsertUserCommandValidator
     {
         public static bool IsValid(this InsertUserCommand model, out string validationMessage)

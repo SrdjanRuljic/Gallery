@@ -1,15 +1,6 @@
-﻿using Application.Common.Behaviours;
-using Application.Common.Exceptions;
-using Application.Users.Queries.GetUserByUsername;
-using Gallery.WebAPI.Auth;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using Application.Auth.Commands;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -17,28 +8,10 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AuthController : BaseController
     {
-        public readonly IJwtFactory _jwtFactory;
-
-        public AuthController(IJwtFactory jwtFactory)
-        {
-            _jwtFactory = jwtFactory;
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginCommand command)
         {
-            UserLoginDetailsViewModel result = await Mediator.Send(new GetUserByUsernameQuery 
-            { 
-                Username = model.Username 
-            });
-
-            if (result == null)
-                return BadRequest(ErrorMessages.IncorectUsernameOrPassword);
-
-            if (!Hasher.VerifyPassword(model.Password, result.PasswordHash, result.PasswordSalt))
-                return BadRequest(ErrorMessages.IncorectUsernameOrPassword);
-
-            object token = TokenHelper.GenerateJwt(result.Username, result.Role, _jwtFactory);
+            object token = await Mediator.Send(command);
 
             return Ok(token);
         }

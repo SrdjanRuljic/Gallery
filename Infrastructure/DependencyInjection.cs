@@ -1,17 +1,40 @@
-﻿using AutoMapper.Configuration;
+﻿using Application.Common.Interfaces;
+using AutoMapper.Configuration;
+using Infrastructure.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Threading.Tasks;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
+                                                                IConfiguration configuration)
         {
+
+            services.AddTransient<IJwtFactory, JwtFactory>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = false,
+                            ValidIssuer = configuration["Jwt:Issuer"],
+
+                            ValidateAudience = false,
+                            ValidAudience = configuration["Jwt:Audience"],
+
+                            ValidateLifetime = true,
+
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                        };
+                    });
+
             return services;
         }
     }

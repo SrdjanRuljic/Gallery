@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Application.Common.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
-namespace Gallery.WebAPI.Auth
+namespace Infrastructure.Auth
 {
     public class JwtFactory : IJwtFactory
     {
