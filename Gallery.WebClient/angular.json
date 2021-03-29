@@ -131,6 +131,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ETG-WEB-UI"
+    }
+  },
+  "defaultProject": "ETG-WEB-UI",
+  "cli": {
+    "analytics": "f0694baf-9fa2-423f-927e-005b1c26d556"
+  }
 }

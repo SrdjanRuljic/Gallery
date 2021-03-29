@@ -14,6 +14,8 @@ namespace Persistence
     {
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
 
         public GalleryDbContext(DbContextOptions<GalleryDbContext> options)
             : base(options)

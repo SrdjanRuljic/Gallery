@@ -13,6 +13,8 @@ namespace Application.Common.Interfaces
     {
         DbSet<Role> Roles { get; set; }
         DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
