@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 
-namespace Northwind.Application.Common.Mappings
+namespace Gallery.Application.Common.Mappings
 {
     public class MappingProfile : Profile
     {

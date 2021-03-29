@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Northwind.Application.Common.Mappings;
+using Gallery.Application.Common.Mappings;
 
 namespace Application.Pictures.Commands
 {
