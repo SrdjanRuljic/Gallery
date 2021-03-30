@@ -1,10 +1,8 @@
-﻿using Application.Categories.Queries;
+﻿using Application.Categories.Commands.InsertCategoryCommand;
+using Application.Categories.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -26,5 +24,18 @@ namespace WebAPI.Controllers
         }
 
         #endregion
+
+        #region [POST]
+
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Insert(InsertCategoryCommand model)
+        {
+            long id = await Mediator.Send(model);
+
+            return Ok(id);
+        }
+
+        #endregion [POST]
     }
 }
