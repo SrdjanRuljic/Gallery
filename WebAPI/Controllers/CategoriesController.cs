@@ -1,5 +1,6 @@
 ﻿using Application.Categories.Commands.InsertCategoryCommand;
 using Application.Categories.Queries;
+using Application.Categories.Queries.GetAllCategories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,6 +13,15 @@ namespace WebAPI.Controllers
     public class CategoriesController : BaseController
     {
         #region [GET]
+
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+        {
+            List<GetAllCategoriesViewModel> list = await Mediator.Send(new GetAllCategoriesQuery() { });
+
+            return Ok(list);
+        }
 
         [HttpGet]
         [Route("dropdown")]

@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         {
             string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            LogedInUserDataViewModel data = await Mediator.Send(new LogedInUserDataCommand()
+            LogedInUserDataViewModel data = await Mediator.Send(new LogedInUserDataQuery()
             {
                 Username = username
             });
