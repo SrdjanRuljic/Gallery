@@ -6,7 +6,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Injectable()
 export class AuthService {
-  private _loginUrl = this._myGlobals.WebApiUrl + "api/login";
+  private _loginUrl = this._myGlobals.WebApiUrl + "api/auth";
   private _jwtHelper = new JwtHelperService();
 
   constructor(private _myGlobals: MyGlobals, private _http: HttpClient) {}

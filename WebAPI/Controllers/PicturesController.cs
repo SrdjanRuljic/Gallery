@@ -1,4 +1,5 @@
 ﻿using Application.Pictures.Commands;
+using Application.Pictures.Commands.InsertCommand;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,6 +12,15 @@ namespace WebAPI.Controllers
     public class PicturesController : BaseController
     {
         #region [POST]
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("")]
+        public async Task<IActionResult> Insert(InsertPictureCommand model)
+        {
+            long id = await Mediator.Send(model);
+
+            return Ok(id);
+        }
 
         [HttpPost]
         [Route("search")]
