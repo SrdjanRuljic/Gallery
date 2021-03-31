@@ -25,9 +25,21 @@ namespace Application.Pictures.Commands.Search
         public async Task<List<SearchPicturesCommandViewModel>> Handle(SearchPicturesCommand command, CancellationToken cancellationToken)
         {
             List<SearchPicturesCommandViewModel> list = await _context.Pictures
-                                                              .Where(x => x.Name.Contains(command.Name) &&
-                                                                          x.CategoryId.Equals(command.CategoryId)).ProjectTo<SearchPicturesCommandViewModel>(_mapper.ConfigurationProvider)
-                                                                                                                  .ToListAsync();
+                                                                      .Where(x => (string.IsNullOrEmpty(command.Name) ?
+                                                                                   true :
+                                                                                   x.Name.Contains(command.Name)) &&
+                                                                                  (command.CategoryId <= 0 || !command.CategoryId.HasValue ?
+                                                                                   true :
+                                                                                   x.CategoryId.Equals(command.CategoryId)))
+                                                                      .ProjectTo<SearchPicturesCommandViewModel>(_mapper.ConfigurationProvider)
+                                                                      .ToListAsync();
+
+            foreach (var item in list)
+            {
+                item.Content = string.IsNullOrEmpty(item.Content) ?
+                               "/assets/images/no-image.png" :
+                               item.Content;
+            }
 
             return list;
         }
