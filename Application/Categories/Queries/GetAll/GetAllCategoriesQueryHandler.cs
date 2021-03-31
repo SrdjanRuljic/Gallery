@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Categories.Queries.GetAllCategories
+namespace Application.Categories.Queries.GetAll
 {
     public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, List<GetAllCategoriesViewModel>>
     {

@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Categories.Commands.UpdateCategoryCommand
+namespace Application.Categories.Commands.Update
 {
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, bool>
     {

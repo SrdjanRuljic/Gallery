@@ -10,7 +10,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Users.Commands
+namespace Application.Users.Commands.Insert
 {
     public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, long>
     {

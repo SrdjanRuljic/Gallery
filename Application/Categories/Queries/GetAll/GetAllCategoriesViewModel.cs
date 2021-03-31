@@ -2,7 +2,7 @@
 using Domain.Entities;
 using Gallery.Application.Common.Mappings;
 
-namespace Application.Categories.Queries.GetAllCategories
+namespace Application.Categories.Queries.GetAll
 {
     public class GetAllCategoriesViewModel : IMapFrom<Category>
     {

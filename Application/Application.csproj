@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Categories\Commands\Delete\" />
     <Folder Include="Pictures\Queries\" />
   </ItemGroup>
 

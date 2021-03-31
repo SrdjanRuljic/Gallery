@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Categories.Queries.GetCategoryById
+namespace Application.Categories.Queries.GetById
 {
     public class GetCategoryByIdQuery : IRequest<GetCategoryByIdViewModel>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Categories.Commands.InsertCategoryCommand
+namespace Application.Categories.Commands.Insert
 {
     public static class InsertCategoryCommandValidator
     {

@@ -1,15 +1,6 @@
-﻿using Application.Common.Behaviours;
-using Application.Common.Interfaces;
-using Domain.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace Application.Users.Commands
+namespace Application.Users.Commands.Insert
 {
     public class InsertUserCommand : IRequest<long>
     {

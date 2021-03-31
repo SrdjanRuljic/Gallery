@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Categories.Commands.UpdateCategoryCommand
+namespace Application.Categories.Commands.Update
 {
     public static class UpdateCategoryCommandValidator
     {

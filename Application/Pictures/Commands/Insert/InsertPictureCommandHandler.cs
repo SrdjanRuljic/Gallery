@@ -6,7 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Pictures.Commands.InsertCommand
+namespace Application.Pictures.Commands.Insert
 {
     public class InsertPictureCommandHandler : IRequestHandler<InsertPictureCommand, long>
     {

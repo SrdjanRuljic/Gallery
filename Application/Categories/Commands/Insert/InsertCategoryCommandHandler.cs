@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Categories.Commands.InsertCategoryCommand
+namespace Application.Categories.Commands.Insert
 {
     public class InsertCategoryCommandHandler : IRequestHandler<InsertCategoryCommand, long>
     {

@@ -1,8 +1,8 @@
-﻿using Application.Categories.Commands.InsertCategoryCommand;
-using Application.Categories.Commands.UpdateCategoryCommand;
+﻿using Application.Categories.Commands.Insert;
+using Application.Categories.Commands.Update;
 using Application.Categories.Queries;
-using Application.Categories.Queries.GetAllCategories;
-using Application.Categories.Queries.GetCategoryById;
+using Application.Categories.Queries.GetAll;
+using Application.Categories.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

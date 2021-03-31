@@ -1,4 +1,4 @@
-﻿using Application.Users.Commands;
+﻿using Application.Users.Commands.Insert;
 using Application.Users.Queries.LogedInUserData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

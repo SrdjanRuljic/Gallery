@@ -8,25 +8,25 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Pictures.Commands
+namespace Application.Pictures.Commands.Search
 {
-    public class SearchCommandHandler : IRequestHandler<SearchCommand, List<SearchCommandViewModel>>
+    public class SearchPicturesCommandHandler : IRequestHandler<SearchPicturesCommand, List<SearchPicturesCommandViewModel>>
     {
         private readonly IGalleryDbContext _context;
         private readonly IMapper _mapper;
 
-        public SearchCommandHandler(IGalleryDbContext context,
+        public SearchPicturesCommandHandler(IGalleryDbContext context,
                                     IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<List<SearchCommandViewModel>> Handle(SearchCommand command, CancellationToken cancellationToken)
+        public async Task<List<SearchPicturesCommandViewModel>> Handle(SearchPicturesCommand command, CancellationToken cancellationToken)
         {
-            List<SearchCommandViewModel> list = await _context.Pictures
+            List<SearchPicturesCommandViewModel> list = await _context.Pictures
                                                               .Where(x => x.Name.Contains(command.Name) &&
-                                                                          x.CategoryId.Equals(command.CategoryId)).ProjectTo<SearchCommandViewModel>(_mapper.ConfigurationProvider)
+                                                                          x.CategoryId.Equals(command.CategoryId)).ProjectTo<SearchPicturesCommandViewModel>(_mapper.ConfigurationProvider)
                                                                                                                   .ToListAsync();
 
             return list;

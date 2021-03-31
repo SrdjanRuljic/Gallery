@@ -1,5 +1,5 @@
-﻿using Application.Pictures.Commands;
-using Application.Pictures.Commands.InsertCommand;
+﻿using Application.Pictures.Commands.Insert;
+using Application.Pictures.Commands.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -25,9 +25,9 @@ namespace WebAPI.Controllers
         [HttpPost]
         [Route("search")]
         [AllowAnonymous]
-        public async Task<IActionResult> Search(SearchCommand command)
+        public async Task<IActionResult> Search(SearchPicturesCommand command)
         {
-            List<SearchCommandViewModel> pictures = await Mediator.Send(command);
+            List<SearchPicturesCommandViewModel> pictures = await Mediator.Send(command);
 
             return Ok(pictures);
         }

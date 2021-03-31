@@ -9,7 +9,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Categories.Queries.GetCategoryById
+namespace Application.Categories.Queries.GetById
 {
     public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, GetCategoryByIdViewModel>
     {

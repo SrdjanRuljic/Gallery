@@ -2,7 +2,7 @@
 using Domain.Entities;
 using Gallery.Application.Common.Mappings;
 
-namespace Application.Categories.Queries.GetCategoryById
+namespace Application.Categories.Queries.GetById
 {
     public class GetCategoryByIdViewModel : IMapFrom<Category>
     {

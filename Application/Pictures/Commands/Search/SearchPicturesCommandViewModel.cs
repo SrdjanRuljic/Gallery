@@ -2,9 +2,9 @@
 using Domain.Entities;
 using Gallery.Application.Common.Mappings;
 
-namespace Application.Pictures.Commands
+namespace Application.Pictures.Commands.Search
 {
-    public class SearchCommandViewModel : IMapFrom<Picture>
+    public class SearchPicturesCommandViewModel : IMapFrom<Picture>
     {
         public long Id { get; set; }
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace Application.Pictures.Commands
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Picture, SearchCommandViewModel>();
+            profile.CreateMap<Picture, SearchPicturesCommandViewModel>();
         }
     }
 }

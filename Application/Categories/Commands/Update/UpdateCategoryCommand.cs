@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Categories.Commands.UpdateCategoryCommand
+namespace Application.Categories.Commands.Update
 {
     public class UpdateCategoryCommand : IRequest<bool>
     {

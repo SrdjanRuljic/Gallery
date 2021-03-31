@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Categories.Commands.InsertCategoryCommand
+namespace Application.Categories.Commands.Insert
 {
     public class InsertCategoryCommand : IRequest<long>
     {
