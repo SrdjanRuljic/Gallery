@@ -28,15 +28,15 @@ namespace Application.Auth.Commands
             _jwtFactory = jwtFactory;
         }
 
-        public async Task<object> Handle(LoginCommand model, CancellationToken cancellationToken)
+        public async Task<object> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
             string errorMessage = null;
 
-            if (!model.IsValid(out errorMessage))
+            if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
             var result = await _context.Users.Where(x => x.Username
-                                                          .Equals(model.Username))
+                                                          .Equals(command.Username))
                                              .Select(x => new
                                              {
                                                  Username = x.Username,
@@ -49,7 +49,7 @@ namespace Application.Auth.Commands
             if (result == null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IncorectUsernameOrPassword);
 
-            if (!Hasher.VerifyPassword(model.Password, result.PasswordHash, result.PasswordSalt))
+            if (!Hasher.VerifyPassword(command.Password, result.PasswordHash, result.PasswordSalt))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IncorectUsernameOrPassword);
 
             object token = TokenHelper.GenerateJwt(result.Username, result.Role, _jwtFactory);

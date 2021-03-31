@@ -22,11 +22,11 @@ namespace Application.Pictures.Commands
             _mapper = mapper;
         }
 
-        public async Task<List<SearchCommandViewModel>> Handle(SearchCommand request, CancellationToken cancellationToken)
+        public async Task<List<SearchCommandViewModel>> Handle(SearchCommand command, CancellationToken cancellationToken)
         {
             List<SearchCommandViewModel> list = await _context.Pictures
-                                                              .Where(x => x.Name.Contains(request.Name) &&
-                                                                          x.CategoryId.Equals(request.CategoryId)).ProjectTo<SearchCommandViewModel>(_mapper.ConfigurationProvider)
+                                                              .Where(x => x.Name.Contains(command.Name) &&
+                                                                          x.CategoryId.Equals(command.CategoryId)).ProjectTo<SearchCommandViewModel>(_mapper.ConfigurationProvider)
                                                                                                                   .ToListAsync();
 
             return list;

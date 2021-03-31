@@ -17,20 +17,20 @@ namespace Application.Pictures.Commands.InsertCommand
             _context = context;
         }
 
-        public async Task<long> Handle(InsertPictureCommand model, CancellationToken cancellationToken)
+        public async Task<long> Handle(InsertPictureCommand command, CancellationToken cancellationToken)
         {
             string errorMessage = null;
 
-            if (!model.IsValid(out errorMessage))
+            if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
             Picture entity = new Picture()
             {
-                CategoryId = model.CategoryId,
-                Content = model.Content,
-                Description = model.Description,
-                Extension = model.Extension,
-                Name = model.Name
+                CategoryId = command.CategoryId,
+                Content = command.Content,
+                Description = command.Description,
+                Extension = command.Extension,
+                Name = command.Name
             };
 
             _context.Pictures.Add(entity);

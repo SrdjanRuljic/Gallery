@@ -6,10 +6,7 @@ using Gallery.Common.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,36 +21,36 @@ namespace Application.Users.Commands
             _context = context;
         }
 
-        public async Task<long> Handle(InsertUserCommand model, CancellationToken cancellationToken)
+        public async Task<long> Handle(InsertUserCommand command, CancellationToken cancellationToken)
         {
             string errorMessage = null;
             byte[] passwordHash;
             byte[] passwordSalt;
 
-            if (!model.IsValid(out errorMessage))
+            if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            model.Username = model.Username.ToLower();
+            command.Username = command.Username.ToLower();
 
-            if (String.IsNullOrEmpty(model.FirstName) || String.IsNullOrWhiteSpace(model.FirstName))
-                model.FirstName = null;
+            if (String.IsNullOrEmpty(command.FirstName) || String.IsNullOrWhiteSpace(command.FirstName))
+                command.FirstName = null;
 
-            if (String.IsNullOrEmpty(model.LastName) || String.IsNullOrWhiteSpace(model.LastName))
-                model.LastName = null;
+            if (String.IsNullOrEmpty(command.LastName) || String.IsNullOrWhiteSpace(command.LastName))
+                command.LastName = null;
 
-            bool exists = await _context.Users.AnyAsync(x => x.Username.Equals(model.Username));
+            bool exists = await _context.Users.AnyAsync(x => x.Username.Equals(command.Username));
 
-            if(exists)
+            if (exists)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
 
-            Hasher.CreatePasswordHash(model.Password, out passwordHash, out passwordSalt);
+            Hasher.CreatePasswordHash(command.Password, out passwordHash, out passwordSalt);
 
             User entity = new User()
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Username = model.Username,
-                RoleId = model.RoleId,
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                Username = command.Username,
+                RoleId = command.RoleId,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt
             };

@@ -19,14 +19,14 @@ namespace Application.Categories.Commands.InsertCategoryCommand
             _context = context;
         }
 
-        public async Task<long> Handle(InsertCategoryCommand model, CancellationToken cancellationToken)
+        public async Task<long> Handle(InsertCategoryCommand command, CancellationToken cancellationToken)
         {
             string errorMessage = null;
 
-            if (!model.IsValid(out errorMessage))
+            if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            bool exists = await _context.Categories.AnyAsync(x => x.Name.Equals(model.Name));
+            bool exists = await _context.Categories.AnyAsync(x => x.Name.Equals(command.Name));
 
             if (exists)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.CategoryExists);
@@ -34,7 +34,7 @@ namespace Application.Categories.Commands.InsertCategoryCommand
 
             Category entity = new Category()
             {
-                Name = model.Name
+                Name = command.Name
             };
 
             _context.Categories.Add(entity);

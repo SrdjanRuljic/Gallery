@@ -21,9 +21,9 @@ namespace Application.Users.Queries.LogedInUserData
             _mapper = mapper;
         }
 
-        public async Task<LogedInUserDataViewModel> Handle(LogedInUserDataQuery model, CancellationToken cancellationToken)
+        public async Task<LogedInUserDataViewModel> Handle(LogedInUserDataQuery request, CancellationToken cancellationToken)
         {
-            LogedInUserDataViewModel vievModel = await _context.Users.Where(x => x.Username.Equals(model.Username))
+            LogedInUserDataViewModel vievModel = await _context.Users.Where(x => x.Username.Equals(request.Username))
                                                                      .ProjectTo<LogedInUserDataViewModel>(_mapper.ConfigurationProvider)
                                                                      .FirstOrDefaultAsync();
 
