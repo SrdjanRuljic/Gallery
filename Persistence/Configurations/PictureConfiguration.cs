@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Configurations
 {
@@ -15,6 +10,11 @@ namespace Persistence.Configurations
         {
             builder.Property(x => x.CategoryId).IsRequired();
             builder.Property(x => x.Name).IsRequired();
+
+            builder.HasOne(d => d.Category)
+                   .WithMany(p => p.Pictures)
+                   .HasForeignKey(d => d.CategoryId)
+                   .HasConstraintName("FK_Pictures_Categories");
         }
     }
 }

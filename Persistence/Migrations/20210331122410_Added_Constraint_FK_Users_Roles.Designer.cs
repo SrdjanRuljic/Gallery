@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(GalleryDbContext))]
-    partial class GalleryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210331122410_Added_Constraint_FK_Users_Roles")]
+    partial class Added_Constraint_FK_Users_Roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,7 +126,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Category", "Category")
                         .WithMany("Pictures")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK_Pictures_Categories")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

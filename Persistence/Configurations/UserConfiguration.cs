@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Configurations
 {
@@ -17,6 +12,11 @@ namespace Persistence.Configurations
             builder.Property(x => x.Username).IsRequired();
             builder.Property(x => x.PasswordHash).IsRequired();
             builder.Property(x => x.PasswordSalt).IsRequired();
+
+            builder.HasOne(d => d.Role)
+                   .WithMany(p => p.Users)
+                   .HasForeignKey(d => d.RoleId)
+                   .HasConstraintName("FK_Users_Roles");
         }
     }
 }
