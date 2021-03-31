@@ -1,6 +1,8 @@
 ﻿using Application.Categories.Commands.InsertCategoryCommand;
+using Application.Categories.Commands.UpdateCategoryCommand;
 using Application.Categories.Queries;
 using Application.Categories.Queries.GetAllCategories;
+using Application.Categories.Queries.GetCategoryById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,6 +15,18 @@ namespace WebAPI.Controllers
     public class CategoriesController : BaseController
     {
         #region [GET]
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            GetCategoryByIdViewModel model = await Mediator.Send(new GetCategoryByIdQuery()
+            {
+                Id = id
+            });
+
+            return Ok(model);
+        }
 
         [HttpGet]
         [Route("")]
@@ -47,5 +61,18 @@ namespace WebAPI.Controllers
         }
 
         #endregion [POST]
+
+        #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Update(UpdateCategoryCommand model)
+        {
+            bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
+        }
+
+        #endregion
     }
 }
