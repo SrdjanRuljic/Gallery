@@ -1,4 +1,5 @@
-﻿using Application.Categories.Commands.Insert;
+﻿using Application.Categories.Commands.Delete;
+using Application.Categories.Commands.Insert;
 using Application.Categories.Commands.Update;
 using Application.Categories.Queries;
 using Application.Categories.Queries.GetAll;
@@ -20,7 +21,7 @@ namespace WebAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            GetCategoryByIdViewModel model = await Mediator.Send(new GetCategoryByIdQuery()
+            GetCategoryByIdViewModel model = await Mediator.Send(new GetCategoryByIdQuery
             {
                 Id = id
             });
@@ -32,7 +33,7 @@ namespace WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> GetAll()
         {
-            List<GetAllCategoriesViewModel> list = await Mediator.Send(new GetAllCategoriesQuery() { });
+            List<GetAllCategoriesViewModel> list = await Mediator.Send(new GetAllCategoriesQuery());
 
             return Ok(list);
         }
@@ -71,6 +72,22 @@ namespace WebAPI.Controllers
             bool isUpdated = await Mediator.Send(model);
 
             return Ok(isUpdated);
+        }
+
+        #endregion
+
+        #region [DELETE]
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await Mediator.Send(new DeleteCategoryCommand
+            {
+                Id = id
+            });
+
+            return Ok();
         }
 
         #endregion
