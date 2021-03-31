@@ -1,5 +1,6 @@
 ﻿using Application.Pictures.Commands.Insert;
 using Application.Pictures.Commands.Search;
+using Application.Pictures.Queries.GetDetailsById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,6 +12,23 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PicturesController : BaseController
     {
+        #region [GET]
+
+        [HttpGet]
+        [Route("single/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSingleById(long id)
+        {
+            GetDetailsByIdViewModel model = await Mediator.Send(new GetDetailsByIdQuery
+            {
+                Id = id
+            });
+
+            return Ok(model);
+        }
+
+        #endregion
+
         #region [POST]
 
         [HttpPost, DisableRequestSizeLimit]

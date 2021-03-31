@@ -34,13 +34,6 @@ namespace Application.Pictures.Commands.Search
                                                                       .ProjectTo<SearchPicturesCommandViewModel>(_mapper.ConfigurationProvider)
                                                                       .ToListAsync();
 
-            foreach (var item in list)
-            {
-                item.Content = string.IsNullOrEmpty(item.Content) ?
-                               "/assets/images/no-image.png" :
-                               item.Content;
-            }
-
             return list;
         }
     }
