@@ -8,7 +8,7 @@ namespace Application.Pictures.Queries.GetDetailsById
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public string Category { get; set; }
+        public string CategoryName { get; set; }
         public string Description { get; set; }
         public string Content { get; set; }
         public string Extension { get; set; }
@@ -16,7 +16,7 @@ namespace Application.Pictures.Queries.GetDetailsById
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Picture, GetDetailsByIdViewModel>()
-                   .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category.Name));
+                   .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Category.Name));
 
             profile.CreateMap<Picture, GetDetailsByIdViewModel>()
                    .ForMember(d => d.Content, opt => opt.MapFrom(s => string.IsNullOrEmpty(s.Content) ?

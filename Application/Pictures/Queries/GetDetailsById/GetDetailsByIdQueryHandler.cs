@@ -28,15 +28,14 @@ namespace Application.Pictures.Queries.GetDetailsById
             if (request.Id <= 0)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
 
+            GetDetailsByIdViewModel viewModel = await _context.Pictures
+                                                              .ProjectTo<GetDetailsByIdViewModel>(_mapper.ConfigurationProvider)
+                                                              .FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            GetDetailsByIdViewModel model = await _context.Pictures
-                                                          .ProjectTo<GetDetailsByIdViewModel>(_mapper.ConfigurationProvider)
-                                                          .FirstOrDefaultAsync(x => x.Id == request.Id);
-
-            if (model == null)
+            if (viewModel == null)
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.CategoryNotFound);
 
-            return model;
+            return viewModel;
         }
     }
 }
