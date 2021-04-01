@@ -1,5 +1,6 @@
 ﻿using Application.Pictures.Commands.Insert;
 using Application.Pictures.Commands.Search;
+using Application.Pictures.Queries.GetById;
 using Application.Pictures.Queries.GetDetailsById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,18 @@ namespace WebAPI.Controllers
             });
 
             return Ok(model);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            GetPictureByIdViewModel picture = await Mediator.Send(new GetPictureByIdQuery
+            {
+                Id = id
+            });
+
+            return Ok(picture);
         }
 
         #endregion
