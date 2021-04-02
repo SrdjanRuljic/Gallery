@@ -1,4 +1,5 @@
-﻿using Application.Pictures.Commands.Insert;
+﻿using Application.Pictures.Commands.Delete;
+using Application.Pictures.Commands.Insert;
 using Application.Pictures.Commands.Search;
 using Application.Pictures.Commands.Update;
 using Application.Pictures.Queries.GetById;
@@ -75,6 +76,23 @@ namespace WebAPI.Controllers
             bool isUpdated = await Mediator.Send(model);
 
             return Ok(isUpdated);
+        }
+
+        #endregion
+
+        #region [DELETE]
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await Mediator.Send(new DeletePictureCommand
+            {
+                Id = id
+            });
+
+            return Ok();
         }
 
         #endregion
