@@ -1,5 +1,6 @@
 ﻿using Application.Pictures.Commands.Insert;
 using Application.Pictures.Commands.Search;
+using Application.Pictures.Commands.Update;
 using Application.Pictures.Queries.GetById;
 using Application.Pictures.Queries.GetDetailsById;
 using Microsoft.AspNetCore.Authorization;
@@ -64,5 +65,18 @@ namespace WebAPI.Controllers
         }
 
         #endregion [POST]
+
+        #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Update(UpdatePictureCommand model)
+        {
+            bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
+        }
+
+        #endregion
     }
 }
