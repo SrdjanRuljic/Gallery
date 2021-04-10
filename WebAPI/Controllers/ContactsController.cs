@@ -1,4 +1,5 @@
-﻿using Application.Contacts.Queries.GetAll;
+﻿using Application.Contacts.Commands.Insert;
+using Application.Contacts.Queries.GetAll;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,5 +24,18 @@ namespace WebAPI.Controllers
         }
 
         #endregion
+
+        #region [POST]
+
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Insert(InsertContactCommand model)
+        {
+            long id = await Mediator.Send(model);
+
+            return Ok(id);
+        }
+
+        #endregion [POST]
     }
 }
