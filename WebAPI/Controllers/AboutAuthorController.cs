@@ -1,4 +1,5 @@
-﻿using Application.Author.Queries.GetById;
+﻿using Application.Author.Commands.Update;
+using Application.Author.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -22,6 +23,19 @@ namespace WebAPI.Controllers
             });
 
             return Ok(author);
+        }
+
+        #endregion
+
+        #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Update(UpdateAboutAuthorCommand model)
+        {
+            bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
         }
 
         #endregion
