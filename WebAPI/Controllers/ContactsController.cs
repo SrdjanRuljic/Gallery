@@ -1,4 +1,5 @@
-﻿using Application.Contacts.Commands.Insert;
+﻿using Application.Contacts.Commands.Delete;
+using Application.Contacts.Commands.Insert;
 using Application.Contacts.Commands.Update;
 using Application.Contacts.Queries.GetAll;
 using Application.Contacts.Queries.GetById;
@@ -64,5 +65,21 @@ namespace WebAPI.Controllers
         }
 
         #endregion [POST]
+
+        #region [DELETE]
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await Mediator.Send(new DeleteContactCommand
+            {
+                Id = id
+            });
+
+            return Ok();
+        }
+
+        #endregion
     }
 }
