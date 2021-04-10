@@ -1,4 +1,5 @@
 ﻿using Application.Contacts.Commands.Insert;
+using Application.Contacts.Commands.Update;
 using Application.Contacts.Queries.GetAll;
 using Application.Contacts.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +35,19 @@ namespace WebAPI.Controllers
             List<GetAllContactsViewModel> list = await Mediator.Send(new GetAllContactsQuery());
 
             return Ok(list);
+        }
+
+        #endregion
+
+        #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Update(UpdateContactCommand model)
+        {
+            bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
         }
 
         #endregion
