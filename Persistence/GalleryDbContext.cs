@@ -1,10 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +12,7 @@ namespace Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Picture> Pictures { get; set; }
+        public DbSet<AboutAuthor> AboutAuthor { get; set; }
 
         public GalleryDbContext(DbContextOptions<GalleryDbContext> options)
             : base(options)

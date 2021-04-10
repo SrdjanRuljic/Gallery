@@ -33,7 +33,7 @@ namespace Application.Pictures.Queries.GetById
                                                               .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (viewModel == null)
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.CategoryNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.PictureNotFound);
 
             return viewModel;
         }

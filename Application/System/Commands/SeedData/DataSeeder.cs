@@ -22,6 +22,8 @@ namespace Application.System.Commands.SeedData
                 await SeedRolesAsync(cancellationToken);
             if (!_context.Users.Any())
                 await SeedUsersAsync(cancellationToken);
+            if (!_context.AboutAuthor.Any())
+                await SeedAboutAuthorAsync(cancellationToken);
             else
                 return;
         }
@@ -49,7 +51,7 @@ namespace Application.System.Commands.SeedData
 
         public async Task SeedUsersAsync(CancellationToken cancellationToken)
         {
-            byte[] adminPasswordHash; 
+            byte[] adminPasswordHash;
             byte[] adminPasswordSalt;
             byte[] moderatorPasswordHash;
             byte[] moderatorPasswordSalt;
@@ -81,6 +83,19 @@ namespace Application.System.Commands.SeedData
             };
 
             _context.Users.AddRange(users);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task SeedAboutAuthorAsync(CancellationToken cancellationToken)
+        {
+            AboutAuthor aboutAuthor = new AboutAuthor()
+            {
+                Name = "Dragana Kezunović",
+                Biography = "U izradi"
+            };
+
+            _context.AboutAuthor.Add(aboutAuthor);
 
             await _context.SaveChangesAsync(cancellationToken);
         }
