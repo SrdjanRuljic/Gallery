@@ -1,5 +1,6 @@
 ﻿using Application.Contacts.Commands.Insert;
 using Application.Contacts.Queries.GetAll;
+using Application.Contacts.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,6 +13,18 @@ namespace WebAPI.Controllers
     public class ContactsController : BaseController
     {
         #region [GET]
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            GetContactByIdViewModel model = await Mediator.Send(new GetContactByIdQuery
+            {
+                Id = id
+            });
+
+            return Ok(model);
+        }
 
         [HttpGet]
         [Route("")]
