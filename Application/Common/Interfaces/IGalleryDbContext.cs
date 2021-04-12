@@ -13,6 +13,7 @@ namespace Application.Common.Interfaces
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<AboutAuthor> AboutAuthor { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

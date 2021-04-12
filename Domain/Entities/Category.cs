@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Domain.Entities
 {
@@ -12,10 +8,12 @@ namespace Domain.Entities
         public string Name { get; set; }
 
         public ICollection<Picture> Pictures { get; private set; }
+        public ICollection<Product> Products { get; private set; }
 
         public Category()
         {
             Pictures = new HashSet<Picture>();
+            Products = new HashSet<Product>();
         }
     }
 }

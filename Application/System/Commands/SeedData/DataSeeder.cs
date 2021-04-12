@@ -1,6 +1,8 @@
 ﻿using Application.Common.Behaviours;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ namespace Application.System.Commands.SeedData
     public class DataSeeder
     {
         private readonly IGalleryDbContext _context;
+        private static Random _random = new Random();
 
         public DataSeeder(IGalleryDbContext context)
         {
@@ -24,6 +27,8 @@ namespace Application.System.Commands.SeedData
                 await SeedUsersAsync(cancellationToken);
             if (!_context.AboutAuthor.Any())
                 await SeedAboutAuthorAsync(cancellationToken);
+            if (!_context.Products.Any() || _context.Products.Count() < 500000)
+                await SeedProductsAsync(cancellationToken);
             else
                 return;
         }
@@ -98,6 +103,50 @@ namespace Application.System.Commands.SeedData
             _context.AboutAuthor.Add(aboutAuthor);
 
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task SeedProductsAsync(CancellationToken cancellationToken)
+        {
+            List<Product> products = new List<Product>();
+
+            for (int i = 0; i < 2500; i++)
+            {
+                Product product = new Product()
+                {
+                    Name = RandomString(100),
+                    CategoryId = 1,
+                    Description = null,
+                    Content = RandomString(500),
+                    Extension = RandomString(3)
+                };
+
+                products.Add(product);
+            }
+
+            for (int i = 0; i < 2500; i++)
+            {
+                Product product = new Product()
+                {
+                    Name = RandomString(100),
+                    CategoryId = 10008,
+                    Description = null,
+                    Content = RandomString(500),
+                    Extension = RandomString(3)
+                };
+
+                products.Add(product);
+            }
+
+            _context.Products.AddRange(products);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[_random.Next(s.Length)]).ToArray());
         }
     }
 }
