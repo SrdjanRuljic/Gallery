@@ -27,7 +27,7 @@ namespace Application.System.Commands.SeedData
                 await SeedUsersAsync(cancellationToken);
             if (!_context.AboutAuthor.Any())
                 await SeedAboutAuthorAsync(cancellationToken);
-            if (!_context.Products.Any() || _context.Products.Count() < 500000)
+            if (!_context.Products.Any() || _context.Products.Count() < 200000)
                 await SeedProductsAsync(cancellationToken);
             else
                 return;
@@ -109,7 +109,7 @@ namespace Application.System.Commands.SeedData
         {
             List<Product> products = new List<Product>();
 
-            for (int i = 0; i < 2500; i++)
+            for (int i = 0; i < 100000; i++)
             {
                 Product product = new Product()
                 {
@@ -123,7 +123,7 @@ namespace Application.System.Commands.SeedData
                 products.Add(product);
             }
 
-            for (int i = 0; i < 2500; i++)
+            for (int i = 0; i < 100000; i++)
             {
                 Product product = new Product()
                 {

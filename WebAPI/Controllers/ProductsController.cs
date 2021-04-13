@@ -1,7 +1,6 @@
 ﻿using Application.Products.Queries.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -17,9 +16,9 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Search(SearchProductsQuery query)
         {
-            List<SearchProductsViewModel> products = await Mediator.Send(query);
+            SearchProductsViewModel result = await Mediator.Send(query);
 
-            return Ok(products);
+            return Ok(result);
         }
 
         #endregion [POST]
