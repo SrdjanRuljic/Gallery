@@ -20,7 +20,7 @@ namespace Persistence.Configurations
             builder.HasIndex(e => new
             {
                 e.Name
-            }).HasName("IX_NameIndex")
+            }).HasName("IX_Products_Name")
               .IsUnique();
         }
     }

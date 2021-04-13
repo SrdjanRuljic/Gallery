@@ -23,10 +23,6 @@ namespace Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<Product>()
-                        .HasIndex(b => b.Name)
-                        .IsUnique();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(GalleryMySqlDbContext).Assembly);
         }
 

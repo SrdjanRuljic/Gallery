@@ -1,14 +1,12 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
 namespace Persistence.Migrations.GalleryMySqlDb
 {
-    public partial class Product_Init_MySql : Migration
+    public partial class MySql_Products : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -46,15 +44,15 @@ namespace Persistence.Migrations.GalleryMySqlDb
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_NameIndex",
-                table: "Products",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_Name",
+                table: "Products",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
