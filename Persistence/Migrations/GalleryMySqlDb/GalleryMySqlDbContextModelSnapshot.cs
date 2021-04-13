@@ -124,11 +124,16 @@ namespace Persistence.Migrations.GalleryMySqlDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_NameIndex");
 
                     b.ToTable("Products");
                 });

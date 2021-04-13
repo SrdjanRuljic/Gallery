@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
 namespace Persistence.Migrations.GalleryMySqlDb
@@ -7,6 +8,7 @@ namespace Persistence.Migrations.GalleryMySqlDb
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -26,7 +28,7 @@ namespace Persistence.Migrations.GalleryMySqlDb
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: true),
@@ -42,6 +44,12 @@ namespace Persistence.Migrations.GalleryMySqlDb
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NameIndex",
+                table: "Products",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

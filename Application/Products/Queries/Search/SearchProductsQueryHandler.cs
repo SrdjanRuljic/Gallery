@@ -14,37 +14,33 @@ namespace Application.Products.Queries.Search
     {
         private readonly IGalleryDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IGalleryMySqlDbContext _myslqContext;
 
         public SearchProductsQueryHandler(IGalleryDbContext context,
-                                         IMapper mapper)
+                                         IMapper mapper,
+                                         IGalleryMySqlDbContext myslqContext)
         {
             _context = context;
             _mapper = mapper;
+            _myslqContext = myslqContext;
         }
 
         public async Task<SearchProductsViewModel> Handle(SearchProductsQuery command, CancellationToken cancellationToken)
         {
-            //List<SearchProductsViewModel> list = await _context.Products
-            //                                                  .Where(x => string.IsNullOrEmpty(command.Name) ?
-            //                                                              true :
-            //                                                              x.Name.Contains(command.Name))
-            //                                                  .ProjectTo<SearchProductsViewModel>(_mapper.ConfigurationProvider)
-            //                                                  .ToListAsync();
+            IQueryable<SearchProductsQueryResult> list = _myslqContext.Products.Where(x => string.IsNullOrEmpty(command.Name) ?
+                                                                                           true :
+                                                                                           x.Name.Contains(command.Name))
+                                                                               .ProjectTo<SearchProductsQueryResult>(_mapper.ConfigurationProvider);
 
-            var list = _context.Products.Where(x => string.IsNullOrEmpty(command.Name) ?
-                                                                         true :
-                                                                         x.Name.Contains(command.Name))
-                                        .ProjectTo<SearchProductsQueryResult>(_mapper.ConfigurationProvider);
-
-            PaginatedList<SearchProductsQueryResult> products = await PaginatedList<SearchProductsQueryResult>.CreateAsync(list.AsNoTracking(),
-                                                                                                                           command.PageNumber ?? 1,
-                                                                                                                           command.PageSize);
+            PaginatedList<SearchProductsQueryResult> paginatedList = await PaginatedList<SearchProductsQueryResult>.CreateAsync(list.AsNoTracking(),
+                                                                                                                                command.PageNumber ?? 1,
+                                                                                                                                command.PageSize);
 
             return new SearchProductsViewModel
             {
-                Products = products,
-                TotalPages = products.TotalPages,
-                PageIndex = products.PageIndex
+                Products = paginatedList,
+                TotalPages = paginatedList.TotalPages,
+                PageIndex = paginatedList.PageIndex
             };
         }
     }

@@ -9,7 +9,7 @@ using Persistence;
 namespace Persistence.Migrations.GalleryMySqlDb
 {
     [DbContext(typeof(GalleryMySqlDbContext))]
-    [Migration("20210413100828_Product_Init_MySql")]
+    [Migration("20210413122148_Product_Init_MySql")]
     partial class Product_Init_MySql
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,11 +126,16 @@ namespace Persistence.Migrations.GalleryMySqlDb
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_NameIndex");
 
                     b.ToTable("Products");
                 });
