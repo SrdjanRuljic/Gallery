@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
-using AutoMapper.Configuration;
 using Infrastructure.Auth;
+using Infrastructure.Elasticsearch;
+using Infrastructure.Elasticsearch.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -11,11 +12,13 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
                                                                 IConfiguration configuration)
         {
 
             services.AddTransient<IJwtFactory, JwtFactory>();
+            services.AddTransient<IBlogService, FileBlogService>();
+            services.AddElasticsearch(configuration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>

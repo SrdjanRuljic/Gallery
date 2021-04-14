@@ -1,10 +1,9 @@
-﻿using Application.Common.Helpers;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Nest;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,32 +14,38 @@ namespace Application.Products.Queries.Search
         private readonly IGalleryDbContext _context;
         private readonly IMapper _mapper;
         private readonly IGalleryMySqlDbContext _myslqContext;
+        private readonly IElasticClient _elasticClient;
 
         public SearchProductsQueryHandler(IGalleryDbContext context,
                                          IMapper mapper,
-                                         IGalleryMySqlDbContext myslqContext)
+                                         IGalleryMySqlDbContext myslqContext,
+                                         IElasticClient elasticClient)
         {
             _context = context;
             _mapper = mapper;
             _myslqContext = myslqContext;
+            _elasticClient = elasticClient;
         }
 
         public async Task<SearchProductsViewModel> Handle(SearchProductsQuery command, CancellationToken cancellationToken)
         {
-            IQueryable<SearchProductsQueryResult> list = _myslqContext.Products.Where(x => string.IsNullOrEmpty(command.Name) ?
-                                                                                           true :
-                                                                                           x.Name.Contains(command.Name))
-                                                                               .ProjectTo<SearchProductsQueryResult>(_mapper.ConfigurationProvider);
+            ISearchResponse<Product> response = await _elasticClient.SearchAsync<Product>(
+                s => s.Query(q => q.QueryString(d => d.Query(command.Name))));
 
-            PaginatedList<SearchProductsQueryResult> paginatedList = await PaginatedList<SearchProductsQueryResult>.CreateAsync(list.AsNoTracking(),
-                                                                                                                                command.PageNumber ?? 1,
-                                                                                                                                command.PageSize);
+            //IQueryable<SearchProductsQueryResult> list = _myslqContext.Products.Where(x => string.IsNullOrEmpty(command.Name) ?
+            //                                                                               true :
+            //                                                                               x.Name.Contains(command.Name))
+            //                                                                   .ProjectTo<SearchProductsQueryResult>(_mapper.ConfigurationProvider);
+
+            //PaginatedList<SearchProductsQueryResult> paginatedList = await PaginatedList<SearchProductsQueryResult>.CreateAsync(list.AsNoTracking(),
+            //                                                                                                                    command.PageNumber ?? 1,
+            //                                                                                                                    command.PageSize);
 
             return new SearchProductsViewModel
             {
-                Products = paginatedList,
-                TotalPages = paginatedList.TotalPages,
-                PageIndex = paginatedList.PageIndex
+                Products = _mapper.Map<List<SearchProductsQueryResult>>(response.Documents),
+                TotalPages = response.Total,
+                PageIndex = command.PageNumber
             };
         }
     }

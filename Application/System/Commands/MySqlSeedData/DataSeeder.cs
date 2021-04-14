@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,10 +11,13 @@ namespace Application.System.Commands.MySqlSeedData
     {
         private readonly IGalleryMySqlDbContext _context;
         private static Random _random = new Random();
+        private readonly IBlogService _blogService;
 
-        public DataSeeder(IGalleryMySqlDbContext context)
+        public DataSeeder(IGalleryMySqlDbContext context,
+                          IBlogService blogService)
         {
             _context = context;
+            _blogService = blogService;
         }
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
@@ -49,39 +51,30 @@ namespace Application.System.Commands.MySqlSeedData
 
         public async Task SeedProductsAsync(CancellationToken cancellationToken)
         {
-            List<Product> products = new List<Product>();
+            Product[] products = new Product[10];
 
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Product product = new Product()
                 {
                     Name = RandomString(100),
-                    CategoryId = 1,
+                    CategoryId = RandomLong(1, 2),
                     Description = null,
                     Content = RandomString(500),
                     Extension = RandomString(3)
                 };
 
-                products.Add(product);
-            }
-
-            for (int i = 0; i < 100000; i++)
-            {
-                Product product = new Product()
-                {
-                    Name = RandomString(100),
-                    CategoryId = 2,
-                    Description = null,
-                    Content = RandomString(500),
-                    Extension = RandomString(3)
-                };
-
-                products.Add(product);
+                products[i] = product;
             }
 
             _context.Products.AddRange(products);
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            for (int i = 0; i < products.Length; i++)
+            {
+                await _blogService.SaveSingleAsync(products[i]);
+            }
         }
 
         public static string RandomString(int length)
@@ -89,6 +82,11 @@ namespace Application.System.Commands.MySqlSeedData
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[_random.Next(s.Length)]).ToArray());
+        }
+
+        public static long RandomLong(int min, int max)
+        {
+            return (long)_random.Next(min, max);
         }
     }
 }
