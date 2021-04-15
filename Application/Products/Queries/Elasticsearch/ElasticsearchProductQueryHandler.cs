@@ -24,7 +24,7 @@ namespace Application.Products.Queries.Elasticsearch
         {
             ISearchResponse<Product> response = await _elasticClient.SearchAsync<Product>(
                 s => s.Query(q => q.QueryString(d => d.Query(request.Name)))
-                      .From((request.PageNumber - 1) * request.PageSize)
+                      .From(((request.PageNumber ?? 1) - 1) * request.PageSize)
                       .Size(request.PageSize));
 
             return new ElasticsearchProductViewModel
