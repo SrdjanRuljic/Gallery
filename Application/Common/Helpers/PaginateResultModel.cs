@@ -2,7 +2,7 @@
 {
     public class PaginateResultModel
     {
-        public long TotalPages { get; set; }
-        public long PageIndex { get; set; }
+        public int TotalPages { get; set; }
+        public int PageIndex { get; set; }
     }
 }

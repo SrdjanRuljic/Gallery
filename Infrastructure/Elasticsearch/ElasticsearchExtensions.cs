@@ -26,15 +26,12 @@ namespace Infrastructure.Elasticsearch
 
         private static void AddDefaultMappings(ConnectionSettings settings)
         {
-            settings.DefaultMappingFor<Product>(m => m.Ignore(p => p.Content)
-                                                      .Ignore(p => p.Description)
-                                                      .Ignore(p => p.Extension));
+            settings.DefaultMappingFor<Product>(m => m.Ignore(p => p.Category));
         }
 
         private static void CreateIndex(IElasticClient client, string indexName)
         {
-            CreateIndexResponse createIndexResponse = client.Indices.Create(indexName, index => index.Map<Product>(x => x.AutoMap())
-        );
+            CreateIndexResponse createIndexResponse = client.Indices.Create(indexName, index => index.Map<Product>(x => x.AutoMap()));
         }
     }
 }

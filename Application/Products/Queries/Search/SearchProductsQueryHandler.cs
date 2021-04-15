@@ -30,7 +30,7 @@ namespace Application.Products.Queries.Search
                                                                                .ProjectTo<SearchProductsQueryResult>(_mapper.ConfigurationProvider);
 
             PaginatedList<SearchProductsQueryResult> paginatedList = await PaginatedList<SearchProductsQueryResult>.CreateAsync(list.AsNoTracking(),
-                                                                                                                                command.PageNumber ?? 1,
+                                                                                                                                command.PageNumber,
                                                                                                                                 command.PageSize);
 
             return new SearchProductsViewModel

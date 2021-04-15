@@ -24,7 +24,7 @@ namespace Application.System.Commands.MySqlSeedData
         {
             if (!_context.Categories.Any())
                 await SeedCategoriesAsync(cancellationToken);
-            if (!_context.Products.Any() || _context.Products.Count() < 200000)
+            if (!_context.Products.Any())
                 await SeedProductsAsync(cancellationToken);
             else
                 return;
@@ -51,9 +51,9 @@ namespace Application.System.Commands.MySqlSeedData
 
         public async Task SeedProductsAsync(CancellationToken cancellationToken)
         {
-            Product[] products = new Product[10];
+            Product[] products = new Product[100000];
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100000; i++)
             {
                 Product product = new Product()
                 {
@@ -71,10 +71,7 @@ namespace Application.System.Commands.MySqlSeedData
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            for (int i = 0; i < products.Length; i++)
-            {
-                await _blogService.SaveSingleAsync(products[i]);
-            }
+            await _blogService.SaveManyAsync(products);
         }
 
         public static string RandomString(int length)

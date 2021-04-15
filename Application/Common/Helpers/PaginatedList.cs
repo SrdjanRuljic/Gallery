@@ -8,8 +8,8 @@ namespace Application.Common.Helpers
 {
     public class PaginatedList<T> : List<T>
     {
-        public long PageIndex { get; private set; }
-        public long TotalPages { get; private set; }
+        public int PageIndex { get; private set; }
+        public int TotalPages { get; private set; }
 
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
@@ -37,8 +37,8 @@ namespace Application.Common.Helpers
 
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
         {
-            var count = await source.CountAsync();
-            var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            int count = await source.CountAsync();
+            List<T> items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
     }
