@@ -23,13 +23,20 @@ namespace Application.Products.Queries.Elasticsearch
 
         public async Task<ElasticsearchProductViewModel> Handle(ElasticsearchProductQuery request, CancellationToken cancellationToken)
         {
-            ISearchResponse<Product> response = await _elasticClient.SearchAsync<Product>(s =>
-                s.Query(q =>
-                    q.QueryString(d =>
-                        d.Fields(f =>
-                            f.Field(f => f.Name.Contains(request.Name)))))
-                 .From((request.PageNumber - 1) * request.PageSize)
-                 .Size(request.PageSize));
+            SearchDescriptor<Product> descriptor = new SearchDescriptor<Product>();
+
+            if (!string.IsNullOrEmpty(request.Name))
+                descriptor = descriptor.Query(q =>
+                    q.QueryString(q =>
+                        q.Fields(f =>
+                            f.Field(f =>
+                                f.Name)).Query("*" + request.Name + "*")));
+            else
+                descriptor = descriptor.Query(q => q.MatchAll());
+
+            ISearchResponse<Product> response = await _elasticClient.SearchAsync<Product>(
+                descriptor.From((request.PageNumber - 1) * request.PageSize)
+                          .Size(request.PageSize), cancellationToken);
 
             return new ElasticsearchProductViewModel
             {
