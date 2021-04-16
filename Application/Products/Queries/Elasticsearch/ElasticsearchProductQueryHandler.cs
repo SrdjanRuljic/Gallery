@@ -23,7 +23,7 @@ namespace Application.Products.Queries.Elasticsearch
 
         public async Task<ElasticsearchProductViewModel> Handle(ElasticsearchProductQuery request, CancellationToken cancellationToken)
         {
-            SearchDescriptor<Product> descriptor = new SearchDescriptor<Product>();
+            SearchDescriptor<Product> descriptor = new SearchDescriptor<Product>().TotalHitsAsInteger(true);
 
             if (!string.IsNullOrEmpty(request.Name))
                 descriptor = descriptor.Query(q =>

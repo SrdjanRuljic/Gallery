@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Microsoft.Extensions.Logging;
 using Nest;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Elasticsearch.Services
@@ -12,13 +12,10 @@ namespace Infrastructure.Elasticsearch.Services
     {
         private readonly List<Product> _cache = new List<Product>();
         private readonly IElasticClient _elasticClient;
-        private readonly ILogger _logger;
 
-        public FileBlogService(IElasticClient elasticClient,
-                               ILogger logger)
+        public FileBlogService(IElasticClient elasticClient)
         {
             _elasticClient = elasticClient;
-            _logger = logger;
         }
 
         public async Task DeleteAsync(Product product)
@@ -29,19 +26,27 @@ namespace Infrastructure.Elasticsearch.Services
                 _cache.Remove(product);
         }
 
-        public async Task SaveManyAsync(Product[] products)
+        public async Task<string> SaveManyAsync(Product[] products)
         {
+            string message = null;
+
             _cache.AddRange(products);
-            var response = await _elasticClient.IndexManyAsync(products);
+
+            BulkResponse response = await _elasticClient.IndexManyAsync(products);
+
+            if (response.ApiCall.HttpStatusCode != (int)HttpStatusCode.OK)
+                message = response.ApiCall.OriginalException.Message;
+
             if (response.Errors)
             {
                 // the response can be inspected for errors
                 foreach (var itemWithError in response.ItemsWithErrors)
                 {
-                    _logger.LogError("Failed to index document {0}: {1}",
-                        itemWithError.Id, itemWithError.Error);
+                    message += "Failed to index document " + itemWithError.Id + ": " + itemWithError.Error;
                 }
             }
+
+            return message;
         }
 
         public async Task SaveSingleAsync(Product product)
@@ -57,19 +62,28 @@ namespace Infrastructure.Elasticsearch.Services
             }
         }
 
-        public async Task SaveBulkAsync(Product[] products)
+        public async Task<string> SaveBulkAsync(Product[] products)
         {
+            string message = null;
+
             _cache.AddRange(products);
-            var response = await _elasticClient.BulkAsync(b => b.Index("products").IndexMany(products));
+
+            BulkResponse response = await _elasticClient.BulkAsync(b => b.Index("products")
+                                                                         .IndexMany(products));
+
+            if (response.ApiCall.HttpStatusCode != (int)HttpStatusCode.OK)
+                message = response.ApiCall.OriginalException.Message;
+
             if (response.Errors)
             {
                 // the response can be inspected for errors
                 foreach (var itemWithError in response.ItemsWithErrors)
                 {
-                    _logger.LogError("Failed to index document {0}: {1}",
-                        itemWithError.Id, itemWithError.Error);
+                    message += "Failed to index document " + itemWithError.Id + ": " + itemWithError.Error;
                 }
             }
+
+            return message;
         }
     }
 }

@@ -6,8 +6,8 @@ namespace Application.Common.Interfaces
     public interface IBlogService
     {
         Task SaveSingleAsync(Product product);
-        Task SaveManyAsync(Product[] products);
+        Task<string> SaveManyAsync(Product[] products);
         Task DeleteAsync(Product product);
-        Task SaveBulkAsync(Product[] products);
+        Task<string> SaveBulkAsync(Product[] products);
     }
 }
