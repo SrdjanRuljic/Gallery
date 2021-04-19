@@ -1,4 +1,5 @@
 ﻿using Application.Products.Commands.Insert;
+using Application.Products.Commands.Update;
 using Application.Products.Queries.Elasticsearch;
 using Application.Products.Queries.GetById;
 using Application.Products.Queries.Search;
@@ -62,5 +63,19 @@ namespace WebAPI.Controllers
         }
 
         #endregion [POST]
+
+        #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Update(UpdateProductCommand model)
+        {
+            bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
+        }
+
+        #endregion
     }
 }

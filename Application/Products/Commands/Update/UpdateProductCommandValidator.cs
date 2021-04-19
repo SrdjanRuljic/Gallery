@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Application.Products.Commands.Insert
+namespace Application.Products.Commands.Update
 {
-    public static class InsertProductCommandValidator
+    public static class UpdateProductCommandValidator
     {
-        public static bool IsValid(this InsertProductCommand model, out string validationMessage)
+        public static bool IsValid(this UpdateProductCommand model, out string validationMessage)
         {
             validationMessage = null;
             bool isValid = true;
