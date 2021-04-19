@@ -26,8 +26,6 @@ namespace Application.System.Commands.MySqlSeedData
                 await SeedCategoriesAsync(cancellationToken);
             if (!_context.Products.Any())
                 await SeedProductsAsync(cancellationToken);
-            else if (_context.Products.Any())
-                await _blogService.SaveManyAsync(_context.Products.ToArray());
             else
                 return;
         }

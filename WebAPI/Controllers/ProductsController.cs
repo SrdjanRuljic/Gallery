@@ -1,4 +1,5 @@
-﻿using Application.Products.Queries.Elasticsearch;
+﻿using Application.Products.Commands.Insert;
+using Application.Products.Queries.Elasticsearch;
 using Application.Products.Queries.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,16 @@ namespace WebAPI.Controllers
             ElasticsearchProductViewModel result = await Mediator.Send(query);
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Insert(InsertProductCommand model)
+        {
+            long id = await Mediator.Send(model);
+
+            return Ok(id);
         }
 
         #endregion [POST]
