@@ -1,4 +1,5 @@
-﻿using Application.Products.Commands.Insert;
+﻿using Application.Products.Commands.Delete;
+using Application.Products.Commands.Insert;
 using Application.Products.Commands.Update;
 using Application.Products.Queries.Elasticsearch;
 using Application.Products.Queries.GetById;
@@ -74,6 +75,23 @@ namespace WebAPI.Controllers
             bool isUpdated = await Mediator.Send(model);
 
             return Ok(isUpdated);
+        }
+
+        #endregion
+
+        #region [DELETE]
+
+        [HttpDelete]
+        [Route("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await Mediator.Send(new DeleteProductCommand
+            {
+                Id = id
+            });
+
+            return Ok();
         }
 
         #endregion

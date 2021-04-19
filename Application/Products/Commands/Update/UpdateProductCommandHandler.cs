@@ -2,7 +2,6 @@
 using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
-using Nest;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,15 +10,12 @@ namespace Application.Products.Commands.Update
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
-        private readonly IElasticClient _elasticClient;
         private readonly IGalleryMySqlDbContext _context;
         private readonly IBlogService _blogService;
 
-        public UpdateProductCommandHandler(IElasticClient elasticClient,
-                                           IGalleryMySqlDbContext context,
+        public UpdateProductCommandHandler(IGalleryMySqlDbContext context,
                                            IBlogService blogService)
         {
-            _elasticClient = elasticClient;
             _context = context;
             _blogService = blogService;
         }
