@@ -3,7 +3,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Persistence.Migrations.GalleryMySqlDb
 {
-    public partial class Codes_Translations_Init : Migration
+    public partial class Codes_Translations_Init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace Persistence.Migrations.GalleryMySqlDb
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: false)
+                    ParentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -24,7 +24,7 @@ namespace Persistence.Migrations.GalleryMySqlDb
                         column: x => x.ParentId,
                         principalTable: "Codes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

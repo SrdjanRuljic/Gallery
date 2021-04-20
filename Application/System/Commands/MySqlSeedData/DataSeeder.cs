@@ -26,6 +26,12 @@ namespace Application.System.Commands.MySqlSeedData
                 await SeedCategoriesAsync(cancellationToken);
             if (!_context.Products.Any())
                 await SeedProductsAsync(cancellationToken);
+            if (!_context.Languages.Any())
+                await SeedLanguagesAsync(cancellationToken);
+            if (!_context.Codes.Any())
+                await SeedCodesAsync(cancellationToken);
+            if (!_context.CodesLanguages.Any())
+                await SeedCodesLanguagesAsync(cancellationToken);
             else
                 return;
         }
@@ -72,6 +78,125 @@ namespace Application.System.Commands.MySqlSeedData
             await _context.SaveChangesAsync(cancellationToken);
 
             string message = await _blogService.SaveManyAsync(products);
+        }
+
+        public async Task SeedLanguagesAsync(CancellationToken cancellationToken)
+        {
+
+            Language[] languages = new[]
+            {
+                new Language()
+                {
+                    Name = "Engleski"
+                },
+                new Language()
+                {
+                    Name = "Srpski"
+                },
+                new Language()
+                {
+                    Name = "Crnski"
+                },
+                new Language()
+                {
+                    Name = "Gorski"
+                },
+            };
+
+            _context.Languages.AddRange(languages);
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task SeedCodesAsync(CancellationToken cancellationToken)
+        {
+            for (int i = 0; i <= 14635; i++)
+            {
+                Code code = new Code();
+
+                if (i <= 21)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = null;
+                }
+                else if (i > 21 && i <= 118)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(1, 21);
+                }
+                else if (i > 118 && i <= 1373)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(21, 118);
+                }
+                else if (i > 1373 && i <= 4844)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(118, 1373);
+                }
+                else if (i > 4844 && i <= 9653)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(1373, 4844);
+                }
+                else if (i > 9653 && i <= 12472)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(4844, 9653);
+                }
+                else if (i > 12472 && i <= 13678)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(9653, 12472);
+                }
+                else if (i > 13678 && i <= 14236)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(12472, 13678);
+                }
+                else if (i > 14236 && i <= 14440)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(13678, 14236);
+                }
+                else if (i > 14440 && i <= 14572)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(14236, 14440);
+                }
+                else if (i > 14572 && i <= 14635)
+                {
+                    code.Name = RandomString(100);
+                    code.ParentId = RandomLong(14440, 14572);
+                }
+
+                _context.Codes.Add(code);
+
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+
+
+        }
+
+        public async Task SeedCodesLanguagesAsync(CancellationToken cancellationToken)
+        {
+            CodeLanguage[] codesLanguages = new CodeLanguage[103000];
+
+            for (int i = 0; i < 103000; i++)
+            {
+                CodeLanguage codeLanguage = new CodeLanguage()
+                {
+                    CodeId = RandomLong(1, 14635),
+                    LanguageId = RandomLong(1, 4),
+                    Translation = RandomString(100)
+                };
+
+                codesLanguages[i] = codeLanguage;
+            }
+
+            _context.CodesLanguages.AddRange(codesLanguages);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         public static string RandomString(int length)

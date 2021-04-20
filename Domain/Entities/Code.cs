@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public long ParentId { get; set; }
+        public long? ParentId { get; set; }
 
         public Code Parent { get; set; }
         public ICollection<Code> Children { get; set; }
