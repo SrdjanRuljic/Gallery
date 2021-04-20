@@ -10,6 +10,9 @@ namespace Persistence
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Code> Codes { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<CodeLanguage> CodesLanguages { get; set; }
 
         public GalleryMySqlDbContext(DbContextOptions<GalleryMySqlDbContext> options)
             : base(options)
