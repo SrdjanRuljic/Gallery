@@ -2,6 +2,7 @@
 {
     public class CodeLanguage
     {
+        public long Id { get; set; }
         public long CodeId { get; set; }
         public long LanguageId { get; set; }
         public string Translation { get; set; }
