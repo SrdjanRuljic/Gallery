@@ -30,10 +30,6 @@ namespace WebAPI.Controllers
             return Ok(data);
         }
 
-        #endregion
-
-        #region [POST]
-
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("")]
@@ -43,6 +39,10 @@ namespace WebAPI.Controllers
 
             return Ok(users);
         }
+
+        #endregion
+
+        #region [POST]
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
