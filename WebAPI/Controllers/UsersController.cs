@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class UsersController : BaseController
     {
         #region [GET]

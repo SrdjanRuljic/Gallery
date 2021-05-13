@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class PicturesController : BaseController
     {
         #region [GET]
