@@ -1,7 +1,9 @@
 ﻿using Application.Users.Commands.Insert;
+using Application.Users.Queries.GetAll;
 using Application.Users.Queries.LogedInUserData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -31,6 +33,16 @@ namespace WebAPI.Controllers
         #endregion
 
         #region [POST]
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetAll()
+        {
+            List<GetAllUsersViewModel> users = await Mediator.Send(new GetAllUsersQuery());
+
+            return Ok(users);
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
