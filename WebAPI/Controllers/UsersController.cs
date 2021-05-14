@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.Insert;
+﻿using Application.Users.Commands.Delete;
+using Application.Users.Commands.Insert;
 using Application.Users.Commands.Update;
 using Application.Users.Queries.GetAll;
 using Application.Users.Queries.GetById;
@@ -78,6 +79,22 @@ namespace WebAPI.Controllers
             long id = await Mediator.Send(model);
 
             return Ok(id);
+        }
+
+        #endregion
+
+        #region [DELETE]
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await Mediator.Send(new DeleteUserCommand
+            {
+                Id = id
+            });
+
+            return Ok();
         }
 
         #endregion
