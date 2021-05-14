@@ -1,5 +1,7 @@
 ﻿using Application.Users.Commands.Insert;
+using Application.Users.Commands.Update;
 using Application.Users.Queries.GetAll;
+using Application.Users.Queries.GetById;
 using Application.Users.Queries.LogedInUserData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +38,32 @@ namespace WebAPI.Controllers
             List<GetAllUsersViewModel> users = await Mediator.Send(new GetAllUsersQuery());
 
             return Ok(users);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            GetUserByIdViewModel user = await Mediator.Send(new GetUserByIdQuery
+            {
+                Id = id
+            });
+
+            return Ok(user);
+        }
+
+        #endregion
+
+        #region [PUT]
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> Update(UpdateUserCommand model)
+        {
+            bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
         }
 
         #endregion
