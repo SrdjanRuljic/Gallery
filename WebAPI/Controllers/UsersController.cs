@@ -1,6 +1,7 @@
 ﻿using Application.Users.Commands.Delete;
 using Application.Users.Commands.Insert;
 using Application.Users.Commands.Update;
+using Application.Users.Commands.UpdatePassword;
 using Application.Users.Queries.GetAll;
 using Application.Users.Queries.GetById;
 using Application.Users.Queries.LogedInUserData;
@@ -63,6 +64,16 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Update(UpdateUserCommand model)
         {
             bool isUpdated = await Mediator.Send(model);
+
+            return Ok(isUpdated);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
+        [Route("update-password")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordCommand command)
+        {
+            bool isUpdated = await Mediator.Send(command);
 
             return Ok(isUpdated);
         }
