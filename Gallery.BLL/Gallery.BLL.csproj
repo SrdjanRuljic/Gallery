@@ -4,9 +4,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Gallery.DAL\Gallery.DAL.csproj" />
-    <ProjectReference Include="..\Gallery.DTO\Gallery.DTO.csproj" />
-  </ItemGroup>
-
 </Project>
