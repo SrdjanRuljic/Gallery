@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { MyGlobals } from "../my-globals";
-import { GlobalEventsManager } from "./components/common/global-event-manager";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
@@ -40,7 +39,7 @@ import { FileUploadModule } from "./components/common/file-upload/file-upload.mo
     FileUploadModule,
   ],
   exports: [ToastModule, ModalModule, FileUploadModule],
-  providers: [MyGlobals, GlobalEventsManager, ErrorInterceptorProvider],
+  providers: [MyGlobals, ErrorInterceptorProvider],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,7 +1,5 @@
 import { Component } from "@angular/core";
 import { AuthService } from "../auth.services";
-import { GlobalEventsManager } from "../../global-event-manager";
-import { ToastService } from "../../../common/toast/toast.service";
 import { Router } from "@angular/router";
 import { UsersService } from "../../../users/users.services";
 
@@ -20,8 +18,6 @@ export class LoginComponent {
 
   constructor(
     private _authService: AuthService,
-    private _globalEventsManager: GlobalEventsManager,
-    private _toastService: ToastService,
     private _router: Router,
     private _usersService: UsersService
   ) {
