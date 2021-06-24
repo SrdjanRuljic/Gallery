@@ -11,7 +11,7 @@ import { AuthService } from "../auth/auth.services";
 })
 export class MenuComponent implements OnInit {
   isAdmin: Observable<boolean>;
-  displayName: string = null;
+  displayName: Observable<string>;
 
   isAuthorized: Observable<boolean>;
 
@@ -22,6 +22,7 @@ export class MenuComponent implements OnInit {
   ) {
     this.isAuthorized = this._authService.getIsAuthorized();
     this.isAdmin = this._usersService.getIsAdmin();
+    this.displayName = this._usersService.getDisplayName();
   }
 
   ngOnInit() {}

@@ -38,10 +38,7 @@ export class LoginComponent {
   }
 
   getLogedInUserData() {
-    this._usersService.getLogedInUserData().subscribe((response) => {
-      this._globalEventsManager.isAdmin.emit(response.isAdmin);
-      this._globalEventsManager.displayName.emit(response.displayName);
-    });
+    this._usersService.getLogedInUserData().subscribe((response) => response);
   }
 
   goToHome() {

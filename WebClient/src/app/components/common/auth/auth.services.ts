@@ -33,6 +33,9 @@ export class AuthService {
 
     localStorage.removeItem("is_admin");
     this._usersServices.setIsAdmin(false);
+
+    localStorage.removeItem("display_name");
+    this._usersServices.setDisplayName(null);
   }
 
   private handleSuccess(response: any) {

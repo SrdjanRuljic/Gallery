@@ -46,7 +46,7 @@
           *ngIf="isAuthorized | async"
           data-target="#login-modal"
         >
-          <a class="text-green">{{ displayName }} </a>
+          <a class="text-green">{{ displayName | async }} </a>
         </li>
         <li
           class="curs"

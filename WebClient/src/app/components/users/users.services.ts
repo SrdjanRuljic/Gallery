@@ -15,7 +15,8 @@ const httpOptions = {
 export class UsersService {
   private _usersUrl = this._myGlobals.WebApiUrl + "api/users";
 
-  private isAdmin = new BehaviorSubject<boolean>(this.isUserAdmin());
+  private isAdmin$ = new BehaviorSubject<boolean>(this.isUserAdmin());
+  private displayName$ = new BehaviorSubject<string>(this.userDisplayName());
 
   constructor(private _myGlobals: MyGlobals, private _http: HttpClient) {}
 
@@ -84,6 +85,9 @@ export class UsersService {
   private handleSuccess(response: any) {
     localStorage.setItem("is_admin", response.isAdmin);
     this.setIsAdmin(response.isAdmin);
+
+    localStorage.setItem("display_name", response.displayName);
+    this.setDisplayName(response.displayName);
   }
 
   isUserAdmin() {
@@ -91,10 +95,22 @@ export class UsersService {
   }
 
   getIsAdmin() {
-    return this.isAdmin.asObservable();
+    return this.isAdmin$.asObservable();
   }
 
   setIsAdmin(isAdmin: boolean) {
-    this.isAdmin.next(isAdmin);
+    this.isAdmin$.next(isAdmin);
+  }
+
+  userDisplayName() {
+    return localStorage.getItem("display_name");
+  }
+
+  getDisplayName() {
+    return this.displayName$.asObservable();
+  }
+
+  setDisplayName(name: string) {
+    this.displayName$.next(name);
   }
 }
