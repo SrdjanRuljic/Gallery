@@ -5,6 +5,7 @@ import { Category } from "../category";
 import { ModalService } from "../../common/modal/modal.service";
 import { ToastService } from "../../common/toast/toast.service";
 import { AuthService } from "../../common/auth/auth.services";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-categories-list",
@@ -18,6 +19,8 @@ export class CategoriesListComponent implements OnInit {
   numberOfPages: number[] = [];
   currentPage: number = 0;
 
+  isAuthorized: Observable<boolean>;
+
   constructor(
     private _categoriesService: CategoriesService,
     private _router: Router,
@@ -25,6 +28,7 @@ export class CategoriesListComponent implements OnInit {
     private _toastService: ToastService,
     private _authService: AuthService
   ) {
+    this.isAuthorized = this._authService.getIsAuthorized();
     this.categories = [];
     this.itemsToDisplay = [];
   }
@@ -59,10 +63,6 @@ export class CategoriesListComponent implements OnInit {
     this._categoriesService.getAll().subscribe((data) => {
       this.initialize(data);
     });
-  }
-
-  isAuthorized() {
-    return this._authService.isAuthorized();
   }
 
   goToCategoryForm(id) {

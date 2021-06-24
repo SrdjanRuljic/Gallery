@@ -5,7 +5,7 @@
       type="button"
       class="btn btn-default pull-right"
       (click)="goToAboutAuthorForm(model.id)"
-      *ngIf="isAuthorized()"
+      *ngIf="isAuthorized | async"
     >
       Izmjena
     </button>

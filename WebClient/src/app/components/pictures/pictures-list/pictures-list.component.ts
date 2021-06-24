@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { ToastService } from "../../common/toast/toast.service";
 import { CategoriesService } from "../../categories/categories.services";
 import { AuthService } from "../../common/auth/auth.services";
+import { Observable } from "rxjs";
 
 export class SearchModel {
   name: string;
@@ -24,6 +25,8 @@ export class PicturesListComponent implements OnInit {
   searchModel: SearchModel;
   categories: any[];
 
+  isAuthorized: Observable<boolean>;
+
   constructor(
     private _picturesService: PicturesService,
     private _router: Router,
@@ -31,6 +34,7 @@ export class PicturesListComponent implements OnInit {
     private _categoriesService: CategoriesService,
     private _authService: AuthService
   ) {
+    this.isAuthorized = this._authService.getIsAuthorized();
     this.pictures = [];
     this.itemsToDisplay = [];
     this.searchModel = new SearchModel();
@@ -85,10 +89,6 @@ export class PicturesListComponent implements OnInit {
     this._categoriesService.getDropDownItems().subscribe((response) => {
       this.categories = response;
     });
-  }
-
-  isAuthorized() {
-    return this._authService.isAuthorized();
   }
 
   goToPictureForm(id) {

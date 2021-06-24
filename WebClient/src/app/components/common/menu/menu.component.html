@@ -29,7 +29,7 @@
         <li
           class="curs"
           (click)="goToUsers()"
-          *ngIf="(isAuthorized | async) && isAdmin"
+          *ngIf="(isAuthorized | async) && (isAdmin | async)"
         >
           <a class="text-green">Korisnici </a>
         </li>

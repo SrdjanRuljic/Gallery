@@ -5,6 +5,7 @@ import { ToastService } from "../../common/toast/toast.service";
 import { ContactsService } from "../contacts.service";
 import { Contact } from "../contact";
 import { AuthService } from "../../common/auth/auth.services";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-contacts-list",
@@ -18,6 +19,8 @@ export class ContactsListComponent implements OnInit {
   numberOfPages: number[] = [];
   currentPage: number = 0;
 
+  isAuthorized: Observable<boolean>;
+
   constructor(
     private _contactsService: ContactsService,
     private _router: Router,
@@ -25,6 +28,7 @@ export class ContactsListComponent implements OnInit {
     private _toastService: ToastService,
     private _authService: AuthService
   ) {
+    this.isAuthorized = this._authService.getIsAuthorized();
     this.contacts = [];
     this.itemsToDisplay = [];
   }
@@ -64,10 +68,6 @@ export class ContactsListComponent implements OnInit {
         this._toastService.activate(error.error.message, "alert-danger");
       }
     );
-  }
-
-  isAuthorized() {
-    return this._authService.isAuthorized();
   }
 
   goToContactForm(id) {

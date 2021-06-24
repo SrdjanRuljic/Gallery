@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
+import { UsersService } from "../../users/users.services";
 import { AuthService } from "../auth/auth.services";
-import { GlobalEventsManager } from "../global-event-manager";
 
 @Component({
   selector: "app-menu",
@@ -10,34 +10,21 @@ import { GlobalEventsManager } from "../global-event-manager";
   styleUrls: ["./menu.component.scss"],
 })
 export class MenuComponent implements OnInit {
-  isAdmin: boolean = false;
+  isAdmin: Observable<boolean>;
   displayName: string = null;
 
   isAuthorized: Observable<boolean>;
 
   constructor(
     private _router: Router,
-    private _globalEventsManager: GlobalEventsManager,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _usersService: UsersService
   ) {
-    this.isAuthorized = _authService.isAuthorized();
-    this.getLocalUserData();
+    this.isAuthorized = this._authService.getIsAuthorized();
+    this.isAdmin = this._usersService.getIsAdmin();
   }
 
   ngOnInit() {}
-
-  // isAuthorized() {
-  //   return this._authService.isAuthorized();
-  // }
-
-  getLocalUserData() {
-    this._globalEventsManager.isAdmin.subscribe((mode: boolean) => {
-      this.isAdmin = mode;
-    });
-    this._globalEventsManager.displayName.subscribe((mode: string) => {
-      this.displayName = mode;
-    });
-  }
 
   goToAboutAuthor() {
     this._router.navigate(["/about-author"]);

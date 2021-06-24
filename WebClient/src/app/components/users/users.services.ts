@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { MyGlobals } from "../../../my-globals";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs/Observable";
+import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 const httpOptions = {
@@ -14,6 +14,8 @@ const httpOptions = {
 @Injectable()
 export class UsersService {
   private _usersUrl = this._myGlobals.WebApiUrl + "api/users";
+
+  private isAdmin = new BehaviorSubject<boolean>(this.isUserAdmin());
 
   constructor(private _myGlobals: MyGlobals, private _http: HttpClient) {}
 
@@ -76,6 +78,23 @@ export class UsersService {
     this.createAuthorizationHeader(headers);
     return this._http
       .get(this._usersUrl + "/data", httpOptions)
-      .pipe(map((res) => res));
+      .pipe(map((res) => this.handleSuccess(res)));
+  }
+
+  private handleSuccess(response: any) {
+    localStorage.setItem("is_admin", response.isAdmin);
+    this.setIsAdmin(response.isAdmin);
+  }
+
+  isUserAdmin() {
+    return JSON.parse(localStorage.getItem("is_admin"));
+  }
+
+  getIsAdmin() {
+    return this.isAdmin.asObservable();
+  }
+
+  setIsAdmin(isAdmin: boolean) {
+    this.isAdmin.next(isAdmin);
   }
 }

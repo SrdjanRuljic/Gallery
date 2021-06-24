@@ -5,7 +5,7 @@
       type="button"
       class="btn btn-default pull-right"
       (click)="goToPictureForm(0)"
-      *ngIf="isAuthorized()"
+      *ngIf="isAuthorized | async"
     >
       Nova slika
     </button>
@@ -37,9 +37,9 @@
               [(ngModel)]="searchModel.categoryId"
             >
               <option [ngValue]="0">-</option>
-              <option *ngFor="let item of categories" [ngValue]="item.id">{{
-                item.name
-              }}</option>
+              <option *ngFor="let item of categories" [ngValue]="item.id">
+                {{ item.name }}
+              </option>
             </select>
           </div>
         </div>
@@ -64,12 +64,7 @@
     <div class="card col-md-3" *ngFor="let item of itemsToDisplay">
       <div class="card curs" (click)="goToPictureDetails(item.id)">
         <div class="">
-          <img
-            [src]="item.content"
-            class="img"
-            width="260"
-            height="190"
-          />
+          <img [src]="item.content" class="img" width="260" height="190" />
         </div>
         <h5 class="title">{{ item.name }}</h5>
       </div>

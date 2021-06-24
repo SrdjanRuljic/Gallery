@@ -5,7 +5,7 @@
       type="button"
       class="btn btn-default pull-right"
       (click)="goToCategoryForm(0)"
-      *ngIf="isAuthorized()"
+      *ngIf="isAuthorized | async"
     >
       Nova kategorija
     </button>

@@ -5,6 +5,7 @@ import { ToastService } from "../../common/toast/toast.service";
 import { ModalService } from "../../common/modal/modal.service";
 import { PictureDetails } from "../picture-details";
 import { AuthService } from "../../common/auth/auth.services";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-pictures-details",
@@ -14,6 +15,8 @@ import { AuthService } from "../../common/auth/auth.services";
 export class PicturesDetailsComponent implements OnInit {
   model: PictureDetails;
 
+  isAuthorized: Observable<boolean>;
+
   constructor(
     private _picturesService: PicturesService,
     private _route: ActivatedRoute,
@@ -22,6 +25,7 @@ export class PicturesDetailsComponent implements OnInit {
     private _modalService: ModalService,
     private _authService: AuthService
   ) {
+    this.isAuthorized = this._authService.getIsAuthorized();
     this.model = new PictureDetails();
   }
 
@@ -44,10 +48,6 @@ export class PicturesDetailsComponent implements OnInit {
 
   goToPictureList() {
     this._router.navigate(["/pictures"]);
-  }
-
-  isAuthorized() {
-    return this._authService.isAuthorized();
   }
 
   delete(id) {

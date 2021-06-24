@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Observable } from "rxjs";
 import { AuthService } from "../../common/auth/auth.services";
 import { AboutAuthorService } from "../about-author.service";
 import { Author } from "../author";
@@ -12,12 +13,15 @@ import { Author } from "../author";
 export class AboutAuthorDetailsComponent implements OnInit {
   model: Author;
 
+  isAuthorized: Observable<boolean>;
+
   constructor(
     private _aboutAuthorService: AboutAuthorService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _authService: AuthService
   ) {
+    this.isAuthorized = this._authService.getIsAuthorized();
     this.model = new Author();
   }
 
@@ -29,10 +33,6 @@ export class AboutAuthorDetailsComponent implements OnInit {
     this._aboutAuthorService.getById(id).subscribe((response) => {
       this.model = response;
     });
-  }
-
-  isAuthorized() {
-    return this._authService.isAuthorized();
   }
 
   goToAboutAuthorForm(id) {
