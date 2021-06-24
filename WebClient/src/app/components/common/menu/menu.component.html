@@ -19,13 +19,17 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="curs" (click)="goToCategories()" *ngIf="isAuthorized()">
+        <li
+          class="curs"
+          (click)="goToCategories()"
+          *ngIf="isAuthorized | async"
+        >
           <a class="text-green">Kategorije </a>
         </li>
         <li
           class="curs"
           (click)="goToUsers()"
-          *ngIf="isAuthorized() && isAdmin"
+          *ngIf="(isAuthorized | async) && isAdmin"
         >
           <a class="text-green">Korisnici </a>
         </li>
@@ -39,7 +43,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li
           data-toggle="modal"
-          *ngIf="isAuthorized()"
+          *ngIf="isAuthorized | async"
           data-target="#login-modal"
         >
           <a class="text-green">{{ displayName }} </a>
@@ -47,7 +51,7 @@
         <li
           class="curs"
           data-toggle="modal"
-          *ngIf="!isAuthorized()"
+          *ngIf="!(isAuthorized | async)"
           data-target="#login-modal"
         >
           <a class="text-green">Prijava </a>
@@ -55,7 +59,7 @@
         <li
           class="curs"
           data-toggle="modal"
-          *ngIf="isAuthorized()"
+          *ngIf="isAuthorized | async"
           data-target="#logout-modal"
         >
           <a class="text-green">Odjeva </a>

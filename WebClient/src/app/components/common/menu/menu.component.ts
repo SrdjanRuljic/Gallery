@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 import { AuthService } from "../auth/auth.services";
 import { GlobalEventsManager } from "../global-event-manager";
 
@@ -12,20 +13,22 @@ export class MenuComponent implements OnInit {
   isAdmin: boolean = false;
   displayName: string = null;
 
+  isAuthorized: Observable<boolean>;
+
   constructor(
     private _router: Router,
     private _globalEventsManager: GlobalEventsManager,
     private _authService: AuthService
   ) {
-    this.isAuthorized();
+    this.isAuthorized = _authService.isAuthorized();
     this.getLocalUserData();
   }
 
   ngOnInit() {}
 
-  isAuthorized() {
-    return this._authService.isAuthorized();
-  }
+  // isAuthorized() {
+  //   return this._authService.isAuthorized();
+  // }
 
   getLocalUserData() {
     this._globalEventsManager.isAdmin.subscribe((mode: boolean) => {
