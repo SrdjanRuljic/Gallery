@@ -34,7 +34,7 @@ namespace Application.Users.Queries.GetById
                                                        .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (model == null)
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.CategoryNotFound);
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.UserNotFound);
 
             return model;
         }
