@@ -4,6 +4,7 @@ using Application.Categories.Commands.Update;
 using Application.Categories.Queries;
 using Application.Categories.Queries.GetAll;
 using Application.Categories.Queries.GetById;
+using Application.Common.Pagination.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -28,15 +29,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> GetAll()
-        {
-            List<GetAllCategoriesViewModel> list = await Mediator.Send(new GetAllCategoriesQuery());
-
-            return Ok(list);
-        }
-
-        [HttpGet]
         [Route("dropdown")]
         [AllowAnonymous]
         public async Task<IActionResult> GetDropdownItems()
@@ -57,6 +49,15 @@ namespace WebAPI.Controllers
             long id = await Mediator.Send(model);
 
             return Ok(id);
+        }
+
+        [HttpPost]
+        [Route("get-all")]
+        public async Task<IActionResult> GetAll(GetAllCategoriesQuery query)
+        {
+            PaginationResultViewModel<GetAllCategoriesViewModel> list = await Mediator.Send(query);
+
+            return Ok(list);
         }
 
         #endregion [POST]

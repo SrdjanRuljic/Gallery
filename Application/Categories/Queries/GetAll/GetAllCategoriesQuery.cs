@@ -1,9 +1,9 @@
-﻿using MediatR;
-using System.Collections.Generic;
+﻿using Application.Common.Pagination.Models;
+using MediatR;
 
 namespace Application.Categories.Queries.GetAll
 {
-    public class GetAllCategoriesQuery : IRequest<List<GetAllCategoriesViewModel>>
+    public class GetAllCategoriesQuery : PaginationViewModel, IRequest<PaginationResultViewModel<GetAllCategoriesViewModel>>
     {
     }
 }

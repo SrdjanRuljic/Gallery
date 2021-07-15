@@ -1,15 +1,16 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Pagination;
+using Application.Common.Pagination.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Categories.Queries.GetAll
 {
-    public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, List<GetAllCategoriesViewModel>>
+    public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, PaginationResultViewModel<GetAllCategoriesViewModel>>
     {
         private readonly IGalleryDbContext _context;
         private readonly IMapper _mapper;
@@ -21,13 +22,23 @@ namespace Application.Categories.Queries.GetAll
             _mapper = mapper;
         }
 
-        public async Task<List<GetAllCategoriesViewModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<PaginationResultViewModel<GetAllCategoriesViewModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            List<GetAllCategoriesViewModel> list = await _context.Categories
-                                                                 .ProjectTo<GetAllCategoriesViewModel>(_mapper.ConfigurationProvider)
-                                                                 .ToListAsync();
+            IQueryable<GetAllCategoriesViewModel> list = _context.Categories
+                                                                 .ProjectTo<GetAllCategoriesViewModel>(_mapper.ConfigurationProvider);
 
-            return list;
+            PaginatedList<GetAllCategoriesViewModel> paginatedList = await PaginatedList<GetAllCategoriesViewModel>.CreateAsync(list,
+                                                                                                                                request.PageNumber,
+                                                                                                                                request.PageSize);
+
+
+            return new PaginationResultViewModel<GetAllCategoriesViewModel>
+            {
+                List = paginatedList,
+                PageNumber = paginatedList.PageNumber,
+                TotalPages = paginatedList.TotalPages,
+                TotalCount = paginatedList.TotalCount
+            };
         }
     }
 }
