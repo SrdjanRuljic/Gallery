@@ -25,11 +25,11 @@ export class CategoriesService {
     );
   }
 
-  getAll(): Observable<any> {
+  getAll(model): Observable<any> {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
     return this._http
-      .get(this._categoriesUrl, httpOptions)
+      .post(this._categoriesUrl + "/get-all", model, httpOptions)
       .pipe(map((res) => res));
   }
 

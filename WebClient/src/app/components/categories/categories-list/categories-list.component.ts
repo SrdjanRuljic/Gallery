@@ -6,6 +6,7 @@ import { ModalService } from "../../common/modal/modal.service";
 import { ToastService } from "../../common/toast/toast.service";
 import { AuthService } from "../../common/auth/auth.services";
 import { Observable } from "rxjs";
+import { Pagination, SearchModel } from "../../common/pagination";
 
 @Component({
   selector: "app-categories-list",
@@ -13,11 +14,9 @@ import { Observable } from "rxjs";
   styleUrls: ["./categories-list.component.css"],
 })
 export class CategoriesListComponent implements OnInit {
+  searchModel: SearchModel;
+  pagination: Pagination;
   categories: Category[];
-  itemsToDisplay: Category[];
-  itemPerPage: number = 10;
-  numberOfPages: number[] = [];
-  currentPage: number = 0;
 
   isAuthorized: Observable<boolean>;
 
@@ -28,40 +27,33 @@ export class CategoriesListComponent implements OnInit {
     private _toastService: ToastService,
     private _authService: AuthService
   ) {
+    this.searchModel = new SearchModel();
+    this.pagination = new Pagination();
     this.isAuthorized = this._authService.getIsAuthorized();
     this.categories = [];
-    this.itemsToDisplay = [];
   }
 
   ngOnInit() {
+    this.initSearchModel();
     this.getCategories();
   }
 
-  initialize(data) {
-    this.categories = data;
-    this.numberOfPages.length = Math.ceil(
-      this.categories.length / this.itemPerPage
-    );
-    if (this.numberOfPages.length > 1) {
-      this.numberOfPages = Array.from(Array(this.numberOfPages.length).keys());
-    }
-    this.changePage(this.currentPage);
+  initSearchModel() {
+    this.searchModel.pageNumber = 1;
+    this.searchModel.pageSize = 10;
   }
 
-  changePage(pageNum) {
-    this.currentPage = pageNum;
-    this.itemsToDisplay = this.categories.slice(
-      this.currentPage * this.itemPerPage,
-      this.currentPage * this.itemPerPage + this.itemPerPage
-    );
-    if (this.itemsToDisplay.length == 0) {
-      this._toastService.activate("Nema podataka za prikaz.", "alert-danger");
-    }
+  pageChanged(event: any) {
+    this.searchModel.pageNumber = event.page;
+    this.getCategories();
   }
 
   getCategories() {
-    this._categoriesService.getAll().subscribe((data) => {
-      this.initialize(data);
+    this._categoriesService.getAll(this.searchModel).subscribe((response) => {
+      this.categories = response.list;
+      this.pagination.pageNumber = response.pageNumber;
+      this.pagination.totalCount = response.totalCount;
+      this.pagination.totalPages = response.totalPages;
     });
   }
 
