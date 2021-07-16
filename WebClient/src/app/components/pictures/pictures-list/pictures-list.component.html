@@ -61,7 +61,7 @@
 
   <hr class="hr" />
   <div class="row">
-    <div class="card col-md-3" *ngFor="let item of itemsToDisplay">
+    <div class="card col-md-3" *ngFor="let item of pictures">
       <div class="card curs" (click)="goToPictureDetails(item.id)">
         <div class="">
           <img [src]="item.content" class="img" width="260" height="190" />
@@ -70,16 +70,19 @@
       </div>
     </div>
   </div>
-  <hr class="hr" *ngIf="itemsToDisplay.length != 0" />
-  <nav class="center" *ngIf="numberOfPages.length > 1">
-    <ul class="pagination curs">
-      <li
-        *ngFor="let pageNumber of numberOfPages"
-        (click)="changePage(pageNumber)"
-        [ngClass]="{ active: pageNumber == currentPage }"
-      >
-        <button class="btn btn-default btn-sml">{{ pageNumber + 1 }}</button>
-      </li>
-    </ul>
-  </nav>
+  <hr class="hr" *ngIf="pagination.totalCount > searchModel.pageSize" />
+  <div class="text-center" *ngIf="pagination.totalCount > searchModel.pageSize">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalCount"
+      [itemsPerPage]="searchModel.pageSize"
+      [(ngModel)]="searchModel.pageNumber"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
 </div>

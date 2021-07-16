@@ -5,10 +5,13 @@ import { ToastService } from "../../common/toast/toast.service";
 import { CategoriesService } from "../../categories/categories.services";
 import { AuthService } from "../../common/auth/auth.services";
 import { Observable } from "rxjs";
+import { Pagination } from "../../common/pagination";
 
 export class SearchModel {
   name: string;
   categoryId: number;
+  pageNumber: number;
+  pageSize: number;
 }
 
 @Component({
@@ -18,11 +21,8 @@ export class SearchModel {
 })
 export class PicturesListComponent implements OnInit {
   pictures: any[];
-  itemsToDisplay: any[];
-  numberOfPages = [];
-  itemPerPage: number = 12;
-  currentPage: number = 0;
   searchModel: SearchModel;
+  pagination: Pagination;
   categories: any[];
 
   isAuthorized: Observable<boolean>;
@@ -36,8 +36,8 @@ export class PicturesListComponent implements OnInit {
   ) {
     this.isAuthorized = this._authService.getIsAuthorized();
     this.pictures = [];
-    this.itemsToDisplay = [];
     this.searchModel = new SearchModel();
+    this.pagination = new Pagination();
   }
 
   ngOnInit() {
@@ -49,40 +49,27 @@ export class PicturesListComponent implements OnInit {
   initSearchModel() {
     this.searchModel.name = null;
     this.searchModel.categoryId = 0;
+    this.searchModel.pageNumber = 1;
+    this.searchModel.pageSize = 12;
   }
 
   search() {
-    this._picturesService.search(this.searchModel).subscribe((data) => {
-      this.initialize(data);
+    this._picturesService.search(this.searchModel).subscribe((response) => {
+      this.pictures = response.list;
+      this.pagination.pageNumber = response.pageNumber;
+      this.pagination.totalCount = response.totalCount;
+      this.pagination.totalPages = response.totalPages;
     });
   }
 
   resetSearch() {
-    this.currentPage = 0;
     this.initSearchModel();
     this.search();
   }
 
-  initialize(data) {
-    this.pictures = data;
-    this.numberOfPages.length = Math.ceil(
-      this.pictures.length / this.itemPerPage
-    );
-    if (this.numberOfPages.length > 1) {
-      this.numberOfPages = Array.from(Array(this.numberOfPages.length).keys());
-    }
-    this.changePage(this.currentPage);
-  }
-
-  changePage(pageNum) {
-    this.currentPage = pageNum;
-    this.itemsToDisplay = this.pictures.slice(
-      this.currentPage * this.itemPerPage,
-      this.currentPage * this.itemPerPage + this.itemPerPage
-    );
-    if (this.itemsToDisplay.length == 0) {
-      this._toastService.activate("Nema podataka za prikaz.", "alert-danger");
-    }
+  pageChanged(event: any) {
+    this.searchModel.pageNumber = event.page;
+    this.search();
   }
 
   getCategories() {

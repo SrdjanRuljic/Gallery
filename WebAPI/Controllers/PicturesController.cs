@@ -1,4 +1,5 @@
-﻿using Application.Pictures.Commands.Delete;
+﻿using Application.Common.Pagination.Models;
+using Application.Pictures.Commands.Delete;
 using Application.Pictures.Commands.Insert;
 using Application.Pictures.Commands.Search;
 using Application.Pictures.Commands.Update;
@@ -6,7 +7,6 @@ using Application.Pictures.Queries.GetById;
 using Application.Pictures.Queries.GetDetailsById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Search(SearchPicturesCommand command)
         {
-            List<SearchPicturesCommandViewModel> pictures = await Mediator.Send(command);
+            PaginationResultViewModel<SearchPicturesCommandViewModel> pictures = await Mediator.Send(command);
 
             return Ok(pictures);
         }
