@@ -1,15 +1,16 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Pagination;
+using Application.Common.Pagination.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Users.Queries.GetAll
 {
-    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<GetAllUsersViewModel>>
+    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, PaginationResultViewModel<GetAllUsersViewModel>>
     {
         private readonly IGalleryDbContext _context;
         private readonly IMapper _mapper;
@@ -21,13 +22,22 @@ namespace Application.Users.Queries.GetAll
             _mapper = mapper;
         }
 
-        public async Task<List<GetAllUsersViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+        public async Task<PaginationResultViewModel<GetAllUsersViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            List<GetAllUsersViewModel> list = await _context.Users
-                                                            .ProjectTo<GetAllUsersViewModel>(_mapper.ConfigurationProvider)
-                                                            .ToListAsync();
+            IQueryable<GetAllUsersViewModel> list = _context.Users
+                                                            .ProjectTo<GetAllUsersViewModel>(_mapper.ConfigurationProvider);
 
-            return list;
+            PaginatedList<GetAllUsersViewModel> paginatedList = await PaginatedList<GetAllUsersViewModel>.CreateAsync(list,
+                                                                                                                      request.PageNumber,
+                                                                                                                      request.PageSize);
+
+            return new PaginationResultViewModel<GetAllUsersViewModel>
+            {
+                List = paginatedList,
+                PageNumber = paginatedList.PageNumber,
+                TotalPages = paginatedList.TotalPages,
+                TotalCount = paginatedList.TotalCount
+            };
         }
     }
 }

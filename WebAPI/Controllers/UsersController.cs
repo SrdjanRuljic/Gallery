@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.Delete;
+﻿using Application.Common.Pagination.Models;
+using Application.Users.Commands.Delete;
 using Application.Users.Commands.Insert;
 using Application.Users.Commands.Update;
 using Application.Users.Commands.UpdatePassword;
@@ -7,7 +8,6 @@ using Application.Users.Queries.GetById;
 using Application.Users.Queries.LogedInUserData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -30,16 +30,6 @@ namespace WebAPI.Controllers
             });
 
             return Ok(data);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> GetAll()
-        {
-            List<GetAllUsersViewModel> users = await Mediator.Send(new GetAllUsersQuery());
-
-            return Ok(users);
         }
 
         [Authorize(Roles = "Admin")]
@@ -81,6 +71,16 @@ namespace WebAPI.Controllers
         #endregion
 
         #region [POST]
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [Route("get-all")]
+        public async Task<IActionResult> GetAll(GetAllUsersQuery query)
+        {
+            PaginationResultViewModel<GetAllUsersViewModel> users = await Mediator.Send(query);
+
+            return Ok(users);
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]

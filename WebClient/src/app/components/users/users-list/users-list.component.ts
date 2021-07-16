@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { User } from "../user";
 import { ModalService } from "../../common/modal/modal.service";
 import { ToastService } from "../../common/toast/toast.service";
+import { Pagination, SearchModel } from "../../common/pagination";
 
 @Component({
   selector: "app-users-list",
@@ -11,11 +12,9 @@ import { ToastService } from "../../common/toast/toast.service";
   styleUrls: ["./users-list.component.css"],
 })
 export class UsersListComponent implements OnInit {
+  searchModel: SearchModel;
+  pagination: Pagination;
   users: User[];
-  itemsToDisplay: User[];
-  itemsPerPage: number = 10;
-  numberOfPages: number[] = [];
-  currentPage: number = 0;
 
   constructor(
     private _usersService: UsersService,
@@ -23,39 +22,32 @@ export class UsersListComponent implements OnInit {
     private _modalService: ModalService,
     private _toastService: ToastService
   ) {
+    this.searchModel = new SearchModel();
+    this.pagination = new Pagination();
     this.users = [];
-    this.itemsToDisplay = [];
   }
 
   ngOnInit() {
+    this.initSearchModel();
     this.getUsers();
   }
 
-  initialize(data) {
-    this.users = data;
-    this.numberOfPages.length = Math.ceil(
-      this.users.length / this.itemsPerPage
-    );
-    if (this.numberOfPages.length > 1) {
-      this.numberOfPages = Array.from(Array(this.numberOfPages.length).keys());
-    }
-    this.changePage(this.currentPage);
+  initSearchModel() {
+    this.searchModel.pageNumber = 1;
+    this.searchModel.pageSize = 10;
   }
 
-  changePage(pageNum) {
-    this.currentPage = pageNum;
-    this.itemsToDisplay = this.users.slice(
-      this.currentPage * this.itemsPerPage,
-      this.currentPage * this.itemsPerPage + this.itemsPerPage
-    );
-    if (this.itemsToDisplay.length == 0) {
-      this._toastService.activate("Nema podataka za prikaz.", "alert-danger");
-    }
+  pageChanged(event: any) {
+    this.searchModel.pageNumber = event.page;
+    this.getUsers();
   }
 
   getUsers() {
-    this._usersService.getAll().subscribe((data) => {
-      this.initialize(data);
+    this._usersService.getAll(this.searchModel).subscribe((response) => {
+      this.users = response.list;
+      this.pagination.pageNumber = response.pageNumber;
+      this.pagination.totalCount = response.totalCount;
+      this.pagination.totalPages = response.totalPages;
     });
   }
 

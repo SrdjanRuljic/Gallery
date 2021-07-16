@@ -28,10 +28,12 @@ export class UsersService {
     );
   }
 
-  getAll(): Observable<any> {
+  getAll(model): Observable<any> {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
-    return this._http.get(this._usersUrl, httpOptions).pipe(map((res) => res));
+    return this._http
+      .post(this._usersUrl + "/get-all", model, httpOptions)
+      .pipe(map((res) => res));
   }
 
   getById(id): Observable<any> {

@@ -12,7 +12,7 @@
 
   <hr class="hr" />
   <div class="">
-    <table class="table table-condensed" *ngIf="itemsToDisplay.length != 0">
+    <table class="table table-condensed" *ngIf="users.length != 0">
       <thead>
         <tr>
           <th>#</th>
@@ -23,8 +23,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of itemsToDisplay; let i = index">
-          <td>{{ i + 1 + currentPage * itemsPerPage }}</td>
+        <tr *ngFor="let item of users; let i = index">
+          <td>
+            {{ i + 1 + (searchModel.pageNumber - 1) * searchModel.pageSize }}
+          </td>
           <td>{{ item.firstName }}</td>
           <td>{{ item.lastName }}</td>
           <td>{{ item.role }}</td>
@@ -52,17 +54,23 @@
       </tbody>
     </table>
 
-    <hr class="hr" *ngIf="itemsToDisplay.length != 0" />
-    <nav class="center" *ngIf="numberOfPages.length > 1">
-      <ul class="pagination curs">
-        <li
-          *ngFor="let pageNumber of numberOfPages"
-          (click)="changePage(pageNumber)"
-          [ngClass]="{ active: pageNumber == currentPage }"
-        >
-          <button class="btn btn-default btn-sml">{{ pageNumber + 1 }}</button>
-        </li>
-      </ul>
-    </nav>
+    <hr class="hr" *ngIf="pagination.totalCount > searchModel.pageSize" />
+    <div
+      class="text-center"
+      *ngIf="pagination.totalCount > searchModel.pageSize"
+    >
+      <pagination
+        [boundaryLinks]="true"
+        [totalItems]="pagination.totalCount"
+        [itemsPerPage]="searchModel.pageSize"
+        [(ngModel)]="searchModel.pageNumber"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        firstText="&laquo;"
+        lastText="&raquo;"
+      >
+      </pagination>
+    </div>
   </div>
 </div>
