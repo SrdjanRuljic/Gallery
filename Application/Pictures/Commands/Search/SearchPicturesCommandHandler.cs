@@ -31,7 +31,8 @@ namespace Application.Pictures.Commands.Search
                                                                                   (command.CategoryId <= 0 || !command.CategoryId.HasValue ?
                                                                                    true :
                                                                                    x.CategoryId.Equals(command.CategoryId)))
-                                                                      .ProjectTo<SearchPicturesCommandViewModel>(_mapper.ConfigurationProvider);
+                                                                      .ProjectTo<SearchPicturesCommandViewModel>(_mapper.ConfigurationProvider)
+                                                                      .OrderByDescending(x => x.Id);
 
             PaginatedList<SearchPicturesCommandViewModel> paginatedList = await PaginatedList<SearchPicturesCommandViewModel>.CreateAsync(list,
                                                                                                                                           command.PageNumber,

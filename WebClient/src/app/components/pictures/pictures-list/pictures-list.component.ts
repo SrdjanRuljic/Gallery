@@ -50,7 +50,7 @@ export class PicturesListComponent implements OnInit {
     this.searchModel.name = null;
     this.searchModel.categoryId = 0;
     this.searchModel.pageNumber = 1;
-    this.searchModel.pageSize = 12;
+    this.searchModel.pageSize = 8;
   }
 
   search() {
