@@ -1,6 +1,6 @@
 <div class="container">
   <h3>
-    Slike
+    <span><b>Slike</b></span>
     <button
       type="button"
       class="btn btn-default pull-right"
@@ -61,12 +61,25 @@
 
   <hr class="hr" />
   <div class="row">
-    <div class="card col-md-3" *ngFor="let item of pictures">
-      <div class="card curs" (click)="goToPictureDetails(item.id)">
-        <div class="">
-          <img [src]="item.content" class="img" width="260" height="190" />
+    <div class="card col-md-3 col-sm-6" *ngFor="let item of pictures">
+      <div class="picture-grid" (click)="goToPictureDetails(item.id)">
+        <div class="picture-image">
+          <a>
+            <img [src]="item.content" class="img" width="260" height="190" />
+          </a>
         </div>
-        <h5 class="title">{{ item.name }}</h5>
+        <div class="picture-content">
+          <h3 class="title">
+            <span>{{ item.name }}</span>
+          </h3>
+        </div>
+        <div class="options">
+          <li>
+            <a data-tip="Detalji" (click)="goToPictureDetails(item.id)"
+              ><i class="glyphicon glyphicon-info-sign"></i
+            ></a>
+          </li>
+        </div>
       </div>
     </div>
   </div>

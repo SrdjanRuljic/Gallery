@@ -1,34 +1,67 @@
 <div class="container">
-    
-  <h3 *ngIf="model.id == 0">Dodavanje novog kontakta</h3>
-  <h3 *ngIf="model.id != 0">Uređivanje kontakta</h3>
+  <h3 *ngIf="model.id == 0">
+    <span><b>Dodavanje novog kontakta</b></span>
+  </h3>
+  <h3 *ngIf="model.id != 0">
+    <span><b>Uređivanje kontakta</b></span>
+  </h3>
 
-  <hr class="hr"/>
+  <hr class="hr" />
   <div class="row">
-      <form name="form" (ngSubmit)="f.valid && save()" #f="ngForm">
-          <fieldset>
-              <div class="form-group col-md-7">
-                  <div [ngClass]="{ 'form-group has-error':f.submitted && !nameValidation()}">
-                      <label for="name">Naziv kontakta*</label>
-                      <input type="text" [(ngModel)]="model.name" class="form-control" id="contactName" name="contactName" autocomplete="off"/>
-                      <div *ngIf="f.submitted && !nameValidation()" class="help-block">Neophodno je unijeti naziv kontakta</div>
-                  </div>
-              </div>
+    <form name="form" (ngSubmit)="f.valid && save()" #f="ngForm">
+      <fieldset>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !nameValidation()
+            }"
+          >
+            <label for="name">Naziv kontakta*</label>
+            <input
+              type="text"
+              [(ngModel)]="model.name"
+              class="form-control"
+              id="contactName"
+              name="contactName"
+              autocomplete="off"
+            />
+            <div *ngIf="f.submitted && !nameValidation()" class="help-block">
+              Neophodno je unijeti naziv kontakta
+            </div>
+          </div>
+        </div>
 
-              <div class="form-group col-md-7">
-                <div [ngClass]="{ 'form-group has-error':f.submitted && !valueValidation()}">
-                    <label for="value">Vrijednost kontakta*</label>
-                    <input type="text" [(ngModel)]="model.value" class="form-control" id="contactValue" name="contactValue" autocomplete="off"/>
-                    <div *ngIf="f.submitted && !valueValidation()" class="help-block">Neophodno je unijeti vrijednost kontakta</div>
-                </div>
-              </div>
+        <div class="form-group col-md-7">
+          <div
+            [ngClass]="{
+              'form-group has-error': f.submitted && !valueValidation()
+            }"
+          >
+            <label for="value">Vrijednost kontakta*</label>
+            <input
+              type="text"
+              [(ngModel)]="model.value"
+              class="form-control"
+              id="contactValue"
+              name="contactValue"
+              autocomplete="off"
+            />
+            <div *ngIf="f.submitted && !valueValidation()" class="help-block">
+              Neophodno je unijeti vrijednost kontakta
+            </div>
+          </div>
+        </div>
 
-              <div class="form-group col-md-12">
-                  <hr class="hr"/>
-                  <button type="button" class="btn btn-default" (click)="goBack()">Nazad</button>
-                  <button type="submit" class="btn btn-default pull-right">Sačuvati</button>
-              </div>
-          </fieldset>
-      </form>
+        <div class="form-group col-md-12">
+          <hr class="hr" />
+          <button type="button" class="btn btn-default" (click)="goBack()">
+            Nazad
+          </button>
+          <button type="submit" class="btn btn-default pull-right">
+            Sačuvati
+          </button>
+        </div>
+      </fieldset>
+    </form>
   </div>
 </div>

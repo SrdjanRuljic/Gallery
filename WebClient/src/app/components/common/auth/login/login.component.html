@@ -1,30 +1,49 @@
-<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog" style="z-index: 90000">
-        <div class="modal-content">
-            <div class="modal-header">                
-                <h4 class="modal-title">Unesite Vaše podatke</h4>
-            </div>
-            <div class="modal-body">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="username" class="font">Korisničko ime</label>
-                        <input type="text" #username class="form-control" id="username">
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="font">Lozinka</label>
-                        <input type="password" #password class="form-control" id="password">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" 
-                        class="btn btn-default" 
-                        data-dismiss="modal" 
-                        (click)="login(username.value, password.value)">
-                            Prijava
-                </button>
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Nazad</button>
-            </div>
-        </div>
+<div
+  class="modal"
+  id="login-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+>
+  <div class="modal-dialog" style="z-index: 90000">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Unesite Vaše podatke</h3>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div class="form-group">
+            <label for="username" class="font">Korisničko ime</label>
+            <input type="text" #username class="form-control" id="username" />
+          </div>
+          <div class="form-group">
+            <label for="password" class="font">Lozinka</label>
+            <input
+              type="password"
+              #password
+              class="form-control"
+              id="password"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          (click)="login(username.value, password.value)"
+        >
+          Prijava
+        </button>
+        <button
+          type="button"
+          class="btn btn-default pull-left"
+          data-dismiss="modal"
+        >
+          Nazad
+        </button>
+      </div>
     </div>
+  </div>
 </div>

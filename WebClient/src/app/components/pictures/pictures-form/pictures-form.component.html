@@ -1,6 +1,10 @@
 <div class="container">
-  <h3 *ngIf="model.id == 0">Dodavanje nove slike</h3>
-  <h3 *ngIf="model.id != 0">Uređivanje slike</h3>
+  <h3 *ngIf="model.id == 0">
+    <span><b>Dodavanje nove slike</b></span>
+  </h3>
+  <h3 *ngIf="model.id != 0">
+    <span><b>Uređivanje slike</b></span>
+  </h3>
   <hr class="hr" />
   <div class="row">
     <form name="form" (ngSubmit)="f.valid && save()" #f="ngForm">
