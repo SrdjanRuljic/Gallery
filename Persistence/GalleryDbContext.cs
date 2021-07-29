@@ -14,6 +14,7 @@ namespace Persistence
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<AboutAuthor> AboutAuthor { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public GalleryDbContext(DbContextOptions<GalleryDbContext> options)
             : base(options)
