@@ -1,10 +1,6 @@
-﻿using Application.Common.Behaviours;
-using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Domain.Entities;
-using Gallery.Common.Helpers;
+﻿using Domain.Entities;
 using MediatR;
-using System.Net;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,29 +8,18 @@ namespace Application.Users.Commands.UpdatePassword
 {
     public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, bool>
     {
-        private readonly IGalleryDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UpdatePasswordCommandHandler(IGalleryDbContext context)
+        public UpdatePasswordCommandHandler(UserManager<User> userManager)
         {
-            _context = context;
+            _userManager = userManager;
         }
 
         public async Task<bool> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
         {
-            byte[] passwordHash;
-            byte[] passwordSalt;
+            User user = await _userManager.FindByIdAsync(request.Id);
 
-            if (request.Id <= 0)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
-
-            Hasher.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
-
-            User entity = await _context.Users.FindAsync(request.Id);
-
-            entity.PasswordHash = passwordHash;
-            entity.PasswordSalt = passwordSalt;
-
-            await _context.SaveChangesAsync(cancellationToken);
+            await _userManager.ChangePasswordAsync(user, user.PasswordHash, request.Password);
 
             return true;
         }

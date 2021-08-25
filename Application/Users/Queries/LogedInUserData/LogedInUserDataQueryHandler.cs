@@ -1,9 +1,10 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
@@ -14,19 +15,19 @@ namespace Application.Users.Queries.LogedInUserData
 {
     public class LogedInUserDataQueryHandler : IRequestHandler<LogedInUserDataQuery, LogedInUserDataViewModel>
     {
-        private readonly IGalleryDbContext _context;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public LogedInUserDataQueryHandler(IGalleryDbContext context,
-                                             IMapper mapper)
+        public LogedInUserDataQueryHandler(UserManager<User> userManager,
+                                       IMapper mapper)
         {
-            _context = context;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         public async Task<LogedInUserDataViewModel> Handle(LogedInUserDataQuery request, CancellationToken cancellationToken)
         {
-            LogedInUserDataViewModel vievModel = await _context.Users.Where(x => x.Username.Equals(request.Username))
+            LogedInUserDataViewModel vievModel = await _userManager.Users.Where(x => x.UserName.Equals(request.Username))
                                                                      .ProjectTo<LogedInUserDataViewModel>(_mapper.ConfigurationProvider)
                                                                      .FirstOrDefaultAsync();
 

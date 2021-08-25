@@ -1,9 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Pagination;
+﻿using Application.Common.Pagination;
 using Application.Common.Pagination.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,19 +13,19 @@ namespace Application.Users.Queries.GetAll
 {
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, PaginationResultViewModel<GetAllUsersViewModel>>
     {
-        private readonly IGalleryDbContext _context;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public GetAllUsersQueryHandler(IGalleryDbContext context,
+        public GetAllUsersQueryHandler(UserManager<User> userManager,
                                        IMapper mapper)
         {
-            _context = context;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         public async Task<PaginationResultViewModel<GetAllUsersViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            IQueryable<GetAllUsersViewModel> list = _context.Users
+            IQueryable<GetAllUsersViewModel> list = _userManager.Users
                                                             .ProjectTo<GetAllUsersViewModel>(_mapper.ConfigurationProvider);
 
             PaginatedList<GetAllUsersViewModel> paginatedList = await PaginatedList<GetAllUsersViewModel>.CreateAsync(list,

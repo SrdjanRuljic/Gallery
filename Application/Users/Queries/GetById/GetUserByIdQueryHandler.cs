@@ -1,9 +1,10 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Threading;
@@ -13,13 +14,13 @@ namespace Application.Users.Queries.GetById
 {
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, GetUserByIdViewModel>
     {
-        private readonly IGalleryDbContext _context;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(IGalleryDbContext context,
+        public GetUserByIdQueryHandler(UserManager<User> userManager,
                                        IMapper mapper)
         {
-            _context = context;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -29,7 +30,7 @@ namespace Application.Users.Queries.GetById
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
 
 
-            GetUserByIdViewModel model = await _context.Users
+            GetUserByIdViewModel model = await _userManager.Users
                                                        .ProjectTo<GetUserByIdViewModel>(_mapper.ConfigurationProvider)
                                                        .FirstOrDefaultAsync(x => x.Id == request.Id);
 

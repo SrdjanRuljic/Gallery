@@ -7,8 +7,6 @@ namespace Application.Common.Interfaces
 {
     public interface IGalleryDbContext
     {
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<AboutAuthor> AboutAuthor { get; set; }

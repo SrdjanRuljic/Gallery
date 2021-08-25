@@ -15,13 +15,13 @@ namespace Application.Users.Commands.UpdatePassword
                 isValid = false;
             }
 
-            if (model.Id == 0 && String.IsNullOrWhiteSpace(model.Password))
+            if (model.Id == "0" && String.IsNullOrWhiteSpace(model.Password))
             {
                 validationMessage += "Neophodno je unijeti lozinku korisnika. ";
                 isValid = false;
             }
 
-            if (model.Id == 0 && String.IsNullOrWhiteSpace(model.ConfirmedPassword))
+            if (model.Id == "" && String.IsNullOrWhiteSpace(model.ConfirmedPassword))
             {
                 validationMessage += "Neophodno je unijeti potvrdu lozinke korisnika. ";
                 isValid = false;

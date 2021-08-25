@@ -8,6 +8,6 @@ namespace Application.Users.Commands.Update
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
-        public long RoleId { get; set; }
+        public string RoleId { get; set; }
     }
 }

@@ -3,7 +3,6 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Net;
 using System.Threading;
@@ -27,7 +26,7 @@ namespace Application.Users.Commands.Update
             if (!request.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            User entity = await _context.Users.FindAsync(request.Id);
+            User entity = new User();
 
             request.Username = request.Username.ToLower();
 
@@ -37,16 +36,14 @@ namespace Application.Users.Commands.Update
             if (String.IsNullOrEmpty(request.LastName) || String.IsNullOrWhiteSpace(request.LastName))
                 request.LastName = null;
 
-            bool exists = await _context.Users.AnyAsync(x => x.Username.Equals(request.Username) &&
-                                                             x.Id != request.Id);
+            bool exists = false;
 
             if (exists)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.CategoryExists);
 
-            entity.Username = request.Username;
+            entity.UserName = request.Username;
             entity.FirstName = request.FirstName;
             entity.LastName = request.LastName;
-            entity.RoleId = request.RoleId;
 
             await _context.SaveChangesAsync(cancellationToken);
 

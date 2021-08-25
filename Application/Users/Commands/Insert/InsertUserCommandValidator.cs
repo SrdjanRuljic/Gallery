@@ -27,7 +27,7 @@ namespace Application.Users.Commands.Insert
                 isValid = false;
             }
 
-            if (model.RoleId <= 0)
+            if (String.IsNullOrWhiteSpace(model.RoleId))
             {
                 validationMessage += "Neophodno je odabrati ulogu. ";
                 isValid = false;

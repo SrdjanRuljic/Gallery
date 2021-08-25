@@ -13,8 +13,7 @@ namespace Application.Users.Queries.GetAll
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<User, GetAllUsersViewModel>()
-                   .ForMember(d => d.Role, opt => opt.MapFrom(s => s.Role.Name));
+            profile.CreateMap<User, GetAllUsersViewModel>();
         }
     }
 }

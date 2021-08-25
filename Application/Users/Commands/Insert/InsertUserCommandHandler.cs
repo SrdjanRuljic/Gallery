@@ -1,10 +1,9 @@
 ﻿using Application.Common.Behaviours;
 using Application.Common.Exceptions;
-using Application.Common.Interfaces;
 using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Net;
 using System.Threading;
@@ -14,11 +13,11 @@ namespace Application.Users.Commands.Insert
 {
     public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, long>
     {
-        private readonly IGalleryDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public InsertUserCommandHandler(IGalleryDbContext context)
+        public InsertUserCommandHandler(UserManager<User> userManager)
         {
-            _context = context;
+            _userManager = userManager;
         }
 
         public async Task<long> Handle(InsertUserCommand command, CancellationToken cancellationToken)
@@ -38,28 +37,22 @@ namespace Application.Users.Commands.Insert
             if (String.IsNullOrEmpty(command.LastName) || String.IsNullOrWhiteSpace(command.LastName))
                 command.LastName = null;
 
-            bool exists = await _context.Users.AnyAsync(x => x.Username.Equals(command.Username));
+            User user = await _userManager.FindByNameAsync(command.Username);
 
-            if (exists)
+            if (user != null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
 
             Hasher.CreatePasswordHash(command.Password, out passwordHash, out passwordSalt);
 
-            User entity = new User()
+            user = new User()
             {
                 FirstName = command.FirstName,
-                LastName = command.LastName,
-                Username = command.Username,
-                RoleId = command.RoleId,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
+                LastName = command.LastName
             };
 
-            _context.Users.Add(entity);
+            await _userManager.CreateAsync(user);
 
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return entity.Id;
+            return 1;
         }
     }
 }

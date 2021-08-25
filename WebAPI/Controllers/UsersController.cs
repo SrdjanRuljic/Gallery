@@ -98,7 +98,7 @@ namespace WebAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(string id)
         {
             await Mediator.Send(new DeleteUserCommand
             {
