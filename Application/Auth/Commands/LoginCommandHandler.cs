@@ -4,7 +4,7 @@ using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -32,24 +32,14 @@ namespace Application.Auth.Commands
             if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            var result = await _userManager.Users
-                                           .Where(x => x.UserName
-                                                        .Equals(command.Username))
-                                           .Select(x => new
-                                           {
-                                               Username = x.UserName,
-                                               PasswordHash = x.PasswordHash,
-                                               Role = ""
-                                           })
-                                           .FirstOrDefaultAsync();
+            AppUser user = await _userManager.FindByNameAsync(command.Username);
 
-            if (result == null)
+            if (user == null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IncorectUsernameOrPassword);
 
-            //if (!Hasher.VerifyPassword(command.Password, result.PasswordHash, result.PasswordSalt))
-            //    throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IncorectUsernameOrPassword);
+            IList<string> roles = await _userManager.GetRolesAsync(user);
 
-            object token = TokenHelper.GenerateJwt(result.Username, result.Role, _jwtFactory);
+            object token = TokenHelper.GenerateJwt(user.UserName, roles.FirstOrDefault(), _jwtFactory);
 
             return token;
         }
