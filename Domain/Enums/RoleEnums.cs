@@ -1,8 +1,8 @@
 ﻿namespace Domain
 {
-    public enum RoleEnums : long
+    public enum RoleEnums
     {
-        ADMIN = 1,
-        MODERATOR = 2
+        Admin,
+        Moderator
     }
 }

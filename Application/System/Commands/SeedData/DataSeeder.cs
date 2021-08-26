@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
+using Domain;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,16 +11,19 @@ namespace Application.System.Commands.SeedData
     public class DataSeeder
     {
         private readonly IGalleryDbContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public DataSeeder(IGalleryDbContext context)
+        public DataSeeder(IGalleryDbContext context,
+                          RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _roleManager = roleManager;
         }
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            //if (!_context.Roles.Any())
-            //    await SeedRolesAsync(cancellationToken);
+            if (!_roleManager.Roles.Any())
+                await SeedRolesAsync(cancellationToken);
             //if (!_context.Users.Any())
             //    await SeedUsersAsync(cancellationToken);
             if (!_context.AboutAuthor.Any())
@@ -29,23 +34,8 @@ namespace Application.System.Commands.SeedData
 
         public async Task SeedRolesAsync(CancellationToken cancellationToken)
         {
-            //Role[] roles = new[]
-            //{
-            //    new Role()
-            //    {
-            //        Name = "Admin",
-            //        Description = "Administratorska uloga"
-            //    },
-            //    new Role()
-            //    {
-            //        Name = "Moderator",
-            //        Description = "Moderatorska uloga"
-            //    }
-            //};
-
-            //_context.Roles.AddRange(roles);
-
-            //await _context.SaveChangesAsync(cancellationToken);
+            await _roleManager.CreateAsync(new IdentityRole(RoleEnums.Admin.ToString()));
+            await _roleManager.CreateAsync(new IdentityRole(RoleEnums.Moderator.ToString()));
         }
 
         public async Task SeedUsersAsync(CancellationToken cancellationToken)
