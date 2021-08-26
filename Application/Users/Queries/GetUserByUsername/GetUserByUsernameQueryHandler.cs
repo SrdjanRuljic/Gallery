@@ -11,10 +11,10 @@ namespace Application.Users.Queries.GetUserByUsername
 {
     public class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserLoginDetailsViewModel>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public GetUserByUsernameQueryHandler(UserManager<User> userManager,
+        public GetUserByUsernameQueryHandler(UserManager<AppUser> userManager,
                                        IMapper mapper)
         {
             _userManager = userManager;

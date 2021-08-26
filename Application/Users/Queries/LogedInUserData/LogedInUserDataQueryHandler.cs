@@ -15,10 +15,10 @@ namespace Application.Users.Queries.LogedInUserData
 {
     public class LogedInUserDataQueryHandler : IRequestHandler<LogedInUserDataQuery, LogedInUserDataViewModel>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public LogedInUserDataQueryHandler(UserManager<User> userManager,
+        public LogedInUserDataQueryHandler(UserManager<AppUser> userManager,
                                        IMapper mapper)
         {
             _userManager = userManager;

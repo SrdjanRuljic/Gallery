@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public class GalleryDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>, IGalleryDbContext
+    public class GalleryDbContext : IdentityDbContext<AppUser>, IGalleryDbContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Picture> Pictures { get; set; }

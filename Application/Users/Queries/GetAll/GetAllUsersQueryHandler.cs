@@ -13,10 +13,10 @@ namespace Application.Users.Queries.GetAll
 {
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, PaginationResultViewModel<GetAllUsersViewModel>>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public GetAllUsersQueryHandler(UserManager<User> userManager,
+        public GetAllUsersQueryHandler(UserManager<AppUser> userManager,
                                        IMapper mapper)
         {
             _userManager = userManager;

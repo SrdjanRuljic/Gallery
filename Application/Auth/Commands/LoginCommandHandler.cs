@@ -15,10 +15,10 @@ namespace Application.Auth.Commands
     public class LoginCommandHandler : IRequestHandler<LoginCommand, object>
     {
 
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         public readonly IJwtFactory _jwtFactory;
 
-        public LoginCommandHandler(UserManager<User> userManager,
+        public LoginCommandHandler(UserManager<AppUser> userManager,
                                    IJwtFactory jwtFactory)
         {
             _userManager = userManager;

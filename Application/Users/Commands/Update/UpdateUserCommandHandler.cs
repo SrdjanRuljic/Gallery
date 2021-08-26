@@ -26,7 +26,7 @@ namespace Application.Users.Commands.Update
             if (!request.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            User entity = new User();
+            AppUser entity = new AppUser();
 
             request.Username = request.Username.ToLower();
 

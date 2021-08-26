@@ -13,9 +13,9 @@ namespace Application.Users.Commands.Insert
 {
     public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, long>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public InsertUserCommandHandler(UserManager<User> userManager)
+        public InsertUserCommandHandler(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
         }
@@ -37,14 +37,14 @@ namespace Application.Users.Commands.Insert
             if (String.IsNullOrEmpty(command.LastName) || String.IsNullOrWhiteSpace(command.LastName))
                 command.LastName = null;
 
-            User user = await _userManager.FindByNameAsync(command.Username);
+            AppUser user = await _userManager.FindByNameAsync(command.Username);
 
             if (user != null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
 
             Hasher.CreatePasswordHash(command.Password, out passwordHash, out passwordSalt);
 
-            user = new User()
+            user = new AppUser()
             {
                 FirstName = command.FirstName,
                 LastName = command.LastName

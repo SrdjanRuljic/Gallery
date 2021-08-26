@@ -4,7 +4,7 @@ using Gallery.Application.Common.Mappings;
 
 namespace Application.Users.Queries.GetAll
 {
-    public class GetAllUsersViewModel : IMapFrom<User>
+    public class GetAllUsersViewModel : IMapFrom<AppUser>
     {
         public long Id { get; set; }
         public string FirstName { get; set; }
@@ -13,7 +13,7 @@ namespace Application.Users.Queries.GetAll
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<User, GetAllUsersViewModel>();
+            profile.CreateMap<AppUser, GetAllUsersViewModel>();
         }
     }
 }

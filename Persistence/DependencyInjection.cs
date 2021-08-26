@@ -15,7 +15,7 @@ namespace Persistence
             services.AddDbContext<GalleryDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("GalleryDb")));
 
-            services.AddIdentityCore<User>()
+            services.AddIdentityCore<AppUser>()
                     .AddRoles<IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
                     .AddRoleValidator<RoleValidator<IdentityRole>>()

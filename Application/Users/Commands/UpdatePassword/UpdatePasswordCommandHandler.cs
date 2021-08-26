@@ -8,16 +8,16 @@ namespace Application.Users.Commands.UpdatePassword
 {
     public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, bool>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UpdatePasswordCommandHandler(UserManager<User> userManager)
+        public UpdatePasswordCommandHandler(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
         }
 
         public async Task<bool> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
         {
-            User user = await _userManager.FindByIdAsync(request.Id);
+            AppUser user = await _userManager.FindByIdAsync(request.Id);
 
             await _userManager.ChangePasswordAsync(user, user.PasswordHash, request.Password);
 

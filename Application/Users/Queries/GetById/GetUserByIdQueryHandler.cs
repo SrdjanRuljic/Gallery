@@ -14,10 +14,10 @@ namespace Application.Users.Queries.GetById
 {
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, GetUserByIdViewModel>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(UserManager<User> userManager,
+        public GetUserByIdQueryHandler(UserManager<AppUser> userManager,
                                        IMapper mapper)
         {
             _userManager = userManager;

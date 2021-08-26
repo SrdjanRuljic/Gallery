@@ -11,20 +11,23 @@ namespace Application.System.Commands.SeedData
     {
         private readonly IGalleryDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public DataSeeder(IGalleryDbContext context,
-                          RoleManager<IdentityRole> roleManager)
+                          RoleManager<IdentityRole> roleManager,
+                          UserManager<AppUser> userManager)
         {
             _context = context;
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
             if (!_roleManager.Roles.Any())
                 await DefaultRoles.SeedAsync(_roleManager);
-            //if (!_context.Users.Any())
-            //    await SeedUsersAsync(cancellationToken);
+            if (!_userManager.Users.Any())
+                await SeedUsersAsync(cancellationToken);
             if (!_context.AboutAuthor.Any())
                 await SeedAboutAuthorAsync(cancellationToken);
             else
@@ -33,40 +36,8 @@ namespace Application.System.Commands.SeedData
 
         public async Task SeedUsersAsync(CancellationToken cancellationToken)
         {
-            //byte[] adminPasswordHash;
-            //byte[] adminPasswordSalt;
-            //byte[] moderatorPasswordHash;
-            //byte[] moderatorPasswordSalt;
-
-            //Hasher.CreatePasswordHash("Administrator_123!", out adminPasswordHash, out adminPasswordSalt);
-            //Hasher.CreatePasswordHash("Moderator_123!", out moderatorPasswordHash, out moderatorPasswordSalt);
-
-            //User[] users = new[]
-            //{
-            //    new User()
-            //    {
-            //        FirstName = "Admin",
-            //        LastName = "Admin",
-            //        Username = "admin",
-            //        RoleId = _context.Roles.FirstOrDefault(x => x.Name == "Admin").Id,
-            //        PasswordHash = adminPasswordHash,
-            //        PasswordSalt = adminPasswordSalt
-
-            //    },
-            //    new User()
-            //    {
-            //        FirstName = "Moderator",
-            //        LastName = "Moderator",
-            //        Username = "moderator",
-            //        RoleId = _context.Roles.FirstOrDefault(x => x.Name == "Moderator").Id,
-            //        PasswordHash = moderatorPasswordHash,
-            //        PasswordSalt = moderatorPasswordSalt
-            //    }
-            //};
-
-            //_context.Users.AddRange(users);
-
-            //await _context.SaveChangesAsync(cancellationToken);
+            await DefaultUsers.Admin.SeedAsync(_userManager);
+            await DefaultUsers.Moderator.SeedAsync(_userManager);
         }
 
         public async Task SeedAboutAuthorAsync(CancellationToken cancellationToken)
