@@ -25,7 +25,7 @@ namespace Application.System.Commands.SeedData.DefaultUsers
                 AppUser user = await userManager.FindByNameAsync(moderator.UserName);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(moderator, "Administrator_123!");
+                    await userManager.CreateAsync(moderator, "Moderator_123!");
                     await userManager.AddToRoleAsync(moderator, Domain.Roles.Moderator.ToString());
                 }
 
