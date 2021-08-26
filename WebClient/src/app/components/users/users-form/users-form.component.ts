@@ -46,7 +46,7 @@ export class UsersFormComponent implements OnInit {
     this.model.lastName = null;
     this.model.username = null;
     this.model.password = null;
-    this.model.roleId = 0;
+    this.model.roleId = null;
   }
 
   getRoles() {
@@ -121,7 +121,7 @@ export class UsersFormComponent implements OnInit {
   }
 
   roleValidation() {
-    return !!!(this.model.roleId < 1);
+    return !!!(this.model.roleId == null || this.model.roleId.length < 1);
   }
 
   compareUsernames() {

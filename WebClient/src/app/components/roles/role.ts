@@ -1,5 +1,5 @@
-export class Role{
-    id: number;
-    name: string;
-    description: string;
+export class Role {
+  id: string;
+  name: string;
+  description: string;
 }

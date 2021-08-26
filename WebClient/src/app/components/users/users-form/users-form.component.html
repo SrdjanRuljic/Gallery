@@ -94,7 +94,7 @@
               name="roleId"
               [(ngModel)]="model.roleId"
             >
-              <option value="0">-</option>
+              <option value="null">-</option>
               <option *ngFor="let item of roles" [value]="item.id">
                 {{ item.name }}
               </option>

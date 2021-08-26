@@ -1,4 +1,5 @@
 ﻿using Application.Roles.Queries.DropdowItem;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace WebAPI.Controllers
     {
         #region [GET]
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("dropdown")]
         public async Task<IActionResult> GetDropdownItems()
