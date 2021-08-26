@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    public enum RoleEnums
+    public enum Roles
     {
         Admin,
         Moderator

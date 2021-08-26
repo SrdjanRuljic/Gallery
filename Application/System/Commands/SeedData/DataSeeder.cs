@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Domain;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -23,19 +22,13 @@ namespace Application.System.Commands.SeedData
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
             if (!_roleManager.Roles.Any())
-                await SeedRolesAsync(cancellationToken);
+                await DefaultRoles.SeedAsync(_roleManager);
             //if (!_context.Users.Any())
             //    await SeedUsersAsync(cancellationToken);
             if (!_context.AboutAuthor.Any())
                 await SeedAboutAuthorAsync(cancellationToken);
             else
                 return;
-        }
-
-        public async Task SeedRolesAsync(CancellationToken cancellationToken)
-        {
-            await _roleManager.CreateAsync(new IdentityRole(RoleEnums.Admin.ToString()));
-            await _roleManager.CreateAsync(new IdentityRole(RoleEnums.Moderator.ToString()));
         }
 
         public async Task SeedUsersAsync(CancellationToken cancellationToken)
