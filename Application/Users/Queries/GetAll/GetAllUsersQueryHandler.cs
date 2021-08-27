@@ -26,7 +26,7 @@ namespace Application.Users.Queries.GetAll
         public async Task<PaginationResultViewModel<GetAllUsersViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
             IQueryable<GetAllUsersViewModel> list = _userManager.Users
-                                                            .ProjectTo<GetAllUsersViewModel>(_mapper.ConfigurationProvider);
+                                                                .ProjectTo<GetAllUsersViewModel>(_mapper.ConfigurationProvider);
 
             PaginatedList<GetAllUsersViewModel> paginatedList = await PaginatedList<GetAllUsersViewModel>.CreateAsync(list,
                                                                                                                       request.PageNumber,
