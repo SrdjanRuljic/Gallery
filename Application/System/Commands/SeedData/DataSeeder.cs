@@ -25,16 +25,21 @@ namespace Application.System.Commands.SeedData
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
             if (!_roleManager.Roles.Any())
-                await DefaultRoles.SeedAsync(_roleManager);
+                await SeedRolessAsync();
             if (!_userManager.Users.Any())
-                await SeedUsersAsync(cancellationToken);
+                await SeedUsersAsync();
             if (!_context.AboutAuthor.Any())
                 await SeedAboutAuthorAsync(cancellationToken);
             else
                 return;
         }
 
-        public async Task SeedUsersAsync(CancellationToken cancellationToken)
+        public async Task SeedRolessAsync()
+        {
+            await DefaultRoles.SeedAsync(_roleManager);
+        }
+
+        public async Task SeedUsersAsync()
         {
             await DefaultUsers.Admin.SeedAsync(_userManager);
             await DefaultUsers.Moderator.SeedAsync(_userManager);
