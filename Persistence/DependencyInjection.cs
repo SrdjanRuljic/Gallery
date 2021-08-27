@@ -16,9 +16,9 @@ namespace Persistence
                 options.UseSqlServer(configuration.GetConnectionString("GalleryDb")));
 
             services.AddIdentityCore<AppUser>()
-                    .AddRoles<IdentityRole>()
-                    .AddRoleManager<RoleManager<IdentityRole>>()
-                    .AddRoleValidator<RoleValidator<IdentityRole>>()
+                    .AddRoles<AppRole>()
+                    .AddRoleManager<RoleManager<AppRole>>()
+                    .AddRoleValidator<RoleValidator<AppRole>>()
                     .AddEntityFrameworkStores<GalleryDbContext>();
 
             services.AddScoped<IGalleryDbContext>(provider =>

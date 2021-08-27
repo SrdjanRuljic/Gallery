@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Entities
 {
-    public class AppUser : IdentityUser
+    public class AppRole : IdentityRole
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-
         public virtual ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

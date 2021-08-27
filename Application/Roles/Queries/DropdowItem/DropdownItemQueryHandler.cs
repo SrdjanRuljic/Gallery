@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,10 @@ namespace Application.Roles.Queries.DropdowItem
 {
     public class DropdownItemQueryHandler : IRequestHandler<DropdownItemQuery, List<DropdownItemViewModel>>
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly IMapper _mapper;
 
-        public DropdownItemQueryHandler(RoleManager<IdentityRole> roleManager,
+        public DropdownItemQueryHandler(RoleManager<AppRole> roleManager,
                                         IMapper mapper)
         {
             _roleManager = roleManager;

@@ -14,11 +14,11 @@ namespace Application.System.Commands.SeedData
     public class SeedDataCommandHandler : IRequestHandler<SeedDataCommand>
     {
         private readonly IGalleryDbContext _context;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
 
         public SeedDataCommandHandler(IGalleryDbContext context,
-                                      RoleManager<IdentityRole> roleManager,
+                                      RoleManager<AppRole> roleManager,
                                       UserManager<AppUser> userManager)
         {
             _context = context;
