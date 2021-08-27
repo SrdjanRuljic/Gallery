@@ -26,13 +26,11 @@ namespace Application.Users.Queries.GetById
 
         public async Task<GetUserByIdViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            if (request.Id <= 0)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IdCanNotBeLowerThanOne);
 
 
             GetUserByIdViewModel model = await _userManager.Users
-                                                       .ProjectTo<GetUserByIdViewModel>(_mapper.ConfigurationProvider)
-                                                       .FirstOrDefaultAsync(x => x.Id == request.Id);
+                                                           .ProjectTo<GetUserByIdViewModel>(_mapper.ConfigurationProvider)
+                                                           .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (model == null)
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.UserNotFound);

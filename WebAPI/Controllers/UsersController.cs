@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetById(long id)
+        public async Task<IActionResult> GetById(string id)
         {
             GetUserByIdViewModel user = await Mediator.Send(new GetUserByIdQuery
             {

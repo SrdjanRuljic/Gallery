@@ -4,6 +4,6 @@ namespace Application.Users.Queries.GetById
 {
     public class GetUserByIdQuery : IRequest<GetUserByIdViewModel>
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
     }
 }
