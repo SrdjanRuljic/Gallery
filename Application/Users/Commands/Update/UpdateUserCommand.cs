@@ -2,9 +2,9 @@
 
 namespace Application.Users.Commands.Update
 {
-    public class UpdateUserCommand : IRequest<bool>
+    public class UpdateUserCommand : IRequest
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }

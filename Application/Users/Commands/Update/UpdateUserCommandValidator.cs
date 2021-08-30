@@ -21,6 +21,12 @@ namespace Application.Users.Commands.Update
                 isValid = false;
             }
 
+            //if (!model.Username.All(x => Char.IsLetterOrDigit(x) || x == '_'|| x == '-'))
+            //{
+            //    validationMessage += "Korisničko ime može sadržavati samo slova ili brojeve. ";
+            //    isValid = false;
+            //}
+
             if (String.IsNullOrWhiteSpace(model.RoleId))
             {
                 validationMessage += "Neophodno je odabrati ulogu. ";

@@ -4,6 +4,7 @@ using Gallery.Common.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,14 +53,14 @@ namespace Application.Users.Commands.Insert
             IdentityResult result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.ToString());
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.Select(x => x.Description).ToString());
 
             AppRole role = await _roleManager.FindByIdAsync(command.RoleId);
 
             result = await _userManager.AddToRoleAsync(user, role.Name);
 
             if (!result.Succeeded)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.ToString());
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.Select(x => x.Description).ToString());
 
             return Unit.Value;
         }

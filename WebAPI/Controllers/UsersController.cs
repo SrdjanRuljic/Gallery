@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Update(UpdateUserCommand model)
         {
-            bool isUpdated = await Mediator.Send(model);
+            await Mediator.Send(model);
 
-            return Ok(isUpdated);
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
