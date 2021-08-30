@@ -27,9 +27,10 @@ namespace Application.Users.Queries.LogedInUserData
 
         public async Task<LogedInUserDataViewModel> Handle(LogedInUserDataQuery request, CancellationToken cancellationToken)
         {
-            LogedInUserDataViewModel vievModel = await _userManager.Users.Where(x => x.UserName.Equals(request.Username))
-                                                                     .ProjectTo<LogedInUserDataViewModel>(_mapper.ConfigurationProvider)
-                                                                     .FirstOrDefaultAsync();
+            LogedInUserDataViewModel vievModel = await _userManager.Users
+                                                                   .Where(x => x.UserName.Equals(request.Username))
+                                                                   .ProjectTo<LogedInUserDataViewModel>(_mapper.ConfigurationProvider)
+                                                                   .FirstOrDefaultAsync();
 
             if (vievModel == null)
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.DataNotFound);

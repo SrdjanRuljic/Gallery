@@ -4,6 +4,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,8 +25,9 @@ namespace Application.Users.Queries.GetUserByUsername
         public async Task<UserLoginDetailsViewModel> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
         {
             UserLoginDetailsViewModel viewModel = await _userManager.Users
-                                                                .ProjectTo<UserLoginDetailsViewModel>(_mapper.ConfigurationProvider)
-                                                                .FirstOrDefaultAsync(x => x.Username.Equals(request.Username));
+                                                                    .Where(x => x.UserName.Equals(request.Username))
+                                                                    .ProjectTo<UserLoginDetailsViewModel>(_mapper.ConfigurationProvider)
+                                                                    .FirstOrDefaultAsync();
 
             return viewModel;
         }
