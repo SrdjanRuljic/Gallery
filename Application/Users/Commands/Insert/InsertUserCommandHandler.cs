@@ -1,5 +1,4 @@
-﻿using Application.Common.Behaviours;
-using Application.Common.Exceptions;
+﻿using Application.Common.Exceptions;
 using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
@@ -11,20 +10,21 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.Insert
 {
-    public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, long>
+    public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand>
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public InsertUserCommandHandler(UserManager<AppUser> userManager)
+        public InsertUserCommandHandler(UserManager<AppUser> userManager,
+                                        RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public async Task<long> Handle(InsertUserCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(InsertUserCommand command, CancellationToken cancellationToken)
         {
             string errorMessage = null;
-            byte[] passwordHash;
-            byte[] passwordSalt;
 
             if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
@@ -42,17 +42,26 @@ namespace Application.Users.Commands.Insert
             if (user != null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
 
-            Hasher.CreatePasswordHash(command.Password, out passwordHash, out passwordSalt);
-
             user = new AppUser()
             {
                 FirstName = command.FirstName,
-                LastName = command.LastName
+                LastName = command.LastName,
+                UserName = command.Username
             };
 
-            await _userManager.CreateAsync(user);
+            IdentityResult result = await _userManager.CreateAsync(user);
 
-            return 1;
+            if (!result.Succeeded)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.ToString());
+
+            AppRole role = await _roleManager.FindByIdAsync(command.RoleId);
+
+            result = await _userManager.AddToRoleAsync(user, role.Name);
+
+            if (!result.Succeeded)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.ToString());
+
+            return Unit.Value;
         }
     }
 }

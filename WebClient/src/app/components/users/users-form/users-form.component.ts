@@ -12,7 +12,7 @@ import { ModalService } from "../../common/modal/modal.service";
   styleUrls: ["./users-form.component.css"],
 })
 export class UsersFormComponent implements OnInit {
-  id: number = 0;
+  id: string = null;
   model: User;
   roles: any[];
   previousUsername: string = null;
@@ -30,8 +30,8 @@ export class UsersFormComponent implements OnInit {
 
   ngOnInit() {
     this._route.params.subscribe((params) => {
-      let id = +params["id"];
-      if (!isNaN(id) && id > 0) {
+      let id = params["id"];
+      if (id != "0") {
         this.getUser(id);
       } else {
         this.initModel();
@@ -41,7 +41,7 @@ export class UsersFormComponent implements OnInit {
   }
 
   initModel() {
-    this.model.id = 0;
+    this.model.id = null;
     this.model.firstName = null;
     this.model.lastName = null;
     this.model.username = null;
@@ -68,7 +68,7 @@ export class UsersFormComponent implements OnInit {
       this.passwordValidation() &&
       this.roleValidation()
     ) {
-      if (this.model.id == 0) {
+      if (this.model.id == null) {
         this.insert();
       } else {
         this.updateUser();
@@ -116,7 +116,7 @@ export class UsersFormComponent implements OnInit {
   passwordValidation() {
     return !!!(
       (this.model.password == null || this.model.password.length < 1) &&
-      this.model.id == 0
+      this.model.id == null
     );
   }
 

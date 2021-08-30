@@ -1,8 +1,8 @@
 <div class="container">
-  <h3 *ngIf="model.id == 0">
+  <h3 *ngIf="model.id == null">
     <span><b>Dodavanje novog korisnika</b></span>
   </h3>
-  <h3 *ngIf="model.id != 0">
+  <h3 *ngIf="model.id != null">
     <span><b>Uređivanje korisnika</b></span>
   </h3>
   <hr class="hr" />
@@ -58,7 +58,7 @@
         </div>
         <div class="form-group col-md-7">
           <div
-            *ngIf="model.id == 0"
+            *ngIf="model.id == null"
             [ngClass]="{
               'form-group has-error': f.submitted && !passwordValidation()
             }"

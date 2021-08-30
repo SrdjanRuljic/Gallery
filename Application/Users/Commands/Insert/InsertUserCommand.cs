@@ -2,9 +2,9 @@
 
 namespace Application.Users.Commands.Insert
 {
-    public class InsertUserCommand : IRequest<long>
+    public class InsertUserCommand : IRequest
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }

@@ -87,9 +87,9 @@ namespace WebAPI.Controllers
         [Route("")]
         public async Task<IActionResult> Insert(InsertUserCommand model)
         {
-            long id = await Mediator.Send(model);
+            await Mediator.Send(model);
 
-            return Ok(id);
+            return Ok();
         }
 
         #endregion

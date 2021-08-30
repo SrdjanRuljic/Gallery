@@ -21,7 +21,7 @@ namespace Application.Users.Commands.Insert
                 isValid = false;
             }
 
-            if (model.Id == 0 && String.IsNullOrWhiteSpace(model.Password))
+            if (model.Id == null && String.IsNullOrWhiteSpace(model.Password))
             {
                 validationMessage += "Neophodno je unijeti lozinku korisnika. ";
                 isValid = false;
