@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gallery.WebAPI.Helpers
 {
@@ -21,6 +17,7 @@ namespace Gallery.WebAPI.Helpers
             respounse.Headers.Add("Access-Control-Expose-Headers", "Argument-Exception");
             respounse.Headers.Add("Access-Control-Allow-Origin", "*");
         }
+
         public static void AddNotFoundExcention(this HttpResponse respounse, string message)
         {
             respounse.Headers.Add("Not-Found-Exception", message);

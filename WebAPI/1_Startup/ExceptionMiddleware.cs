@@ -1,12 +1,8 @@
 ﻿using Gallery.Common.Helpers;
 using Gallery.WebAPI.Helpers;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -29,7 +25,7 @@ namespace Gallery.WebAPI._1_Startup
             }
             catch (HttpStatusCodeException exception)
             {
-                await HandleExceptionAsync(context, exception);             
+                await HandleExceptionAsync(context, exception);
             }
             catch (Exception exception)
             {
