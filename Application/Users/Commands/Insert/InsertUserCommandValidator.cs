@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Application.Users.Commands.Insert
 {
@@ -18,6 +19,12 @@ namespace Application.Users.Commands.Insert
             if (String.IsNullOrWhiteSpace(model.Username))
             {
                 validationMessage += "Neophodno je unijeti korisničko ime korisnika. ";
+                isValid = false;
+            }
+
+            if (!model.Username.All(x => Char.IsLetterOrDigit(x) || x == '-' || x == '.' || x == '_' || x == '@' || x == '+'))
+            {
+                validationMessage += "Korisničko ime može sadržavati samo slova ili brojeve. ";
                 isValid = false;
             }
 
