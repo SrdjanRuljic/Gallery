@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             return Ok(data);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(string id)
@@ -49,6 +49,7 @@ namespace WebAPI.Controllers
 
         #region [PUT]
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPut]
         [Route("")]
         public async Task<IActionResult> Update(UpdateUserCommand model)
@@ -58,7 +59,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPut]
         [Route("update-password")]
         public async Task<IActionResult> UpdatePassword(UpdatePasswordCommand command)
@@ -72,7 +73,7 @@ namespace WebAPI.Controllers
 
         #region [POST]
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Route("get-all")]
         public async Task<IActionResult> GetAll(GetAllUsersQuery query)
@@ -82,7 +83,7 @@ namespace WebAPI.Controllers
             return Ok(users);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Insert(InsertUserCommand model)
@@ -96,6 +97,7 @@ namespace WebAPI.Controllers
 
         #region [DELETE]
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(string id)

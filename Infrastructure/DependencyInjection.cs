@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using AutoMapper.Configuration;
 using Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +10,7 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
                                                                 IConfiguration configuration)
         {
 
@@ -34,6 +33,11 @@ namespace Infrastructure
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
                         };
                     });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(Domain.Roles.Admin.ToString()));
+            });
 
             return services;
         }
