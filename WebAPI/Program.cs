@@ -1,4 +1,5 @@
 using Application.System.Commands.SeedData;
+using Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,9 @@ namespace WebAPI
                 {
                     GalleryDbContext galleryContext = services.GetRequiredService<GalleryDbContext>();
                     galleryContext.Database.Migrate();
+
+                    ApplicationDbContext applicationContext = services.GetRequiredService<ApplicationDbContext>();
+                    applicationContext.Database.Migrate();
 
                     IMediator mediator = services.GetRequiredService<IMediator>();
                     await mediator.Send(new SeedDataCommand(), CancellationToken.None);

@@ -1,6 +1,11 @@
 ﻿using Application.Common.Interfaces;
+using Domain.Entities;
 using Infrastructure.Auth;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -15,6 +20,15 @@ namespace Infrastructure
         {
 
             services.AddTransient<IJwtFactory, JwtFactory>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("GalleryDb")));
+
+            services.AddIdentityCore<AppUser>()
+                    .AddRoles<AppRole>()
+                    .AddRoleManager<RoleManager<AppRole>>()
+                    .AddRoleValidator<RoleValidator<AppRole>>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
