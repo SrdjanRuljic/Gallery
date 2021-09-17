@@ -3,9 +3,6 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,13 +12,13 @@ namespace Application.Auth.Commands
     public class LoginCommandHandler : IRequestHandler<LoginCommand, object>
     {
 
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IManagersServices _managersServices;
         public readonly IJwtFactory _jwtFactory;
 
-        public LoginCommandHandler(UserManager<AppUser> userManager,
+        public LoginCommandHandler(IManagersServices managersServices,
                                    IJwtFactory jwtFactory)
         {
-            _userManager = userManager;
+            _managersServices = managersServices;
             _jwtFactory = jwtFactory;
         }
 
@@ -32,14 +29,14 @@ namespace Application.Auth.Commands
             if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            AppUser user = await _userManager.FindByNameAsync(command.Username);
+            AppUser user = await _managersServices.Authenticate(command.Username, command.Password);
 
             if (user == null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IncorectUsernameOrPassword);
 
-            IList<string> roles = await _userManager.GetRolesAsync(user);
+            string role = await _managersServices.GetRole(user);
 
-            object token = TokenHelper.GenerateJwt(user.UserName, roles.FirstOrDefault(), _jwtFactory);
+            object token = TokenHelper.GenerateJwt(user.UserName, role, _jwtFactory);
 
             return token;
         }
