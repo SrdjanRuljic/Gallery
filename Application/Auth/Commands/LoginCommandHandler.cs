@@ -29,12 +29,12 @@ namespace Application.Auth.Commands
             if (!command.IsValid(out errorMessage))
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, errorMessage);
 
-            AppUser user = await _managersServices.Authenticate(command.Username, command.Password);
+            AppUser user = await _managersServices.AuthenticateAsync(command.Username, command.Password);
 
             if (user == null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.IncorectUsernameOrPassword);
 
-            string role = await _managersServices.GetRole(user);
+            string role = await _managersServices.GetRoleAsync(user);
 
             object token = TokenHelper.GenerateJwt(user.UserName, role, _jwtFactory);
 

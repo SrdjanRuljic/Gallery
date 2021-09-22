@@ -1,4 +1,5 @@
 ﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
@@ -15,12 +16,15 @@ namespace Application.Users.Commands.Insert
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly IManagersServices _managersServices;
 
         public InsertUserCommandHandler(UserManager<AppUser> userManager,
-                                        RoleManager<AppRole> roleManager)
+                                        RoleManager<AppRole> roleManager,
+                                        IManagersServices managersServices)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _managersServices = managersServices;
         }
 
         public async Task<Unit> Handle(InsertUserCommand command, CancellationToken cancellationToken)
@@ -38,7 +42,7 @@ namespace Application.Users.Commands.Insert
             if (String.IsNullOrEmpty(command.LastName) || String.IsNullOrWhiteSpace(command.LastName))
                 command.LastName = null;
 
-            AppUser user = await _userManager.FindByNameAsync(command.Username);
+            AppUser user = await _managersServices.FindByUserNameAsync(command.Username);
 
             if (user != null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
@@ -50,14 +54,7 @@ namespace Application.Users.Commands.Insert
                 UserName = command.Username
             };
 
-            IdentityResult result = await _userManager.CreateAsync(user);
-
-            if (!result.Succeeded)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.Select(x => x.Description).ToString());
-
-            AppRole role = await _roleManager.FindByIdAsync(command.RoleId);
-
-            result = await _userManager.AddToRoleAsync(user, role.Name);
+            IdentityResult result = await _managersServices.CreateAsync(command.FirstName, command.LastName, command.Username, command.RoleId);
 
             if (!result.Succeeded)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.Select(x => x.Description).ToString());
