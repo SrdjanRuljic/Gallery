@@ -5,14 +5,13 @@ using Gallery.Common.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Users.Commands.Insert
 {
-    public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand>
+    public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, string>
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
@@ -27,7 +26,7 @@ namespace Application.Users.Commands.Insert
             _managersServices = managersServices;
         }
 
-        public async Task<Unit> Handle(InsertUserCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(InsertUserCommand command, CancellationToken cancellationToken)
         {
             string errorMessage = null;
 
@@ -47,19 +46,17 @@ namespace Application.Users.Commands.Insert
             if (user != null)
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
 
-            user = new AppUser()
-            {
-                FirstName = command.FirstName,
-                LastName = command.LastName,
-                UserName = command.Username
-            };
+            var result = await _managersServices.CreateUserAsync(command.FirstName,
+                                                             command.LastName,
+                                                             command.Username,
+                                                             command.Password,
+                                                             command.RoleId,
+                                                             null);
 
-            IdentityResult result = await _managersServices.CreateAsync(command.FirstName, command.LastName, command.Username, command.RoleId);
+            if (!result.Result.Succeeded)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Result.Errors.ToString());
 
-            if (!result.Succeeded)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Errors.Select(x => x.Description).ToString());
-
-            return Unit.Value;
+            return result.UserId;
         }
     }
 }

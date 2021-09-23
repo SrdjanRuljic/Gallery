@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,23 +9,20 @@ namespace Application.System.Commands.SeedData
     public class DataSeeder
     {
         private readonly IGalleryDbContext _context;
-        private readonly RoleManager<AppRole> _roleManager;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IManagersServices _managersServices;
 
         public DataSeeder(IGalleryDbContext context,
-                          RoleManager<AppRole> roleManager,
-                          UserManager<AppUser> userManager)
+                          IManagersServices managersServices)
         {
             _context = context;
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _managersServices = managersServices;
         }
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            if (!_roleManager.Roles.Any())
+            if (!await _managersServices.IsThereAnyRoleAsync())
                 await SeedRolessAsync();
-            if (!_userManager.Users.Any())
+            if (!await _managersServices.IsThereAnyUserAsync())
                 await SeedUsersAsync();
             if (!_context.AboutAuthor.Any())
                 await SeedAboutAuthorAsync(cancellationToken);
@@ -36,13 +32,13 @@ namespace Application.System.Commands.SeedData
 
         public async Task SeedRolessAsync()
         {
-            await DefaultRoles.SeedAsync(_roleManager);
+            await DefaultRoles.SeedAsync(_managersServices);
         }
 
         public async Task SeedUsersAsync()
         {
-            await DefaultUsers.Admin.SeedAsync(_userManager);
-            await DefaultUsers.Moderator.SeedAsync(_userManager);
+            await DefaultUsers.Admin.SeedAsync(_managersServices);
+            await DefaultUsers.Moderator.SeedAsync(_managersServices);
         }
 
         public async Task SeedAboutAuthorAsync(CancellationToken cancellationToken)

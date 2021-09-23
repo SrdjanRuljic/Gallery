@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +36,18 @@ namespace Infrastructure.Identity
             return user;
         }
 
-        public async Task<IdentityResult> CreateAsync(string firstName, string lastName, string userName, string roleId)
+        public async Task CreateRoleAsync(string roleName) =>
+            await _roleManager.CreateAsync(new AppRole()
+            {
+                Name = roleName
+            });
+
+        public async Task<(Result Result, string UserId)> CreateUserAsync(string firstName,
+                                                                          string lastName,
+                                                                          string userName,
+                                                                          string password,
+                                                                          string roleId = null,
+                                                                          string roleName = null)
         {
             AppUser user = new AppUser()
             {
@@ -43,16 +56,20 @@ namespace Infrastructure.Identity
                 UserName = userName
             };
 
-            IdentityResult result = await _userManager.CreateAsync(user);
+            IdentityResult result = await _userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
-                return result;
+                return (result.ToApplicationResult(), user.Id);
 
-            AppRole role = await _roleManager.FindByIdAsync(roleId);
+            if (roleId != null)
+            {
+                AppRole role = await _roleManager.FindByIdAsync(roleId);
+                roleName = role.Name;
+            }
 
-            await _userManager.AddToRoleAsync(user, role.Name);
+            await _userManager.AddToRoleAsync(user, roleName);
 
-            return result;
+            return (result.ToApplicationResult(), user.Id);
         }
 
         public async Task<AppRole> FindByIdAsync(string roleId) =>
@@ -67,5 +84,11 @@ namespace Infrastructure.Identity
 
             return roles == null ? null : roles.FirstOrDefault();
         }
+
+        public async Task<bool> IsThereAnyRoleAsync() =>
+            await _roleManager.Roles.AnyAsync();
+
+        public async Task<bool> IsThereAnyUserAsync() =>
+            await _userManager.Users.AnyAsync();
     }
 }

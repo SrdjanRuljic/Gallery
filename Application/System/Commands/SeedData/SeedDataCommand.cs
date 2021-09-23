@@ -1,7 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,21 +12,18 @@ namespace Application.System.Commands.SeedData
     public class SeedDataCommandHandler : IRequestHandler<SeedDataCommand>
     {
         private readonly IGalleryDbContext _context;
-        private readonly RoleManager<AppRole> _roleManager;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IManagersServices _managersServices;
 
         public SeedDataCommandHandler(IGalleryDbContext context,
-                                      RoleManager<AppRole> roleManager,
-                                      UserManager<AppUser> userManager)
+                                      IManagersServices managersServices)
         {
             _context = context;
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _managersServices = managersServices;
         }
 
         public async Task<Unit> Handle(SeedDataCommand request, CancellationToken cancellationToken)
         {
-            DataSeeder seeder = new DataSeeder(_context, _roleManager, _userManager);
+            DataSeeder seeder = new DataSeeder(_context, _managersServices);
 
             await seeder.SeedAllAsync(cancellationToken);
 

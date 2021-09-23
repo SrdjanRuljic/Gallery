@@ -1,23 +1,15 @@
-﻿using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using Application.Common.Interfaces;
 using System.Threading.Tasks;
 
 namespace Application.System.Commands.SeedData
 {
     public static class DefaultRoles
     {
-        public static async Task SeedAsync(RoleManager<AppRole> roleManager)
+        public static async Task SeedAsync(IManagersServices _managersServicess)
         {
             //Seed Roles
-            await roleManager.CreateAsync(new AppRole()
-            {
-                Name = Domain.Roles.Admin.ToString()
-            });
-
-            await roleManager.CreateAsync(new AppRole()
-            {
-                Name = Domain.Roles.Moderator.ToString()
-            });
+            await _managersServicess.CreateRoleAsync(Domain.Roles.Admin.ToString());
+            await _managersServicess.CreateRoleAsync(Domain.Roles.Moderator.ToString());
         }
     }
 }
