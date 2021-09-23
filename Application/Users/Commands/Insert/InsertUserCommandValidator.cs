@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Application.Users.Commands.Insert
 {
@@ -9,6 +10,7 @@ namespace Application.Users.Commands.Insert
         {
             validationMessage = null;
             bool isValid = true;
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])$";
 
             if (model == null)
             {
@@ -28,9 +30,21 @@ namespace Application.Users.Commands.Insert
                 isValid = false;
             }
 
-            if (model.Id == null && String.IsNullOrWhiteSpace(model.Password))
+            if (String.IsNullOrWhiteSpace(model.Password))
             {
                 validationMessage += "Neophodno je unijeti lozinku korisnika. ";
+                isValid = false;
+            }
+
+            if (model.Password.Length < 6)
+            {
+                validationMessage += "Neophodno je da lozinka korisnika sadrži minimum 6 karaktera. ";
+                isValid = false;
+            }
+
+            if (!Regex.IsMatch(model.Password, passwordPattern))
+            {
+                validationMessage += "Lozinka mora sadržavati velika i mala slova, brojeve i specijalne karaktere. ";
                 isValid = false;
             }
 

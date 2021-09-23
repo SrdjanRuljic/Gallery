@@ -13,16 +13,10 @@ namespace Application.Users.Commands.Insert
 {
     public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, string>
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<AppRole> _roleManager;
         private readonly IManagersServices _managersServices;
 
-        public InsertUserCommandHandler(UserManager<AppUser> userManager,
-                                        RoleManager<AppRole> roleManager,
-                                        IManagersServices managersServices)
+        public InsertUserCommandHandler(IManagersServices managersServices)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
             _managersServices = managersServices;
         }
 
@@ -47,14 +41,14 @@ namespace Application.Users.Commands.Insert
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, ErrorMessages.UserExists);
 
             var result = await _managersServices.CreateUserAsync(command.FirstName,
-                                                             command.LastName,
-                                                             command.Username,
-                                                             command.Password,
-                                                             command.RoleId,
-                                                             null);
+                                                                 command.LastName,
+                                                                 command.Username,
+                                                                 command.Password,
+                                                                 command.RoleId,
+                                                                 null);
 
             if (!result.Result.Succeeded)
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, result.Result.Errors.ToString());
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, string.Concat(result.Result.Errors));
 
             return result.UserId;
         }
