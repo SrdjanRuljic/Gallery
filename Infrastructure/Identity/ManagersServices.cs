@@ -75,8 +75,14 @@ namespace Infrastructure.Identity
         public async Task<AppRole> FindByIdAsync(string roleId) =>
             await _roleManager.FindByIdAsync(roleId);
 
+        public IQueryable<AppUser> FindByUserName(string username) =>
+            _userManager.Users.Where(x => x.UserName.Equals(username));
+
         public async Task<AppUser> FindByUserNameAsync(string username) =>
             await _userManager.FindByNameAsync(username);
+
+        public IQueryable<AppUser> GetAllUsers() =>
+            _userManager.Users;
 
         public async Task<string> GetRoleAsync(AppUser user)
         {

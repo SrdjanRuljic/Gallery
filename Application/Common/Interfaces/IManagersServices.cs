@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Domain.Entities;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
@@ -15,7 +16,9 @@ namespace Application.Common.Interfaces
                                                              string roleId = null,
                                                              string roleName = null);
         Task<AppUser> FindByUserNameAsync(string username);
+        IQueryable<AppUser> FindByUserName(string username);
         Task<AppRole> FindByIdAsync(string roleId);
+        IQueryable<AppUser> GetAllUsers();
         Task<string> GetRoleAsync(AppUser user);
         Task<bool> IsThereAnyUserAsync();
         Task<bool> IsThereAnyRoleAsync();
