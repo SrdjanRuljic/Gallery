@@ -72,7 +72,7 @@ namespace Infrastructure.Identity
             return (result.ToApplicationResult(), user.Id);
         }
 
-        public async Task<AppRole> FindByIdAsync(string roleId) =>
+        public async Task<AppRole> FindRoleByIdAsync(string roleId) =>
             await _roleManager.FindByIdAsync(roleId);
 
         public IQueryable<AppUser> FindByUserName(string username) =>
@@ -80,6 +80,12 @@ namespace Infrastructure.Identity
 
         public async Task<AppUser> FindByUserNameAsync(string username) =>
             await _userManager.FindByNameAsync(username);
+
+        public IQueryable<AppUser> FindUserById(string id) =>
+             _userManager.Users.Where(x => x.Id.Equals(id));
+
+        public IQueryable<AppRole> GetAllRoles() =>
+            _roleManager.Roles;
 
         public IQueryable<AppUser> GetAllUsers() =>
             _userManager.Users;
@@ -96,5 +102,41 @@ namespace Infrastructure.Identity
 
         public async Task<bool> IsThereAnyUserAsync() =>
             await _userManager.Users.AnyAsync();
+
+        public async Task<Result> UpdateUserAsync(AppUser user,
+                                                  string firstName,
+                                                  string lastName,
+                                                  string userName,
+                                                  string roleId)
+        {
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            user.UserName = userName;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            await UpdateUserRoleAsync(user, roleId);
+
+            return result.ToApplicationResult();
+        }
+
+        public async Task<AppUser> FindUserByIdAsync(string id) =>
+            await _userManager.FindByIdAsync(id);
+
+        private async Task UpdateUserRoleAsync(AppUser user, string roleId)
+        {
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
+            AppRole currentRole = await _roleManager.FindByNameAsync(userRoles.FirstOrDefault());
+            AppRole newRole = await _roleManager.FindByIdAsync(roleId);
+
+            IdentityResult result = new IdentityResult();
+
+            if (!roleId.Equals(currentRole.Id))
+            {
+                await _userManager.RemoveFromRolesAsync(user, userRoles);
+
+                await _userManager.AddToRoleAsync(user, newRole.Name);
+            }
+        }
     }
 }

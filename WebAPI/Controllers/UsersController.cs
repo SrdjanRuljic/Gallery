@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         [Route("data")]
         public async Task<IActionResult> GetLogedInUserData()
         {
-            string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            string username = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
             LogedInUserDataViewModel data = await Mediator.Send(new LogedInUserDataQuery()
             {

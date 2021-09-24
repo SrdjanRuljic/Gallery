@@ -47,7 +47,18 @@ namespace Infrastructure
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(Domain.Roles.Admin.ToString()));
+                options.AddPolicy("RequireAdminRole", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole(Domain.Roles.Admin.ToString());
+                });
+
+                options.AddPolicy("RequireAuthorization", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                });
             });
 
             return services;

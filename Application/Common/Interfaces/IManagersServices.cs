@@ -17,10 +17,18 @@ namespace Application.Common.Interfaces
                                                              string roleName = null);
         Task<AppUser> FindByUserNameAsync(string username);
         IQueryable<AppUser> FindByUserName(string username);
-        Task<AppRole> FindByIdAsync(string roleId);
+        Task<AppRole> FindRoleByIdAsync(string roleId);
+        IQueryable<AppUser> FindUserById(string id);
+        Task<AppUser> FindUserByIdAsync(string id);
+        IQueryable<AppRole> GetAllRoles();
         IQueryable<AppUser> GetAllUsers();
         Task<string> GetRoleAsync(AppUser user);
         Task<bool> IsThereAnyUserAsync();
         Task<bool> IsThereAnyRoleAsync();
+        Task<Result> UpdateUserAsync(AppUser user,
+                                     string firstName,
+                                     string lastName,
+                                     string userName,
+                                     string roleId);
     }
 }

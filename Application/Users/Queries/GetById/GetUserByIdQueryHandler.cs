@@ -1,10 +1,9 @@
 ﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain.Entities;
 using Gallery.Common.Helpers;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Threading;
@@ -14,23 +13,21 @@ namespace Application.Users.Queries.GetById
 {
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, GetUserByIdViewModel>
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IManagersServices _managersServices;
         private readonly IMapper _mapper;
 
-        public GetUserByIdQueryHandler(UserManager<AppUser> userManager,
+        public GetUserByIdQueryHandler(IManagersServices managersServices,
                                        IMapper mapper)
         {
-            _userManager = userManager;
+            _managersServices = managersServices;
             _mapper = mapper;
         }
 
         public async Task<GetUserByIdViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-
-
-            GetUserByIdViewModel model = await _userManager.Users
-                                                           .ProjectTo<GetUserByIdViewModel>(_mapper.ConfigurationProvider)
-                                                           .FirstOrDefaultAsync(x => x.Id == request.Id);
+            GetUserByIdViewModel model = await _managersServices.FindUserById(request.Id)
+                                                                .ProjectTo<GetUserByIdViewModel>(_mapper.ConfigurationProvider)
+                                                                .FirstOrDefaultAsync();
 
             if (model == null)
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.UserNotFound);
