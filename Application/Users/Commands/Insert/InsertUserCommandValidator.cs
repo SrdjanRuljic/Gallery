@@ -10,7 +10,7 @@ namespace Application.Users.Commands.Insert
         {
             validationMessage = null;
             bool isValid = true;
-            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])$";
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{6,}$";
 
             if (model == null)
             {

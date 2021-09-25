@@ -90,7 +90,7 @@ namespace WebAPI.Controllers
         {
             string id = await Mediator.Send(model);
 
-            return Ok(id);
+            return Ok(new { id });
         }
 
         #endregion
