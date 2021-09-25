@@ -23,7 +23,7 @@ export class UsersUpdatePasswordComponent implements OnInit {
 
   ngOnInit() {
     this._route.params.subscribe((params) => {
-      let id = +params["id"];
+      let id = params["id"];
       this.initModel(id);
     });
   }

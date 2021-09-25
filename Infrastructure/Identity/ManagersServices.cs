@@ -141,5 +141,14 @@ namespace Infrastructure.Identity
 
         public async Task DeleteUserAsync(AppUser user) =>
             await _userManager.DeleteAsync(user);
+
+        public async Task<Result> ChangePasswordAsync(AppUser user, string newPassword)
+        {
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, newPassword);
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            return result.ToApplicationResult();
+        }
     }
 }

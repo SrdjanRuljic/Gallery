@@ -8,6 +8,7 @@ namespace Application.Common.Interfaces
     public interface IManagersServices
     {
         Task<AppUser> AuthenticateAsync(string username, string password);
+        Task<Result> ChangePasswordAsync(AppUser user, string newPassword);
         Task CreateRoleAsync(string roleName);
         Task<(Result Result, string UserId)> CreateUserAsync(string firstName,
                                                              string lastName,

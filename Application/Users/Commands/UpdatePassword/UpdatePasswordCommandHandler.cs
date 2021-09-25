@@ -1,6 +1,10 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.Common.Models;
+using Domain.Entities;
+using Gallery.Common.Helpers;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,20 +12,26 @@ namespace Application.Users.Commands.UpdatePassword
 {
     public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommand, bool>
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IManagersServices _managersServices;
 
-        public UpdatePasswordCommandHandler(UserManager<AppUser> userManager)
+        public UpdatePasswordCommandHandler(IManagersServices managersServices)
         {
-            _userManager = userManager;
+            _managersServices = managersServices;
         }
 
         public async Task<bool> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
         {
-            AppUser user = await _userManager.FindByIdAsync(request.Id);
+            AppUser user = await _managersServices.FindUserByIdAsync(request.Id);
 
-            await _userManager.ChangePasswordAsync(user, user.PasswordHash, request.Password);
+            if (user == null)
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ErrorMessages.UserNotFound);
 
-            return true;
+            Result result = await _managersServices.ChangePasswordAsync(user, request.Password);
+
+            if (!result.Succeeded)
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, string.Concat(result.Errors));
+
+            return result.Succeeded;
         }
     }
 }
