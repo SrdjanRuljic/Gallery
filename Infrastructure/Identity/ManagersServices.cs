@@ -138,5 +138,8 @@ namespace Infrastructure.Identity
                 await _userManager.AddToRoleAsync(user, newRole.Name);
             }
         }
+
+        public async Task DeleteUserAsync(AppUser user) =>
+            await _userManager.DeleteAsync(user);
     }
 }

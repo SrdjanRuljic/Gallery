@@ -25,6 +25,7 @@ namespace Application.Common.Interfaces
         Task<string> GetRoleAsync(AppUser user);
         Task<bool> IsThereAnyUserAsync();
         Task<bool> IsThereAnyRoleAsync();
+        Task DeleteUserAsync(AppUser user);
         Task<Result> UpdateUserAsync(AppUser user,
                                      string firstName,
                                      string lastName,
